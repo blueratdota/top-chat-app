@@ -9,6 +9,7 @@ import {
 import "./index.css";
 import UserLogin from "./pages/UserLogin.tsx";
 import HomePage from "./pages/HomePage.tsx";
+import Newsfeed from "./pages/HomePageOutlet/Newsfeed.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,17 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/home" replace /> },
       { path: "/login", element: <UserLogin /> },
-      { path: "/home", element: <HomePage /> }
+      {
+        path: "/home",
+        element: <HomePage />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/home/newsfeed" replace />
+          },
+          { path: "/home/newsfeed", element: <Newsfeed /> }
+        ]
+      }
     ]
   }
 ]);

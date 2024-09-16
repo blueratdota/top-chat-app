@@ -13,7 +13,7 @@ const protect = async (req, res, next) => {
         const userQuery = await prisma.user.findUnique({
           where: { name: decoded.userId }
         });
-        req.user = await userQuery;
+        req.user = userQuery;
         console.log("success req.user = query");
         next();
       } catch (error) {
