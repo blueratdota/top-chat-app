@@ -2,17 +2,16 @@
   "name": "backend",
   "type": "module",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "compile": "tsx  watch --env-file=.env --clear-screen=false ./src/index.ts",
-    "start": "npm run compile && node ./dist/index.js"
+    "dev": "node --watch --env-file=.env index.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "bcryptjs": "^2.4.3",
@@ -22,10 +21,6 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "@types/node": "^22.5.5",
-    "prisma": "^5.19.1",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.1",
-    "typescript": "^5.6.2"
+    "prisma": "^5.19.1"
   }
 }
