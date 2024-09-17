@@ -11,6 +11,7 @@ import Profile from "./pages/HomePageOutlet/Profile.tsx";
 import Messages from "./pages/HomePageOutlet/Messages.tsx";
 import MessageId from "./pages/HomePageOutlet/MessagesOutlet/MessageId.tsx";
 import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault.tsx";
+import UserSignup from "./pages/UserSignup.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/login", element: <UserLogin /> },
+      { path: "/signup", element: <UserSignup /> },
       { path: "/profile", element: <Profile /> },
       {
         path: "/messages",

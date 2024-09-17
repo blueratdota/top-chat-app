@@ -19,8 +19,39 @@ model User {
   id          String   @unique @default(uuid())
   email       String   @unique
   password    String
-  firstName   String?
-  lastName    String?
   dateCreated DateTime @default(now())
   dateUpdated DateTime @updatedAt
+
+  friendUser   User?       @relation("friends", fields: [userId], references: [id])
+  userId       String?
+  User         User[]      @relation("friends")
+  Profile      Profile?
+  MessageBox   MessageBox? @relation(fields: [messageBoxId], references: [id])
+  messageBoxId String?
+  Message      Message[]
+}
+
+model Profile {
+  id        Int     @id @default(autoincrement())
+  bio       String?
+  firstName String?
+  lastName  String?
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @unique
+}
+
+model MessageBox {
+  id          String    @unique @default(uuid())
+  members     User[]
+  messages    Message[]
+  dateUpdated DateTime  @updatedAt
+}
+
+model Message {
+  id          String     @unique @default(uuid())
+  author      User       @relation(fields: [userId], references: [id])
+  userId      String
+  receiver    MessageBox @relation(fields: [receiverId], references: [id])
+  receiverId  String
+  dateCreated DateTime   @default(now())
 }
