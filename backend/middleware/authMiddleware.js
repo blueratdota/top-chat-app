@@ -11,7 +11,11 @@ const protect = async (req, res, next) => {
         console.log("TOKEN VERIFIED");
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userQuery = await prisma.user.findUnique({
-          where: { name: decoded.userId }
+          where: { id: decoded.userId },
+          select: {
+            id: true,
+            email: true
+          }
         });
         req.user = userQuery;
         console.log("success req.user = query");
