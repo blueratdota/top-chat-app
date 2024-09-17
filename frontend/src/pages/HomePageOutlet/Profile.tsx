@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 
-const Newsfeed = () => {
+const Profile = () => {
   return (
     <div>
-      this is the newsfeed
+      this is the Profile
       <Outlet />
     </div>
   );
 };
 
-export default Newsfeed;
+export default Profile;

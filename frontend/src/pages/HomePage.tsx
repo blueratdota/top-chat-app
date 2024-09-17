@@ -3,15 +3,7 @@ import Sidebar from "../components/built/Sidebar";
 import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 640px)" });
-  return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <main>
-        <Outlet />
-      </main>
-      {isTabletOrMobile ? null : <div>optional side</div>}
-    </div>
-  );
+  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  return <div>Home page desu</div>;
 };
 export default HomePage;
