@@ -8,7 +8,7 @@ const Messages = () => {
     <div className="flex">
       <div className="border-r">
         <div className="flex w-[380px] p-2 pr-5 gap-5 border-b">
-          <h1 className="text-lg flex-1">Messages</h1>
+          <h1 className="text-lg font-bold flex-1">Messages</h1>
           <div className="w-7 ">
             <Icon path={mdiCogOutline} />{" "}
           </div>
