@@ -22,7 +22,9 @@ const Sidebar = ({ pathName }: SidebarParam) => {
     <div className="w-64 bg-white border-r [&>div]:hover:cursor-pointer py-5">
       <Link to={"/profile"}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${mainPath == "profile" ? "bg-gray-100 font-bold" : ""}`}
+          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == "profile" ? "bg-gray-100 font-bold" : ""
+          }`}
         >
           <div className="w-10">
             <Icon path={mdiAccountCircle} />
@@ -33,7 +35,9 @@ const Sidebar = ({ pathName }: SidebarParam) => {
       </Link>
       <Link to={"/"}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${mainPath == "" ? "bg-gray-100 font-bold" : ""}`}
+          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == "" ? "bg-gray-100 font-bold" : ""
+          }`}
         >
           <div className="w-10">
             <Icon path={mdiHome} />
@@ -42,7 +46,9 @@ const Sidebar = ({ pathName }: SidebarParam) => {
         </div>
       </Link>
       <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${mainPath == "explore" ? "bg-gray-100 font-bold" : ""}`}
+        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          mainPath == "explore" ? "bg-gray-100 font-bold" : ""
+        }`}
       >
         <div className="w-10">
           <Icon path={mdiMagnify} />
@@ -50,23 +56,31 @@ const Sidebar = ({ pathName }: SidebarParam) => {
         <p className=" text-lg">Explore</p>
       </div>
       <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${mainPath == "notifications" ? "bg-gray-100 font-bold" : ""}`}
+        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          mainPath == "notifications" ? "bg-gray-100 font-bold" : ""
+        }`}
       >
         <div className="w-10">
           <Icon path={mdiBellOutline} />
         </div>
         <p className=" text-lg">Notifications</p>
       </div>
-      <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${mainPath == "messages" ? "bg-gray-100 font-bold" : ""}`}
-      >
-        <div className="w-10">
-          <Icon path={mdiEmailOutline} />
+      <Link to={"/messages"}>
+        <div
+          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == "messages" ? "bg-gray-100 font-bold" : ""
+          }`}
+        >
+          <div className="w-10">
+            <Icon path={mdiEmailOutline} />
+          </div>
+          <p className=" text-lg">Messages</p>
         </div>
-        <p className=" text-lg">Messages</p>
-      </div>
+      </Link>
       <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${mainPath == "friends" ? "bg-gray-100 font-bold" : ""}`}
+        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          mainPath == "friends" ? "bg-gray-100 font-bold" : ""
+        }`}
       >
         <div className="w-10">
           <Icon path={mdiAccountGroup} />
