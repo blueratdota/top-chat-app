@@ -5,6 +5,7 @@ import { genToken } from "../utils/generateToken.js";
 import { protect } from "../middleware/authMiddleware.js";
 import {
   getUserData,
+  userAcceptFriend,
   userAddFriend,
   userLogin,
   userSignup
@@ -16,5 +17,6 @@ router.get("/userdata", protect, getUserData);
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.put("/add-friend", userAddFriend);
+router.put("/accept-friend", protect, userAcceptFriend);
 
 export default router;

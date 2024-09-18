@@ -9,12 +9,13 @@ const getUserData = async (req, res, next) => {
   const userData = await prisma.user.findUnique({
     where: { id: id },
     include: {
-      Friends: true
+      friends: true,
+      friendsOf: true
     }
   });
   const result = {
     isSuccess: true,
-    msg: "Friend request sent",
+    msg: "User data downloaded successfuly",
     data: userData
   };
   res.status(200).json(result);
@@ -31,14 +32,6 @@ const userSignup = async (req, res, next) => {
         data: { email: email, password: hashedPassword }
       });
       const result = { isSuccess: true, msg: "User created", data: user };
-
-      // ONCE ACCOUNT CREATED, CREATE THE FOLLOWING TABLE ENTRIES
-      // FRIENDS -- LIST OF USER'S FRIENDS -- START EMPTY
-      // FRIENDS -- SENT FRIEND REQUESTS
-      // FRIENDS -- RECEIVED FRIEND REQUESTS
-
-      // DEFAULT PROFILE
-      // EMPTY BIO, FIRST NAME, LAST NAME
 
       res.status(200).json(result);
     } else {
@@ -88,19 +81,59 @@ const userAddFriend = async (req, res, next) => {
   const { userId, friendId } = req.body;
   try {
     const friendRequest = await prisma.friends.create({
-      data: { userId: friendId }
+      data: { requestingUserId: userId, acceptingUserId: friendId }
     });
+
     await prisma.user.update({
       where: { id: userId },
-      data: { Friends: { connect: friendRequest } }
+      data: { friends: { connect: friendRequest } }
     });
+    await prisma.user.update({
+      where: { id: friendId },
+      data: { friendsOf: { connect: friendRequest } }
+    });
+
     const result = {
       isSuccess: true,
       msg: "Friend request sent",
       data: friendRequest
     };
     res.status(200).json(result);
-  } catch (error) {}
+  } catch (error) {
+    const result = new Error("Friend request failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
 };
 
-export { getUserData, userSignup, userLogin, userAddFriend };
+const userAcceptFriend = async (req, res, next) => {
+  const { id, requestingUserId, acceptingUserId } = req.body;
+  try {
+    if (acceptingUserId == req.user.id) {
+      const friendRequest = await prisma.friends.update({
+        where: { id: id },
+        data: { accepted: true }
+      });
+      const result = {
+        isSuccess: true,
+        msg: "Friend request accepted",
+        data: friendRequest
+      };
+      res.status(200).json(result);
+    } else {
+      throw new Error("Error in accepting friend request");
+    }
+  } catch (error) {
+    const result = new Error("Friend request handling fatal error");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
+export { getUserData, userSignup, userLogin, userAddFriend, userAcceptFriend };
+
+// FOR SHOWING PROFILE ON FRIEND REQUEST
+// CREATE A GET PROFILE API BASED ON USER ID
+// PROFILE SHOULD SHOW COMPLETE NAME AND PROFILE PICTURE IF IMPLEMENTED
