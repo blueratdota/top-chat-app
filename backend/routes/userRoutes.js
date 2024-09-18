@@ -1,22 +1,25 @@
 import express from "express";
-import bcrypt from "bcryptjs";
-import { PrismaClient, Prisma } from "@prisma/client";
-import { genToken } from "../utils/generateToken.js";
 import { protect } from "../middleware/authMiddleware.js";
 import {
   getUserData,
+  getUserFriends,
+  getUserProfile,
   userAcceptFriend,
   userAddFriend,
   userLogin,
   userSignup
 } from "../controller/userFunctions.js";
 const router = express.Router();
-const prisma = new PrismaClient();
 
+// GET ALL USER DATA
 router.get("/userdata", protect, getUserData);
+// GET SPECIFIC USER DATA
+router.get("/profile", protect, getUserProfile);
+router.get("/friends", protect, getUserFriends);
+// POST
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
-router.put("/add-friend", userAddFriend);
+router.post("/add-friend", userAddFriend);
 router.put("/accept-friend", protect, userAcceptFriend);
 
 export default router;

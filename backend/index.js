@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler.js";
 //import routes
 import userRoutes from "./routes/userRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 const app = express();
 const corsOptions = {
@@ -26,8 +27,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 // api endpoints
 app.use("/api/users", userRoutes);
-// app.use("/api/folders", folderRoutes);
-// app.use("/api/files", fileRoutes);
+app.use("/api/messages", messageRoutes);
 
 // use error handler
 app.use(errorHandler);

@@ -6,19 +6,74 @@ const prisma = new PrismaClient();
 const getUserData = async (req, res, next) => {
   const { id } = req.user;
   console.log(req.user);
-  const userData = await prisma.user.findUnique({
-    where: { id: id },
-    include: {
-      friends: true,
-      friendsOf: true
-    }
-  });
-  const result = {
-    isSuccess: true,
-    msg: "User data downloaded successfuly",
-    data: userData
-  };
-  res.status(200).json(result);
+  try {
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      include: {
+        Profile: true,
+        friends: true,
+        friendsOf: true,
+        sentMessages: true,
+        receivedMessages: true
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "User data downloaded successfuly",
+      data: userData
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+const getUserProfile = async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        Profile: true
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "User profile data downloaded",
+      data: userData
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User profile data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+const getUserFriends = async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        friends: true,
+        friendsOf: true
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "User friends data downloaded",
+      data: userData
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User friends data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
 };
 
 // CREATE A GET ALL FRIEND DATA
@@ -132,7 +187,15 @@ const userAcceptFriend = async (req, res, next) => {
   }
 };
 
-export { getUserData, userSignup, userLogin, userAddFriend, userAcceptFriend };
+export {
+  getUserData,
+  getUserProfile,
+  getUserFriends,
+  userSignup,
+  userLogin,
+  userAddFriend,
+  userAcceptFriend
+};
 
 // FOR SHOWING PROFILE ON FRIEND REQUEST
 // CREATE A GET PROFILE API BASED ON USER ID
