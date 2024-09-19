@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 // ROUTER
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // CSS
 import "./index.css";
 // AUTH
-import { useAuth, AuthProvider } from "./hooks/AuthContext.tsx";
+import { AuthProvider } from "./hooks/AuthContext.tsx";
 // PAGES
 import UserLogin from "./pages/UserLogin.tsx";
 import HomePage from "./pages/HomePageOutlet/HomePage.tsx";
@@ -21,17 +17,8 @@ import Messages from "./pages/HomePageOutlet/Messages.tsx";
 import MessageId from "./pages/HomePageOutlet/MessagesOutlet/MessageId.tsx";
 import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault.tsx";
 import UserSignup from "./pages/UserSignup.tsx";
-
-// PrivateRoute component to protect routes
-const PrivateRoute = ({ children }: any) => {
-  const { isAuthenticated, loading } = useAuth();
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  // If the user is not authenticated, redirect to login
-  return isAuthenticated ? children : <Navigate to="/login" />;
-};
+// UTILS
+import PrivateRoute from "./utils/PrivateRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +35,14 @@ const router = createBrowserRouter([
       },
       { path: "/login", element: <UserLogin /> },
       { path: "/signup", element: <UserSignup /> },
-      { path: "/profile", element: <Profile /> },
+      {
+        path: "/profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        )
+      },
       {
         path: "/messages",
         element: (

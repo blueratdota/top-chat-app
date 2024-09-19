@@ -61,6 +61,8 @@ const UserLogin = () => {
           <Button
             className="text-slate-200 bg-black w-1/2 py-2 rounded-md"
             onClick={async () => {
+              console.log(email, password);
+
               await login(email, password);
               window.location.href = "/";
             }}

@@ -16,16 +16,17 @@ datasource db {
 }
 
 model User {
-  id               String    @unique @default(uuid())
-  email            String    @unique
-  password         String
-  dateCreated      DateTime  @default(now())
-  dateUpdated      DateTime  @updatedAt
-  Profile          Profile?
-  receivedMessages Message[] @relation("recievedMessages")
-  sentMessages     Message[] @relation("sentMessages")
-  friends          Friends[] @relation("requestingUser")
-  friendsOf        Friends[] @relation("acceptingUser")
+  id             String        @unique @default(uuid())
+  email          String        @unique
+  password       String
+  dateCreated    DateTime      @default(now())
+  dateUpdated    DateTime      @updatedAt
+  Profile        Profile?
+  sentMessages   Message[]     @relation("sentMessages")
+  friends        Friends[]     @relation("requestingUser")
+  friendsOf      Friends[]     @relation("acceptingUser")
+  conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  conversationId String?
 }
 
 model Friends {
@@ -47,11 +48,24 @@ model Profile {
 }
 
 model Message {
-  id          String   @id @default(uuid())
-  author      User     @relation("sentMessages", fields: [authorId], references: [id])
-  authorId    String
-  recipient   User     @relation("recievedMessages", fields: [recipientId], references: [id])
-  recipientId String
-  content     String
-  dateSent    DateTime @default(now())
+  id             String        @id @default(uuid())
+  author         User          @relation("sentMessages", fields: [authorId], references: [id])
+  authorId       String
+  content        String
+  dateSent       DateTime      @default(now())
+  conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  conversationId String?
+}
+
+model Conversation {
+  id          String           @id @default(uuid())
+  members     User[]
+  messages    Message[]
+  dateUpdated DateTime         @updatedAt
+  type        ConversationType
+}
+
+enum ConversationType {
+  PRIVATE
+  GROUP
 }

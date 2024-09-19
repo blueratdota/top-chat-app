@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 const Profile = () => {
   return (
     <div>
-      this is the Profile
+      if profile is null, route to edit profile page
       <Outlet />
     </div>
   );

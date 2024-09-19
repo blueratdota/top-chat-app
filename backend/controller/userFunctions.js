@@ -14,7 +14,7 @@ const getUserData = async (req, res, next) => {
         friends: true,
         friendsOf: true,
         sentMessages: true,
-        receivedMessages: true
+        conversation: { include: { members: true, messages: true } }
       }
     });
     const result = {
@@ -24,6 +24,8 @@ const getUserData = async (req, res, next) => {
     };
     res.status(200).json(result);
   } catch (error) {
+    console.log(error);
+
     const result = new Error("User data download failed");
     result.status = 400;
     result.log = error;
@@ -31,6 +33,8 @@ const getUserData = async (req, res, next) => {
   }
 };
 const getUserProfile = async (req, res, next) => {
+  console.log(req.user);
+
   const { id } = req.user;
   try {
     const userData = await prisma.user.findUnique({

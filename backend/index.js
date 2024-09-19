@@ -4,9 +4,10 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler.js";
-//import routes
+// IMPORT ROUTES
 import userRoutes from "./routes/userRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
+import { establishConversation } from "./controller/messageFunctions.js";
 
 const app = express();
 const corsOptions = {
