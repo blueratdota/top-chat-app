@@ -12,6 +12,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => void;
   logout: () => void;
+  profile: any;
 }
 
 // Create the context with an initial undefined value
@@ -35,7 +36,7 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true); // For handling async loading state
-
+  const [profile, setProfile] = useState({});
   // API call to check authentication status
   const checkAuthStatus = async () => {
     try {
@@ -51,6 +52,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       const data = await response.json();
       if (response.ok && data.isSuccess) {
+        setProfile(data.data.profile);
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -94,7 +96,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     isAuthenticated,
     loading,
     login,
-    logout
+    logout,
+    profile
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

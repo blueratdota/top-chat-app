@@ -21,7 +21,7 @@ model User {
   password       String
   dateCreated    DateTime      @default(now())
   dateUpdated    DateTime      @updatedAt
-  Profile        Profile?
+  profile        Profile?
   sentMessages   Message[]     @relation("sentMessages")
   friends        Friends[]     @relation("requestingUser")
   friendsOf      Friends[]     @relation("acceptingUser")

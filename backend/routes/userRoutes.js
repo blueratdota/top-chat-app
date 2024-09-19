@@ -7,7 +7,8 @@ import {
   userAcceptFriend,
   userAddFriend,
   userLogin,
-  userSignup
+  userSignup,
+  userUpdateProfile
 } from "../controller/userFunctions.js";
 const router = express.Router();
 
@@ -20,6 +21,8 @@ router.get("/friends", protect, getUserFriends);
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.post("/add-friend", userAddFriend);
+// PUT
 router.put("/accept-friend", protect, userAcceptFriend);
+router.put("/profile", protect, userUpdateProfile);
 
 export default router;

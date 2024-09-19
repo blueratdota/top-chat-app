@@ -17,7 +17,7 @@ import { useState } from "react";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login }: any = useAuth();
+  const { login } = useAuth();
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

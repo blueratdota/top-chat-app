@@ -40,7 +40,7 @@ const getUserProfile = async (req, res, next) => {
     const userData = await prisma.user.findUnique({
       where: { id: id },
       select: {
-        Profile: true
+        profile: true
       }
     });
     const result = {
@@ -191,6 +191,58 @@ const userAcceptFriend = async (req, res, next) => {
   }
 };
 
+const userUpdateProfile = async (req, res, next) => {
+  const { firstName, lastName, bio } = req.body;
+  const userBio = bio ? bio : "";
+  try {
+    // CHECK IF USER ALREADY HAS PROFILE
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      include: { profile: true }
+    });
+    if (user.profile) {
+      // HAS AN EXISTING PROFILE
+      // UPDATE PROFILE
+      const profile = await prisma.profile.update({
+        where: { id: user.profile.id },
+        data: {
+          firstName: firstName,
+          lastName: lastName,
+          bio: userBio
+        }
+      });
+      const result = {
+        isSuccess: true,
+        msg: "Profile updated",
+        data: profile
+      };
+      res.status(200).json(result);
+    } else {
+      // HAS NO EXISTING PROFILE
+      // CREATE A NEW PROFILE AND CONNECT IT TO USER
+      const profile = await prisma.profile.create({
+        data: {
+          firstName: firstName,
+          lastName: lastName,
+          bio: userBio,
+          userId: req.user.id
+        }
+      });
+      const result = {
+        isSuccess: true,
+        msg: "Profile created",
+        data: profile
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Profile update failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 export {
   getUserData,
   getUserProfile,
@@ -198,7 +250,8 @@ export {
   userSignup,
   userLogin,
   userAddFriend,
-  userAcceptFriend
+  userAcceptFriend,
+  userUpdateProfile
 };
 
 // FOR SHOWING PROFILE ON FRIEND REQUEST
