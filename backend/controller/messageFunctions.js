@@ -1,28 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// WHEN TRYING TO CHAT WITH SOMEONE
-// YOU CREATE A CONVERSATION BETWEEN TWO USERS
-// EMPTY CONVERSATION AT START
+// WAYS TO START A PRIVATE CONVERSATION
+// 1 - GO TO THEIR PROFILE, CLICK SEND MESSAGE
+// CHECK FOR EXISTING CONVERSATION BETWEEN TWO USERS
+// LOOK FOR A CONVERSATION THAT IS "TYPE:PRIVATE"
+// AND MEMBERS = [USER,OTHERUSER]
+// IF NO EXISTING CONVERSATION, CREATE CONVERSATION
+//
 
+// POST - CREATE CONVERSATION
 const establishConversation = async (req, res, next) => {
-  const { authorId, recipientId, content } = req.body;
+  const { recipientId } = req.body;
   try {
     const conversation = await prisma.conversation.create({
-      data: { type: "PRIVATE" }
+      data: {
+        type: "PRIVATE",
+        members: { connect: [{ id: req.user.id }, { id: recipientId }] }
+      }
     });
-    const membersId = [authorId, recipientId];
-    for (const member of membersId) {
-      const memberData = await prisma.user.findUnique({
-        where: { id: member },
-        select: { id: true, Profile: true, email: true }
-      });
-
-      await prisma.conversation.update({
-        where: { id: conversation.id },
-        data: { members: { connect: memberData } }
-      });
-    }
     const result = {
       isSuccess: true,
       msg: "Conversation established",
@@ -35,6 +31,54 @@ const establishConversation = async (req, res, next) => {
     result.log = error;
     next(result);
   }
+};
+
+const getConversation = async (req, res, next) => {
+  const memberId = [
+    "ce6ce699-b3a2-4991-ba40-6354451ab362",
+    "63af2f19-d9d0-45f4-86bb-da6c9e70d128"
+  ];
+  try {
+    const conversation = await prisma.conversation.findFirst({
+      where: { type: "PRIVATE", members: { every: { id: { in: memberId } } } },
+      include: { messages: true }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "Conversation downloaded",
+      data: conversation
+    };
+    // WILL RETURN DATA
+    // DATA {"ISSUCCESS":TRUE, "DATA":NULL} => IF NO EXISTING CONVERSATION BETWEEN USERS
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("Conversation download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+  // "id": "7b11051e-c0db-484f-9647-90809ae80e11",
+  //       "dateUpdated": "2024-09-19T21:03:02.841Z",
+  //       "type": "PRIVATE",
+  //       "members": [
+  //           {
+  //               "id": "ce6ce699-b3a2-4991-ba40-6354451ab362",
+  //               "email": "john@gmail.com",
+  //               "password": "$2a$10$SriBDS1u.43Idk0HORDwFOyUdfkK2QHNHfU2Ae2OIMSBFPaHZvu82",
+  //               "dateCreated": "2024-09-18T13:30:14.914Z",
+  //               "dateUpdated": "2024-09-19T21:03:02.841Z",
+  //               "conversationId": "7b11051e-c0db-484f-9647-90809ae80e11"
+  //           },
+  //           {
+  //               "id": "63af2f19-d9d0-45f4-86bb-da6c9e70d128",
+  //               "email": "bianca@gmail.com",
+  //               "password": "$2a$10$92OWubV9Mnx8/FSvciT1Y.QUcv2IOLsxlx1/T1mG9F1etIahkHz/u",
+  //               "dateCreated": "2024-09-18T13:30:25.624Z",
+  //               "dateUpdated": "2024-09-19T21:03:02.841Z",
+  //               "conversationId": "7b11051e-c0db-484f-9647-90809ae80e11"
+  //           }
+  //       ]
+  //   }
 };
 
 const addConversationMessage = async (req, res, next) => {
@@ -107,4 +151,9 @@ const sendPersonalMessage = async (req, res, next) => {
   // }
 };
 
-export { sendPersonalMessage, establishConversation, addConversationMessage };
+export {
+  sendPersonalMessage,
+  establishConversation,
+  addConversationMessage,
+  getConversation
+};
