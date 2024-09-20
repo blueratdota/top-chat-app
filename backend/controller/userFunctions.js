@@ -10,11 +10,10 @@ const getUserData = async (req, res, next) => {
     const userData = await prisma.user.findUnique({
       where: { id: id },
       include: {
-        Profile: true,
-        friends: true,
-        friendsOf: true,
+        profile: true,
+        friends: { include: { friends: true } },
         sentMessages: true,
-        conversation: { include: { members: true, messages: true } }
+        conversations: { include: { members: true, messages: true } }
       }
     });
     const result = {
@@ -62,8 +61,7 @@ const getUserFriends = async (req, res, next) => {
     const userData = await prisma.user.findUnique({
       where: { id: id },
       select: {
-        friends: true,
-        friendsOf: true
+        friends: true
       }
     });
     const result = {
@@ -97,6 +95,7 @@ const userSignup = async (req, res, next) => {
       throw new Error();
     }
   } catch (error) {
+    console.log(error);
     const result = new Error("User creation failed");
     result.status = 400;
     result.log = error;
@@ -137,28 +136,21 @@ const userLogin = async (req, res, next) => {
 };
 
 const userAddFriend = async (req, res, next) => {
-  const { userId, friendId } = req.body;
+  const { friendId } = req.body;
   try {
-    const friendRequest = await prisma.friends.create({
-      data: { requestingUserId: userId, acceptingUserId: friendId }
+    const friendship = await prisma.friendship.create({
+      data: {
+        friends: { connect: [{ id: req.user.id }, { id: friendId }] }
+      }
     });
-
-    await prisma.user.update({
-      where: { id: userId },
-      data: { friends: { connect: friendRequest } }
-    });
-    await prisma.user.update({
-      where: { id: friendId },
-      data: { friendsOf: { connect: friendRequest } }
-    });
-
     const result = {
       isSuccess: true,
-      msg: "Friend request sent",
-      data: friendRequest
+      msg: "Friendship requested",
+      data: friendship
     };
     res.status(200).json(result);
   } catch (error) {
+    console.log(error);
     const result = new Error("Friend request failed");
     result.status = 400;
     result.log = error;

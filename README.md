@@ -7,7 +7,7 @@ NODE_ENV = development
 
 # todo
 
-- work on messaging api
+- fix friendship api
 
 # done
 

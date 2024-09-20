@@ -35,8 +35,8 @@ const establishConversation = async (req, res, next) => {
 
 const getConversation = async (req, res, next) => {
   const memberId = [
-    "ce6ce699-b3a2-4991-ba40-6354451ab362",
-    "63af2f19-d9d0-45f4-86bb-da6c9e70d128"
+    "91a92b39-6272-4e6c-8654-b41f4ad5daed",
+    "6a0b420d-8d2c-471e-b459-1a5737611751"
   ];
   try {
     const conversation = await prisma.conversation.findFirst({

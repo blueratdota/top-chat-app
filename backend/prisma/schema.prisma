@@ -16,53 +16,48 @@ datasource db {
 }
 
 model User {
-  id             String        @unique @default(uuid())
-  email          String        @unique
-  password       String
-  dateCreated    DateTime      @default(now())
-  dateUpdated    DateTime      @updatedAt
-  profile        Profile?
-  sentMessages   Message[]     @relation("sentMessages")
-  friends        Friends[]     @relation("requestingUser")
-  friendsOf      Friends[]     @relation("acceptingUser")
-  conversation   Conversation? @relation(fields: [conversationId], references: [id])
-  conversationId String?
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  dateCreated   DateTime       @default(now())
+  dateUpdated   DateTime       @updatedAt
+  sentMessages  Message[]
+  conversations Conversation[]
+  profile       Profile?
+  friends       Friendship[]
 }
 
-model Friends {
-  id               String  @id @default(uuid())
-  requestingUser   User    @relation("requestingUser", fields: [requestingUserId], references: [id])
-  requestingUserId String
-  acceptingUser    User    @relation("acceptingUser", fields: [acceptingUserId], references: [id])
-  acceptingUserId  String
-  accepted         Boolean @default(false)
+model Friendship {
+  id       String  @id @default(uuid())
+  friends  User[]
+  accepted Boolean @default(false)
 }
 
 model Profile {
-  id        Int     @id @default(autoincrement())
+  id        String  @id @default(uuid())
   bio       String?
-  firstName String?
-  lastName  String?
+  firstName String
+  lastName  String
   user      User    @relation(fields: [userId], references: [id])
   userId    String  @unique
 }
 
 model Message {
-  id             String        @id @default(uuid())
-  author         User          @relation("sentMessages", fields: [authorId], references: [id])
-  authorId       String
+  id             String       @id @default(uuid())
   content        String
-  dateSent       DateTime      @default(now())
-  conversation   Conversation? @relation(fields: [conversationId], references: [id])
-  conversationId String?
+  dateSent       DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId String
+  author         User         @relation(fields: [authorId], references: [id])
+  authorId       String
 }
 
 model Conversation {
   id          String           @id @default(uuid())
-  members     User[]
   messages    Message[]
   dateUpdated DateTime         @updatedAt
   type        ConversationType
+  members     User[]
 }
 
 enum ConversationType {

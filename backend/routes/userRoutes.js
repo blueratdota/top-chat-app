@@ -20,7 +20,7 @@ router.get("/friends", protect, getUserFriends);
 // POST
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
-router.post("/add-friend", userAddFriend);
+router.post("/add-friend", protect, userAddFriend);
 // PUT
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);
