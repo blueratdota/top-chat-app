@@ -33,7 +33,6 @@ const getUserData = async (req, res, next) => {
 };
 const getUserProfile = async (req, res, next) => {
   console.log(req.user);
-
   const { id } = req.user;
   try {
     const userData = await prisma.user.findUnique({
@@ -225,6 +224,7 @@ const userUpdateProfile = async (req, res, next) => {
         msg: "Profile created",
         data: profile
       };
+      res.status(200).json(result);
     }
   } catch (error) {
     console.log(error);
