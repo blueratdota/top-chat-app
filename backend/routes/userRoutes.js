@@ -1,6 +1,7 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
 import {
+  getUserConversations,
   getUserData,
   getUserFriends,
   getUserProfile,
@@ -17,6 +18,7 @@ router.get("/userdata", protect, getUserData);
 // GET SPECIFIC USER DATA
 router.get("/profile", protect, getUserProfile);
 router.get("/friends", protect, getUserFriends);
+router.get("/conversations", protect, getUserConversations);
 // POST
 router.post("/signup", userSignup);
 router.post("/login", userLogin);

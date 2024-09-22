@@ -16,21 +16,27 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  email         String         @unique
-  password      String
-  dateCreated   DateTime       @default(now())
-  dateUpdated   DateTime       @updatedAt
-  sentMessages  Message[]
-  conversations Conversation[]
-  profile       Profile?
-  friends       Friendship[]
+  id                     String         @id @default(uuid())
+  email                  String         @unique
+  password               String
+  dateCreated            DateTime       @default(now())
+  dateUpdated            DateTime       @updatedAt
+  sentMessages           Message[]
+  conversations          Conversation[]
+  profile                Profile?
+  sentFriendRequests     Friendship[]   @relation("Sent Request")
+  receivedFriendRequests Friendship[]   @relation("Received Request")
 }
 
 model Friendship {
-  id       String  @id @default(uuid())
-  friends  User[]
-  accepted Boolean @default(false)
+  id               String   @id @default(uuid())
+  accepted         Boolean  @default(false)
+  requestingUser   User     @relation("Sent Request", fields: [requestingUserId], references: [id])
+  requestingUserId String
+  acceptingUser    User     @relation("Received Request", fields: [acceptingUserrId], references: [id])
+  acceptingUserrId String
+  dateSent         DateTime @default(now())
+  dateAccepted     DateTime @updatedAt
 }
 
 model Profile {

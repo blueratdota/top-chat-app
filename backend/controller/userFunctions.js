@@ -3,6 +3,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { genToken } from "../utils/generateToken.js";
 const prisma = new PrismaClient();
 
+// #### GET USER PROFILE, ALL FRIENDS, CONVERSATIONS, ETC... ####
 const getUserData = async (req, res, next) => {
   const { id } = req.user;
   console.log(req.user);
@@ -11,7 +12,8 @@ const getUserData = async (req, res, next) => {
       where: { id: id },
       include: {
         profile: true,
-        friends: { include: { friends: true } },
+        receivedFriendRequests: true,
+        sentFriendRequests: true,
         sentMessages: true,
         conversations: { include: { members: true, messages: true } }
       }
@@ -31,29 +33,7 @@ const getUserData = async (req, res, next) => {
     next(result);
   }
 };
-const getUserProfile = async (req, res, next) => {
-  console.log(req.user);
-  const { id } = req.user;
-  try {
-    const userData = await prisma.user.findUnique({
-      where: { id: id },
-      select: {
-        profile: true
-      }
-    });
-    const result = {
-      isSuccess: true,
-      msg: "User profile data downloaded",
-      data: userData
-    };
-    res.status(200).json(result);
-  } catch (error) {
-    const result = new Error("User profile data download failed");
-    result.status = 400;
-    result.log = error;
-    next(result);
-  }
-};
+
 const getUserFriends = async (req, res, next) => {
   const { id } = req.user;
   try {
@@ -77,8 +57,44 @@ const getUserFriends = async (req, res, next) => {
   }
 };
 
-// CREATE A GET ALL FRIEND DATA
+const getUserConversations = async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        conversations: {
+          include: {
+            members: {
+              where: { id: { not: id } },
+              select: {
+                id: true,
+                email: true,
+                profile: {
+                  select: { firstName: true, lastName: true }
+                }
+              }
+            },
+            messages: { orderBy: { dateSent: "desc" }, take: 1 }
+          }
+        }
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "User conversations data downloaded",
+      data: userData
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User conversations data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
 
+// #### USER CREATION, USER LOGIN ####
 const userSignup = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -134,13 +150,13 @@ const userLogin = async (req, res, next) => {
   }
 };
 
+// #### USER ADD FRIEND, ACCEPT FRIEND, REMOVE FRIEND, BLOCK FRIEND ####
+
 const userAddFriend = async (req, res, next) => {
   const { friendId } = req.body;
   try {
     const friendship = await prisma.friendship.create({
-      data: {
-        friends: { connect: [{ id: req.user.id }, { id: friendId }] }
-      }
+      data: { requestingUserId: req.user.id, acceptingUserrId: friendId }
     });
     const result = {
       isSuccess: true,
@@ -158,24 +174,46 @@ const userAddFriend = async (req, res, next) => {
 };
 
 const userAcceptFriend = async (req, res, next) => {
-  const { id, requestingUserId, acceptingUserId } = req.body;
+  const { friendRequestId } = req.body;
   try {
-    if (acceptingUserId == req.user.id) {
-      const friendRequest = await prisma.friends.update({
-        where: { id: id },
-        data: { accepted: true }
-      });
-      const result = {
-        isSuccess: true,
-        msg: "Friend request accepted",
-        data: friendRequest
-      };
-      res.status(200).json(result);
-    } else {
-      throw new Error("Error in accepting friend request");
-    }
+    const friendship = await prisma.friendship.update({
+      where: { id: friendRequestId },
+      data: { accepted: true }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "Friend request accepted",
+      data: friendship
+    };
+    res.status(200).json(result);
   } catch (error) {
     const result = new Error("Friend request handling fatal error");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
+// #### GET,UPDATE USER PROFILE ####
+
+const getUserProfile = async (req, res, next) => {
+  console.log(req.user);
+  try {
+    const { id } = req.user;
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        profile: true
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "User profile data downloaded",
+      data: userData
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User profile data download failed");
     result.status = 400;
     result.log = error;
     next(result);
@@ -239,6 +277,7 @@ export {
   getUserData,
   getUserProfile,
   getUserFriends,
+  getUserConversations,
   userSignup,
   userLogin,
   userAddFriend,

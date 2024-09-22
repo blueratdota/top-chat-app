@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 // LOOK FOR A CONVERSATION THAT IS "TYPE:PRIVATE"
 // AND MEMBERS = [USER,OTHERUSER]
 // IF NO EXISTING CONVERSATION, CREATE CONVERSATION
-//
 
 // POST - CREATE CONVERSATION
 const establishConversation = async (req, res, next) => {
@@ -33,10 +32,11 @@ const establishConversation = async (req, res, next) => {
   }
 };
 
+// GET - DOWNLOAD EXISTING CONVERSATION BETWEEN GIVEN USER
 const getConversation = async (req, res, next) => {
   const memberId = [
-    "91a92b39-6272-4e6c-8654-b41f4ad5daed",
-    "6a0b420d-8d2c-471e-b459-1a5737611751"
+    "53a094fd-452b-42f7-b7bd-62f85de077a1",
+    "f660d9fa-963b-453f-a16f-8238fce9e0ff"
   ];
   try {
     const conversation = await prisma.conversation.findFirst({
@@ -82,29 +82,23 @@ const getConversation = async (req, res, next) => {
 };
 
 const addConversationMessage = async (req, res, next) => {
-  const { conversationId, content, authorId } = req.body;
-  const convservation = await prisma.conversation.findUnique({
-    where: { id: conversationId }
-  });
+  const { conversationId, content } = req.body;
   try {
-    const message = await prisma.message.create({
+    const conversation = await prisma.conversation.update({
+      where: { id: conversationId },
       data: {
-        authorId: authorId,
-        content: content
-        // conversationId: conversationId
+        messages: { create: { authorId: req.user.id, content: content } }
       }
     });
-    await prisma.conversation.update({
-      where: { id: conversationId },
-      data: { messages: { connect: message } }
-    });
+
     const result = {
       isSuccess: true,
       msg: "Message sent",
-      data: message
+      data: conversation
     };
     res.status(200).json(result);
   } catch (error) {
+    console.log(error);
     const result = new Error("Message not sent");
     result.status = 400;
     result.log = error;
@@ -112,48 +106,4 @@ const addConversationMessage = async (req, res, next) => {
   }
 };
 
-const sendPersonalMessage = async (req, res, next) => {
-  // WHEN SENDING A MESSAGE
-  // IF CONVERSATION BETWEEN USERS EXISTS ALREADY, UPDATE THE CONVERSATION
-  // ELSE CREATE A CONVERSATION MODEL FIRST
-  // CONNECT USERS TO CONVERSATION
-  // CONNECT MESSAGE TO CONVERSATION
-  // const { authorId, recipientId, content } = req.body;
-  // try {
-  //   const message = await prisma.message.create({
-  //     data: {
-  //       authorId: authorId,
-  //       content: content
-  //     }
-  //   });
-  //   const conversationExists = await prisma.conversation.findFirst({
-  //     where: { members: { in: [authorId, recipientId] } }
-  //   });
-  //   await prisma.user.update({
-  //     where: { id: authorId },
-  //     data: { sentMessages: { connect: message } }
-  //   });
-  //   await prisma.user.update({
-  //     where: { id: recipientId },
-  //     data: { receivedMessages: { connect: message } }
-  //   });
-  //   const result = {
-  //     isSuccess: true,
-  //     msg: "Message delivered",
-  //     data: message
-  //   };
-  //   res.status(200).json(result);
-  // } catch (error) {
-  //   const result = new Error("Message delivery failed");
-  //   result.status = 400;
-  //   result.log = error;
-  //   next(result);
-  // }
-};
-
-export {
-  sendPersonalMessage,
-  establishConversation,
-  addConversationMessage,
-  getConversation
-};
+export { establishConversation, addConversationMessage, getConversation };
