@@ -14,7 +14,7 @@ import Newsfeed from "./pages/HomePageOutlet/Newsfeed.tsx";
 import Post from "./pages/HomePageOutlet/Post.tsx";
 import Profile from "./pages/HomePageOutlet/Profile.tsx";
 import Messages from "./pages/HomePageOutlet/Messages.tsx";
-import MessageId from "./pages/HomePageOutlet/MessagesOutlet/MessageId.tsx";
+import ConversationId from "./pages/HomePageOutlet/MessagesOutlet/ConversationId.tsx";
 import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault.tsx";
 import UserSignup from "./pages/UserSignup.tsx";
 // UTILS
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
         ),
         children: [
           { index: true, element: <MessageDefault /> },
-          { path: "/messages/:id", element: <MessageId /> }
+          { path: "/messages/:id", element: <ConversationId /> }
         ]
       },
       {

@@ -1,6 +1,6 @@
 import Icon from "@mdi/react";
 import { mdiCogOutline, mdiEmailPlusOutline } from "@mdi/js";
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import useSWR from "swr";
 import Conversation from "../../components/message/Conversation";
@@ -21,8 +21,8 @@ const Messages = () => {
       revalidateOnFocus: false
     }
   );
-
-  console.log(conversations);
+  const context = useOutletContext();
+  const { profile }: any = context;
 
   return (
     <div className="flex">
@@ -59,8 +59,8 @@ const Messages = () => {
           )}
         </div>
       </div>
-      <div>
-        <Outlet />
+      <div className="w-full min-h-screen">
+        <Outlet context={{ profile: profile }} />
       </div>
     </div>
   );

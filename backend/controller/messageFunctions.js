@@ -81,6 +81,30 @@ const getConversation = async (req, res, next) => {
   //   }
 };
 
+// GET - DOWNLOAD EXISTING CONVERSATION VIA ID
+const getPrivateConversationById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.user.id;
+    const conversation = await prisma.conversation.findFirst({
+      where: { type: "PRIVATE", id: id, members: { some: { id: userId } } },
+      include: { messages: true }
+    });
+    console.log(conversation);
+    const result = {
+      isSuccess: true,
+      msg: "Conversation downloaded",
+      data: conversation
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("Conversation download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 const addConversationMessage = async (req, res, next) => {
   const { conversationId, content } = req.body;
   try {
@@ -106,4 +130,9 @@ const addConversationMessage = async (req, res, next) => {
   }
 };
 
-export { establishConversation, addConversationMessage, getConversation };
+export {
+  establishConversation,
+  addConversationMessage,
+  getConversation,
+  getPrivateConversationById
+};
