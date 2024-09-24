@@ -55,9 +55,7 @@ const Messages = () => {
                 );
               })}
             </>
-          ) : (
-            <div>Loading...</div>
-          )}
+          ) : null}
         </div>
       </div>
       <div className="w-full min-h-screen">

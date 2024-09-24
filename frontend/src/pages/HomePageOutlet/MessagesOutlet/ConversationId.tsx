@@ -1,10 +1,22 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useSWR from "swr";
 import Message from "../../../components/message/Message";
 import { Button } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
 
 const ConversationId = () => {
+  const [messageContent, setMessageContent] = useState("");
+  const emptyDiv = useRef<HTMLDivElement>(null);
   const { id } = useParams();
+  const { pathname } = useLocation();
+  // SCROLL DOWN ON RENDER
+  useEffect(() => {
+    if (emptyDiv.current) {
+      console.log("scroll down");
+      emptyDiv.current.scrollIntoView({ block: "end", behavior: "smooth" });
+    }
+  }, [pathname, id, emptyDiv]);
+
   // SWR FETCHER FUNCTION
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
@@ -17,15 +29,35 @@ const ConversationId = () => {
     `${import.meta.env.VITE_SERVER}/api/messages/conversation/${id}`,
     fetcher,
     {
-      revalidateOnFocus: false
+      revalidateOnFocus: true,
+      refreshInterval: 5000
     }
   );
+  // DATA POST FUNCTION
+  const onSendButton = async (e: any) => {
+    e.preventDefault();
+    try {
+      const body = { conversationId: id, content: messageContent };
+      await fetch(`${import.meta.env.VITE_SERVER}/api/messages/send`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      await mutateConversation();
+      setMessageContent("");
+      emptyDiv.current?.scrollIntoView({ behavior: "smooth" });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  // WHILE DATA FETCH IS NOT YET DONE, DISPLAY A LOADING SCREEN
   if (isLoadingConversation) {
     return <div>Loading conversation...</div>;
   } else {
     const { members, messages, type } = conversation?.data;
-
+    // SET CONVERSATION NAME
     const fullName = (() => {
       let conversationName: string = "";
       if (type === "PRIVATE") {
@@ -45,7 +77,6 @@ const ConversationId = () => {
         return conversationName;
       }
     })();
-
     return (
       <div>
         {conversation ? (
@@ -54,20 +85,31 @@ const ConversationId = () => {
               <div className="size-8 bg-green-500"></div>
               <p className=" text-xl font-bold">{fullName}</p>
             </div>
-            <div className="bg-gradient-to-br from-gray-100 to-gray-500 max-h-[calc(100vh-64px-48px)] overflow-auto">
+            <div className="bg-gradient-to-r from-gray-600 to-gray-500 max-h-[calc(100vh-64px-48px)] overflow-auto">
               {isLoadingConversation && <div>Loading conversation...</div>}
               {conversation ? (
-                <div className="min-h-[calc(100vh-64px-48px)] px-5 pt-5">
-                  {messages.map((message: any) => {
-                    return <Message message={message} key={message.id} />;
-                  })}
-                </div>
+                <>
+                  <div className="min-h-[calc(100vh-64px-48px)] px-5 pt-5">
+                    {messages.map((message: any) => {
+                      return <Message message={message} key={message.id} />;
+                    })}
+                  </div>
+                  <div ref={emptyDiv}></div>
+                </>
               ) : null}
             </div>
-            <div className="h-[64px]">
-              <input type="text" />
-              <Button>Send</Button>
-            </div>
+            <form className="h-[64px]">
+              <input
+                type="text"
+                value={messageContent}
+                onChange={(e) => {
+                  setMessageContent(e.target.value);
+                }}
+              />
+              <Button onClick={onSendButton} type="submit">
+                Send
+              </Button>
+            </form>
           </>
         ) : null}
       </div>

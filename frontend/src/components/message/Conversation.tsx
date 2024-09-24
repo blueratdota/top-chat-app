@@ -33,7 +33,7 @@ const Conversation = ({ data }: any) => {
         <div className="flex-1">
           <p className="text-lg font-bold">{fullName}</p>
           <p className="max-w-[80%] truncate text-gray-500">
-            {messages[0]?.content}
+            {messages[0] ? messages[0].content : "No messages"}
           </p>
         </div>
       </Link>
