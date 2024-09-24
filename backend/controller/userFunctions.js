@@ -76,7 +76,8 @@ const getUserConversations = async (req, res, next) => {
               }
             },
             messages: { orderBy: { dateSent: "desc" }, take: 1 }
-          }
+          },
+          orderBy: { dateUpdated: "desc" }
         }
       }
     });

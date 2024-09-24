@@ -21,13 +21,14 @@ const Messages = () => {
       revalidateOnFocus: false
     }
   );
+
   const context = useOutletContext();
   const { profile }: any = context;
 
   return (
     <div className="flex">
       <div className="border-r min-h-screen">
-        <div className="flex w-[380px] p-2 pr-5 gap-5 border-b">
+        <div className="flex w-[430px] p-2 pr-5 gap-5 ">
           <h1 className="text-lg font-bold flex-1">Messages</h1>
           <div className="w-7 ">
             <Icon path={mdiCogOutline} />{" "}

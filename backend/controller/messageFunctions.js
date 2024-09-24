@@ -85,12 +85,17 @@ const getConversation = async (req, res, next) => {
 const getPrivateConversationById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { userId } = req.user.id;
+    const userId = req.user.id;
     const conversation = await prisma.conversation.findFirst({
       where: { type: "PRIVATE", id: id, members: { some: { id: userId } } },
-      include: { messages: true }
+      include: {
+        messages: true,
+        members: {
+          where: { id: { not: userId } },
+          select: { profile: true, email: true }
+        }
+      }
     });
-    console.log(conversation);
     const result = {
       isSuccess: true,
       msg: "Conversation downloaded",
