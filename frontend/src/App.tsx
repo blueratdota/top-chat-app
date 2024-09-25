@@ -1,7 +1,6 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./components/built/Sidebar";
-import useSWR from "swr";
-import LoadingPage from "./components/built/LoadingPage";
+
 import { useAuth } from "./hooks/AuthContext";
 
 function App() {

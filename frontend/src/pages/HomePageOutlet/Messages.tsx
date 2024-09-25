@@ -1,6 +1,6 @@
 import Icon from "@mdi/react";
 import { mdiCogOutline, mdiEmailPlusOutline } from "@mdi/js";
-import { Outlet, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useOutletContext } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import useSWR from "swr";
 import Conversation from "../../components/message/Conversation";
@@ -9,19 +9,14 @@ const Messages = () => {
   // SWR FETCHER FUNCTION
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
-  const {
-    data: conversations,
-    error: errorConversations,
-    isLoading: isLoadingConversations,
-    mutate: mutateConversations
-  } = useSWR(
+  const { data: conversations, isLoading: isLoadingConversations } = useSWR(
     `${import.meta.env.VITE_SERVER}/api/users/conversations`,
     fetcher,
     {
       revalidateOnFocus: false
     }
   );
-
+  const { pathname } = useLocation();
   const context = useOutletContext();
   const { profile }: any = context;
 
@@ -59,7 +54,13 @@ const Messages = () => {
         </div>
       </div>
       <div className="w-full min-h-screen">
-        <Outlet context={{ profile: profile }} />
+        <Outlet
+          context={{
+            profile: profile,
+            pathname: pathname,
+            userId: conversations?.userId
+          }}
+        />
       </div>
     </div>
   );

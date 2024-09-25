@@ -84,7 +84,8 @@ const getUserConversations = async (req, res, next) => {
     const result = {
       isSuccess: true,
       msg: "User conversations data downloaded",
-      data: userData
+      data: userData,
+      userId: id
     };
     res.status(200).json(result);
   } catch (error) {

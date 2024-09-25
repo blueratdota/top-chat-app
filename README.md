@@ -7,9 +7,7 @@ NODE_ENV = development
 
 # todo
 
-- fix friendship api
+- fix scroll down function of ConversationId.tsx
+- test realtimeness of messaging
 
 # done
-
-- sending friend request
-- accepting friend request

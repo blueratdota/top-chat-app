@@ -4,10 +4,15 @@ import { format } from "date-fns";
 const Message = ({ message }: any) => {
   // console.log(message);
   const context = useOutletContext();
-  const { profile }: any = context;
-  //   console.log(profile);
+  const { userId }: any = context;
+  // console.log(userId);
 
-  const authorId: string = profile.userId;
+  // MOVE THIS TO CONVERSATION ID COMPONENT
+  // if (!profile) {
+  //   return <Navigate to={"/profile"} />;
+  // }
+
+  const authorId: string = userId;
   const date: string = format(message.dateSent, "PPp");
 
   if (message.authorId == authorId) {

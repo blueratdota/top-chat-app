@@ -64,6 +64,8 @@ model Conversation {
   dateUpdated DateTime         @updatedAt
   type        ConversationType
   members     User[]
+
+  @@unique([id])
 }
 
 enum ConversationType {
