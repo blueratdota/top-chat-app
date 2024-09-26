@@ -10,8 +10,12 @@ import {
   Input,
   Text
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 const UpdateProfile = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [bio, setBio] = useState("");
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <Card className="w-full max-w-md border rounded-md bg-white py-10 px-7">

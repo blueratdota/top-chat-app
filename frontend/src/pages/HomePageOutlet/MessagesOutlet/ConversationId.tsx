@@ -6,8 +6,11 @@ import { useEffect, useRef, useState } from "react";
 
 const ConversationId = () => {
   const [messageContent, setMessageContent] = useState("");
-  const emptyDiv = useRef<HTMLDivElement>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [isHidden, setIsHidden] = useState<boolean>(true);
+  const [isTextMessage, setIsTextMessage] = useState(true);
+  const emptyDiv = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { id } = useParams();
   const context = useOutletContext();
   const { pathname, userId }: any = context;
@@ -35,25 +38,59 @@ const ConversationId = () => {
       emptyDiv.current.scrollIntoView({ block: "end", behavior: "smooth" });
     }
   }, [pathname, isLoadingConversation]);
-
   // DATA POST FUNCTION
-  const onSendButton = async (e: any) => {
+  const onSendText = async (e: any) => {
     e.preventDefault();
-    try {
-      setIsHidden(false);
-      const body = { conversationId: id, content: messageContent };
-      await fetch(`${import.meta.env.VITE_SERVER}/api/messages/send`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-      setIsHidden(true);
-      await mutateConversation();
-      setMessageContent("");
-      emptyDiv.current?.scrollIntoView({ behavior: "smooth" });
-    } catch (error) {
-      console.log(error);
+    if (messageContent.length > 0) {
+      try {
+        setIsHidden(false);
+        const body = { conversationId: id, content: messageContent };
+        await fetch(`${import.meta.env.VITE_SERVER}/api/messages/send-txt`, {
+          method: "PUT",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        setIsHidden(true);
+        await mutateConversation();
+        setMessageContent("");
+        emptyDiv.current?.scrollIntoView({ behavior: "smooth" });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  const onSendImage = async (e: any) => {
+    e.preventDefault();
+    if (image && image.type.split("/")[0] == "image" && id) {
+      try {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("conversationId", id);
+        await fetch(`${import.meta.env.VITE_SERVER}/api/messages/send-img`, {
+          method: "PUT",
+          mode: "cors",
+          credentials: "include",
+          body: formData
+        });
+        console.log("IMAGE WILL BE SENT");
+
+        await mutateConversation();
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+        setImage(null);
+        emptyDiv.current?.scrollIntoView({ behavior: "smooth" });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  // HANDLE CHANGE FILE INPUT
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setImage(file);
     }
   };
 
@@ -122,18 +159,53 @@ const ConversationId = () => {
                   </>
                 ) : null}
               </div>
-              <form className="h-[64px]">
-                <input
-                  type="text"
-                  value={messageContent}
-                  onChange={(e) => {
-                    setMessageContent(e.target.value);
-                  }}
-                />
-                <Button onClick={onSendButton} type="submit">
-                  Send
-                </Button>
-              </form>
+              <div className="h-[64px]">
+                <div className="flex gap-5">
+                  <Button
+                    onClick={() => {
+                      setIsTextMessage(true);
+                    }}
+                  >
+                    text
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setMessageContent("");
+                      setIsTextMessage(false);
+                    }}
+                  >
+                    image
+                  </Button>
+                </div>
+                {isTextMessage ? (
+                  <form>
+                    <input
+                      type="text"
+                      value={messageContent}
+                      onChange={(e) => {
+                        setMessageContent(e.target.value);
+                      }}
+                    />
+                    <Button onClick={onSendText} type="submit">
+                      Send
+                    </Button>
+                  </form>
+                ) : (
+                  <form method="post" encType="multipart/form-data">
+                    <input
+                      required
+                      ref={inputRef}
+                      type="file"
+                      placeholder="filename.txt"
+                      className=" text-black border text-sm file:text-sm file:text-extWhite file:bg-extGreen file:border-0 file:p-2 file:mr-3"
+                      onChange={handleFileChange}
+                    />
+                    <Button onClick={onSendImage} type="submit">
+                      Send
+                    </Button>
+                  </form>
+                )}
+              </div>
             </>
           ) : null}
         </div>

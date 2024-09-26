@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import path from "path";
+import { __dirname } from "../index.js";
 const prisma = new PrismaClient();
 
 // WAYS TO START A PRIVATE CONVERSATION
@@ -130,10 +132,24 @@ const getAllMessagesFromConversationId = async (req, res, next) => {
     next(result);
   }
 };
-
-const addConversationMessage = async (req, res, next) => {
-  const { conversationId, content } = req.body;
+// GET - DOWNLOAD IMAGE FROM A CONVERSATION
+const getImageFromId = async (req, res, next) => {
   try {
+    const { id } = req.params;
+    const imagePath = path.join(__dirname, "image_uploads", id);
+    res.sendFile(imagePath);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Image download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
+const addConversationTextMessage = async (req, res, next) => {
+  try {
+    const { conversationId, content } = req.body;
     const conversation = await prisma.conversation.update({
       where: { id: conversationId },
       data: {
@@ -155,11 +171,57 @@ const addConversationMessage = async (req, res, next) => {
     next(result);
   }
 };
+const addConversationImageMessage = async (req, res, next) => {
+  try {
+    const { conversationId } = req.body;
+    // console.log(req.file);
+    const fileData = {
+      path: req.file.path,
+      name: req.file.originalname,
+      filename: req.file.filename,
+      fileSize: req.file.size,
+      authorId: req.user.id
+    };
+    // {
+    //   path: 'image_uploads/416a26b3cf994d74e3d8ca6faaa064ed',
+    //   name: 'youtube-svgrepo-com.svg',
+    //   fileSize: 761,
+    //   authorId: '32da8644-3221-4ef0-a54c-537dd1a2aa98'
+    // }
+    const conversation = await prisma.conversation.update({
+      where: { id: conversationId },
+      data: {
+        messages: {
+          create: {
+            authorId: req.user.id,
+            content: fileData.filename,
+            isImage: true
+          }
+        }
+      }
+    });
+
+    const result = {
+      isSuccess: true,
+      msg: "Message sent",
+      data: conversation
+    };
+    res.status(200).json(fileData);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Message not sent");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
 
 export {
   establishConversation,
-  addConversationMessage,
+  addConversationTextMessage,
+  addConversationImageMessage,
   getConversation,
   getPrivateConversationById,
-  getAllMessagesFromConversationId
+  getAllMessagesFromConversationId,
+  getImageFromId
 };

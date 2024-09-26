@@ -1,16 +1,33 @@
 import { useOutletContext } from "react-router-dom";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
 const Message = ({ message }: any) => {
   // console.log(message);
   const context = useOutletContext();
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const { userId }: any = context;
-  // console.log(userId);
-
-  // MOVE THIS TO CONVERSATION ID COMPONENT
-  // if (!profile) {
-  //   return <Navigate to={"/profile"} />;
-  // }
+  // console.log(message);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        setIsLoadingImage(true);
+        const response = await fetch(
+          `${import.meta.env.VITE_SERVER}/api/messages/image/${message.content}`
+        );
+        const imageBlob = await response.blob();
+        const imageObjectURL = URL.createObjectURL(imageBlob);
+        setImageSrc(imageObjectURL);
+        setIsLoadingImage(false);
+      } catch (error) {
+        console.error("Error fetching the image:", error);
+      }
+    };
+    if (message.isImage) {
+      fetchImage();
+    }
+  }, []);
 
   const authorId: string = userId;
   const date: string = format(message.dateSent, "PPp");
@@ -19,7 +36,21 @@ const Message = ({ message }: any) => {
     return (
       <div className="bg-transparent text-white pb-5 flex flex-col items-end grow-0">
         <div className="bg-blue-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
-          <div className="max-w-[320px]">{message.content}</div>
+          {message.isImage ? (
+            <div>
+              {imageSrc && !isLoadingImage ? (
+                <img
+                  src={imageSrc}
+                  alt={message.content}
+                  className="max-w-[500px]"
+                />
+              ) : (
+                <div className="max-w-[320px]">{message.content}</div>
+              )}
+            </div>
+          ) : (
+            <div className="max-w-[320px]">{message.content}</div>
+          )}
         </div>
         <p>{date}</p>
       </div>
