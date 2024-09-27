@@ -3,9 +3,11 @@ import useSWR from "swr";
 import Message from "../../../components/message/Message";
 import { Button } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import EmojiPicker from "emoji-picker-react";
 
 const ConversationId = () => {
   const [messageContent, setMessageContent] = useState("");
+  const [isOpenEmoji, setIsOpenEmoji] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [isHidden, setIsHidden] = useState<boolean>(true);
   const [isTextMessage, setIsTextMessage] = useState(true);
@@ -52,6 +54,7 @@ const ConversationId = () => {
           body: JSON.stringify(body)
         });
         setIsHidden(true);
+        setIsOpenEmoji(false);
         await mutateConversation();
         setMessageContent("");
         emptyDiv.current?.scrollIntoView({ behavior: "smooth" });
@@ -160,7 +163,7 @@ const ConversationId = () => {
                 ) : null}
               </div>
               <div className="h-[64px]">
-                <div className="flex gap-5">
+                <div className="flex gap-5 relative">
                   <Button
                     onClick={() => {
                       setIsTextMessage(true);
@@ -172,13 +175,31 @@ const ConversationId = () => {
                     onClick={() => {
                       setMessageContent("");
                       setIsTextMessage(false);
+                      setIsOpenEmoji(false);
                     }}
                   >
                     image
                   </Button>
+                  {isTextMessage ? (
+                    <Button
+                      onClick={() => {
+                        setIsOpenEmoji(!isOpenEmoji);
+                      }}
+                    >
+                      emoji
+                    </Button>
+                  ) : null}
+                  <div className="absolute z-10 mt-2 -translate-y-[458px]">
+                    <EmojiPicker
+                      open={isOpenEmoji}
+                      onEmojiClick={(e) => {
+                        setMessageContent((prev) => prev + e.emoji);
+                      }}
+                    />
+                  </div>
                 </div>
                 {isTextMessage ? (
-                  <form>
+                  <form className="">
                     <input
                       type="text"
                       value={messageContent}

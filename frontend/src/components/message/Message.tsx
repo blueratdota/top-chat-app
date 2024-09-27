@@ -59,7 +59,21 @@ const Message = ({ message }: any) => {
     return (
       <div className="bg-transparent text-white pb-5  ">
         <div className="bg-gray-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
-          <div className="max-w-[320px]">{message.content}</div>
+          {message.isImage ? (
+            <div>
+              {imageSrc && !isLoadingImage ? (
+                <img
+                  src={imageSrc}
+                  alt={message.content}
+                  className="max-w-[500px]"
+                />
+              ) : (
+                <div className="max-w-[320px]">{message.content}</div>
+              )}
+            </div>
+          ) : (
+            <div className="max-w-[320px]">{message.content}</div>
+          )}
         </div>
         <p>{date}</p>
       </div>
