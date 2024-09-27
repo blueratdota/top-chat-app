@@ -4,6 +4,13 @@ import Message from "../../../components/message/Message";
 import { Button } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
+import Icon from "@mdi/react";
+import {
+  mdiEmoticonHappyOutline,
+  mdiFormTextbox,
+  mdiImage,
+  mdiSend
+} from "@mdi/js";
 
 const ConversationId = () => {
   const [messageContent, setMessageContent] = useState("");
@@ -157,19 +164,20 @@ const ConversationId = () => {
                         />
                         {/* ADD SOME LOADING SPINNER HERE */}
                       </div>
+                      <div ref={emptyDiv}></div>
                     </div>
-                    <div ref={emptyDiv}></div>
                   </>
                 ) : null}
               </div>
-              <div className="h-[64px]">
-                <div className="flex gap-5 relative">
+              <div className="h-[64px] flex">
+                <div className="flex items-center px-5 gap-3  relative [&>button]:size-[52px] [&>button]:bg-gray-200 [&>button]:rounded-lg ">
                   <Button
                     onClick={() => {
                       setIsTextMessage(true);
                     }}
+                    className="  p-3"
                   >
-                    text
+                    <Icon path={mdiFormTextbox} />
                   </Button>
                   <Button
                     onClick={() => {
@@ -177,19 +185,21 @@ const ConversationId = () => {
                       setIsTextMessage(false);
                       setIsOpenEmoji(false);
                     }}
+                    className="  p-3"
                   >
-                    image
+                    <Icon path={mdiImage} />
                   </Button>
                   {isTextMessage ? (
                     <Button
                       onClick={() => {
                         setIsOpenEmoji(!isOpenEmoji);
                       }}
+                      className="  p-3"
                     >
-                      emoji
+                      <Icon path={mdiEmoticonHappyOutline} />
                     </Button>
                   ) : null}
-                  <div className="absolute z-10 mt-2 -translate-y-[458px]">
+                  <div className="absolute z-10 mt-2 -translate-y-[60%]">
                     <EmojiPicker
                       open={isOpenEmoji}
                       onEmojiClick={(e) => {
@@ -199,30 +209,42 @@ const ConversationId = () => {
                   </div>
                 </div>
                 {isTextMessage ? (
-                  <form className="">
-                    <input
-                      type="text"
+                  <form className="flex flex-1 items-center gap-3 pr-4">
+                    <textarea
                       value={messageContent}
                       onChange={(e) => {
                         setMessageContent(e.target.value);
                       }}
-                    />
-                    <Button onClick={onSendText} type="submit">
-                      Send
+                      className="outline-none resize-none w-full my-2 px-4 rounded-lg"
+                    ></textarea>
+                    <Button
+                      onClick={onSendText}
+                      type="submit"
+                      className="size-[52px] p-3 bg-gray-200 "
+                    >
+                      <Icon path={mdiSend} />
                     </Button>
                   </form>
                 ) : (
-                  <form method="post" encType="multipart/form-data">
+                  <form
+                    method="post"
+                    encType="multipart/form-data"
+                    className="flex flex-1 items-center gap-3 pr-4"
+                  >
                     <input
                       required
                       ref={inputRef}
                       type="file"
                       placeholder="filename.txt"
-                      className=" text-black border text-sm file:text-sm file:text-extWhite file:bg-extGreen file:border-0 file:p-2 file:mr-3"
+                      className=" text-black border text-sm file:text-sm file:text-extWhite file:bg-extGreen file:border-0 file:p-2 file:mr-3 w-full"
                       onChange={handleFileChange}
                     />
-                    <Button onClick={onSendImage} type="submit">
-                      Send
+                    <Button
+                      onClick={onSendImage}
+                      type="submit"
+                      className="size-[52px] p-3 bg-gray-200 "
+                    >
+                      <Icon path={mdiSend} />
                     </Button>
                   </form>
                 )}

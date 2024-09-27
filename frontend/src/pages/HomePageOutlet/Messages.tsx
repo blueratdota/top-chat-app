@@ -46,7 +46,11 @@ const Messages = () => {
             <>
               {conversations.data.conversations.map((conversation: any) => {
                 return (
-                  <Conversation key={conversation.id} data={conversation} />
+                  <Conversation
+                    key={conversation.id}
+                    data={conversation}
+                    userId={conversations?.userId}
+                  />
                 );
               })}
             </>

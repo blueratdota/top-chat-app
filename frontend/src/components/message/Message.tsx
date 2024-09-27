@@ -35,47 +35,47 @@ const Message = ({ message }: any) => {
   if (message.authorId == authorId) {
     return (
       <div className="bg-transparent text-white pb-5 flex flex-col items-end grow-0">
-        <div className="bg-blue-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
-          {message.isImage ? (
-            <div>
-              {imageSrc && !isLoadingImage ? (
-                <img
-                  src={imageSrc}
-                  alt={message.content}
-                  className="max-w-[500px]"
-                />
-              ) : (
-                <div className="max-w-[320px]">{message.content}</div>
-              )}
-            </div>
-          ) : (
+        {message.isImage ? (
+          <div>
+            {imageSrc && !isLoadingImage ? (
+              <img
+                src={imageSrc}
+                alt={message.content}
+                className="max-w-[520px] rounded-3xl"
+              />
+            ) : (
+              <div className="max-w-[320px]">{message.content}</div>
+            )}
+          </div>
+        ) : (
+          <div className="bg-blue-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
             <div className="max-w-[320px]">{message.content}</div>
-          )}
-        </div>
-        <p>{date}</p>
+          </div>
+        )}
+        <p className="py-1 text-sm">{date}</p>
       </div>
     );
   } else {
     return (
-      <div className="bg-transparent text-white pb-5  ">
-        <div className="bg-gray-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
-          {message.isImage ? (
-            <div>
-              {imageSrc && !isLoadingImage ? (
-                <img
-                  src={imageSrc}
-                  alt={message.content}
-                  className="max-w-[500px]"
-                />
-              ) : (
-                <div className="max-w-[320px]">{message.content}</div>
-              )}
-            </div>
-          ) : (
+      <div className="bg-transparent text-white pb-5">
+        {message.isImage ? (
+          <div>
+            {imageSrc && !isLoadingImage ? (
+              <img
+                src={imageSrc}
+                alt={message.content}
+                className="max-w-[520px] rounded-3xl"
+              />
+            ) : (
+              <div className="max-w-[320px]">{message.content}</div>
+            )}
+          </div>
+        ) : (
+          <div className="bg-gray-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
             <div className="max-w-[320px]">{message.content}</div>
-          )}
-        </div>
-        <p>{date}</p>
+          </div>
+        )}
+        <p className="py-1 text-sm">{date}</p>
       </div>
     );
   }
