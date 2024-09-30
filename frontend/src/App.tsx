@@ -7,7 +7,7 @@ function App() {
   const { pathname } = useLocation();
   const { profile } = useAuth();
 
-  const soloPages = ["/login", "/signup"];
+  const soloPages = ["/login", "/signup", "/account-created"];
   const renderOwnPage = soloPages.includes(pathname);
 
   return (

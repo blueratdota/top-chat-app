@@ -21,8 +21,8 @@ const UserLogin = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md border rounded-md bg-white py-10 px-7">
-        <CardHeader className="mb-10">
+      <Card className="w-full max-w-md rounded-md bg-white py-10 px-7">
+        <CardHeader className="mb-5">
           <Heading className="text-2xl font-bold text-center mb-2">
             Login
           </Heading>
@@ -30,7 +30,7 @@ const UserLogin = () => {
             Enter your credentials to access your account
           </Text>
         </CardHeader>
-        <CardBody className="space-y-4 mb-10">
+        <CardBody className="space-y-4 mb-5">
           <FormControl className="space-y-2">
             <FormLabel>Email</FormLabel>
             <Input

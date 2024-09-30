@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // CSS
 import "./index.css";
+import { ChakraProvider } from "@chakra-ui/react";
 // AUTH
 import { AuthProvider } from "./hooks/AuthContext.tsx";
 // PAGES
@@ -67,7 +68,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
     </AuthProvider>
   </React.StrictMode>
 );

@@ -14,12 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(false);
+  const toast = useToast();
 
   // ADD A USEEFFECT HERE THAT REDIRECTS USER TO HOME PAGE IF THEY TRY TO GO TO SIGNUP/LOGIN
   // CHECKS IF USER IS LOGGED IN
@@ -54,16 +56,33 @@ const UserSignup = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
       });
-      console.log(await response.json());
+      const result = await response.json();
+      if (!result.isSuccess) {
+        throw new Error("Network response was not ok");
+      }
+      toast({
+        title: "Account created.",
+        description: "You've successfully created an account",
+        status: "success",
+        duration: 9000,
+        isClosable: true
+      });
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Account not created.",
+        description: "There has been an error",
+        status: "error",
+        duration: 9000,
+        isClosable: true
+      });
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md border rounded-md bg-white py-10 px-7">
-        <CardHeader className="mb-10">
+      <Card className="w-full max-w-md rounded-md bg-white py-10 px-7">
+        <CardHeader className="mb-5">
           <Heading className="text-2xl font-bold text-center mb-2">
             Sign Up
           </Heading>
@@ -71,7 +90,7 @@ const UserSignup = () => {
             Enter your credentials to create account
           </Text>
         </CardHeader>
-        <CardBody className="space-y-4 mb-10">
+        <CardBody className="space-y-4 mb-5">
           <FormControl
             className="space-y-2"
             isInvalid={!isValidEmail && email.length !== 0}
