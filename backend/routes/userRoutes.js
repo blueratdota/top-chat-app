@@ -5,6 +5,7 @@ import {
   getUserData,
   getUserFriends,
   getUserProfile,
+  getUserProfileById,
   userAcceptFriend,
   userAddFriend,
   userLogin,
@@ -20,6 +21,7 @@ router.get("/userdata", protect, getUserData);
 router.get("/profile", protect, getUserProfile);
 router.get("/friends", protect, getUserFriends);
 router.get("/conversations", protect, getUserConversations);
+router.get("/:id", getUserProfileById);
 // POST
 router.post("/signup", userSignup);
 router.post("/login", userLogin);

@@ -17,7 +17,7 @@ function App() {
       ) : (
         <>
           <div className="flex h-screen bg-gray-100">
-            <Sidebar pathName={pathname} />
+            <Sidebar pathName={pathname} profile={profile} />
             <main className="w-full">
               <Outlet context={{ profile: profile }} />
             </main>

@@ -42,8 +42,8 @@ model Friendship {
 model Profile {
   id        String  @id @default(uuid())
   bio       String?
-  firstName String
-  lastName  String
+  firstName String?
+  lastName  String?
   user      User    @relation(fields: [userId], references: [id])
   userId    String  @unique
 }

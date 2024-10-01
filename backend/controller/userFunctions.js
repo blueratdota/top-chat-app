@@ -105,6 +105,11 @@ const userSignup = async (req, res, next) => {
       const user = await prisma.user.create({
         data: { email: email, password: hashedPassword }
       });
+
+      await prisma.profile.create({
+        data: { userId: user.id }
+      });
+
       const result = { isSuccess: true, msg: "User created", data: user };
 
       res.status(200).json(result);
@@ -213,7 +218,7 @@ const getUserProfile = async (req, res, next) => {
     const userData = await prisma.user.findUnique({
       where: { id: id },
       select: {
-        profile: true
+        profile: { include: { user: { select: { email: true } } } }
       }
     });
     const result = {
@@ -283,9 +288,35 @@ const userUpdateProfile = async (req, res, next) => {
   }
 };
 
+const getUserProfileById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        profile: { include: { user: { select: { email: true } } } }
+      }
+    });
+    console.log(userData);
+
+    const result = {
+      isSuccess: true,
+      msg: "User profile data downloaded",
+      data: userData
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User profile data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 export {
   getUserData,
   getUserProfile,
+  getUserProfileById,
   getUserFriends,
   getUserConversations,
   userSignup,

@@ -39,10 +39,13 @@ const UpdateProfile = () => {
         toast({
           title: "Update Successful",
           description: "Profile name has been updated",
-          status: "error",
+          status: "success",
           duration: 9000,
           isClosable: true
         });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         throw new Error("Incomplete fields");
       }

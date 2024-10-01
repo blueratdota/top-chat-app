@@ -20,6 +20,7 @@ import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault
 import UserSignup from "./pages/UserSignup.tsx";
 // UTILS
 import PrivateRoute from "./utils/PrivateRoute.tsx";
+import UserProfile from "./pages/HomePageOutlet/ProfileOutlet/UserProfile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       },
       { path: "/login", element: <UserLogin /> },
       { path: "/signup", element: <UserSignup /> },
+      { path: "/:id", element: <UserProfile /> },
       {
         path: "/profile",
         element: (

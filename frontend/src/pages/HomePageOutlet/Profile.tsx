@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import UpdateProfile from "./ProfileOutlet/UpdateProfile.tsx";
 import UserProfile from "./ProfileOutlet/UserProfile.tsx";
 type ContextType = {
-  profile: object;
+  profile: { firstName: "string"; lastName: "string"; bio: "string" };
 };
 
 const Profile = () => {
@@ -10,7 +10,15 @@ const Profile = () => {
   const { profile } = context;
   console.log(`profile from useAuth() =`, profile);
 
-  return <>{profile ? <UserProfile profile={profile} /> : <UpdateProfile />}</>;
+  return (
+    <>
+      {profile.firstName ? (
+        <UserProfile profile={profile} />
+      ) : (
+        <UpdateProfile />
+      )}
+    </>
+  );
 };
 
 export default Profile;

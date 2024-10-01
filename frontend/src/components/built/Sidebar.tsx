@@ -15,9 +15,10 @@ import { useToast } from "@chakra-ui/react";
 
 type SidebarParam = {
   pathName: string;
+  profile: { firstName: string; lastName: string; userId: string };
 };
 
-const Sidebar = ({ pathName }: SidebarParam) => {
+const Sidebar = ({ pathName, profile }: SidebarParam) => {
   const toast = useToast();
   const mainPath = pathName.split("/")[1];
 
@@ -42,7 +43,7 @@ const Sidebar = ({ pathName }: SidebarParam) => {
 
   return (
     <div className="w-64 bg-white border-r [&>div]:hover:cursor-pointer py-5">
-      <Link to={"/profile"}>
+      <Link to={`/${profile.userId}`}>
         <div
           className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
             mainPath == "profile" ? "bg-gray-100 font-bold" : ""
