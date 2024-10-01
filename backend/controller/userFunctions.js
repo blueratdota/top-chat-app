@@ -96,7 +96,7 @@ const getUserConversations = async (req, res, next) => {
   }
 };
 
-// #### USER CREATION, USER LOGIN ####
+// #### USER CREATION, USER LOGIN/LOGOUT ####
 const userSignup = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -150,6 +150,14 @@ const userLogin = async (req, res, next) => {
     result.log = error;
     next(result);
   }
+};
+
+const userLogout = async (req, res, next) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0)
+  });
+  res.json({ message: `User: logged-out` });
 };
 
 // #### USER ADD FRIEND, ACCEPT FRIEND, REMOVE FRIEND, BLOCK FRIEND ####
@@ -282,6 +290,7 @@ export {
   getUserConversations,
   userSignup,
   userLogin,
+  userLogout,
   userAddFriend,
   userAcceptFriend,
   userUpdateProfile

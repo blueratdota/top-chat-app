@@ -5,9 +5,11 @@ import {
   mdiMagnify,
   mdiBellOutline,
   mdiEmailOutline,
-  mdiAccountGroup
+  mdiAccountGroup,
+  mdiLogout
 } from "@mdi/js";
 import { Link } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
 //
 
@@ -16,7 +18,27 @@ type SidebarParam = {
 };
 
 const Sidebar = ({ pathName }: SidebarParam) => {
+  const toast = useToast();
   const mainPath = pathName.split("/")[1];
+
+  const onLogout = async () => {
+    try {
+      await fetch("http://localhost:3000/api/users/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" }
+      });
+    } catch (error) {
+      toast({
+        title: "Logout Error",
+        description: "Unable to logout user",
+        status: "error",
+        duration: 9000,
+        isClosable: true
+      });
+    }
+    window.location.reload();
+  };
 
   return (
     <div className="w-64 bg-white border-r [&>div]:hover:cursor-pointer py-5">
@@ -86,6 +108,17 @@ const Sidebar = ({ pathName }: SidebarParam) => {
           <Icon path={mdiAccountGroup} />
         </div>
         <p className=" text-lg">Friends</p>
+      </div>
+      <div
+        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          mainPath == "friends" ? "bg-gray-100 font-bold" : ""
+        }`}
+        onClick={onLogout}
+      >
+        <div className="w-10">
+          <Icon path={mdiLogout} />
+        </div>
+        <p className=" text-lg">Log Out</p>
       </div>
     </div>
   );

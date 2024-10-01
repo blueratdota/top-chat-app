@@ -13,8 +13,9 @@ import {
   FormHelperText
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
+import { useAuth } from "../hooks/AuthContext";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
@@ -22,9 +23,14 @@ const UserSignup = () => {
   const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(false);
   const toast = useToast();
+  const { isAuthenticated } = useAuth();
 
   // ADD A USEEFFECT HERE THAT REDIRECTS USER TO HOME PAGE IF THEY TRY TO GO TO SIGNUP/LOGIN
   // CHECKS IF USER IS LOGGED IN
+
+  if (isAuthenticated) {
+    return <Navigate to={"/"} />;
+  }
 
   const onEmailChange = (e: any) => {
     const emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -61,7 +67,7 @@ const UserSignup = () => {
         throw new Error("Network response was not ok");
       }
       toast({
-        title: "Account created.",
+        title: "Account Created",
         description: "You've successfully created an account",
         status: "success",
         duration: 9000,
@@ -70,7 +76,7 @@ const UserSignup = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Account not created.",
+        title: "Account Not Created",
         description: "There has been an error",
         status: "error",
         duration: 9000,

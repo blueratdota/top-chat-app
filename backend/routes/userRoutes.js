@@ -8,6 +8,7 @@ import {
   userAcceptFriend,
   userAddFriend,
   userLogin,
+  userLogout,
   userSignup,
   userUpdateProfile
 } from "../controller/userFunctions.js";
@@ -23,6 +24,7 @@ router.get("/conversations", protect, getUserConversations);
 router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.post("/add-friend", protect, userAddFriend);
+router.post("/logout", userLogout);
 // PUT
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);

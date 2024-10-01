@@ -14,6 +14,7 @@ import {
 const router = express.Router();
 // MIDDLEWARE
 import { protect } from "../middleware/authMiddleware.js";
+import { userUpdateProfile } from "../controller/userFunctions.js";
 
 router.get("/conversation/:id?", protect, getPrivateConversationById);
 router.get(
@@ -31,6 +32,9 @@ router.put(
   upload.single("file"),
   addConversationImageMessage
 );
+// ESTABLISHING CONVERSATION
 router.post("/establish-conversation", protect, establishConversation);
+// UPDATING PROFILE
+router.put("/profile", protect, userUpdateProfile);
 
 export default router;

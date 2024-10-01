@@ -23,7 +23,7 @@ const Messages = () => {
   return (
     <div className="flex">
       <div className="border-r min-h-screen">
-        <div className="flex w-[430px] p-2 pr-5 gap-5 ">
+        <div className="flex w-[430px] py-5 px-3 pr-5 gap-5 ">
           <h1 className="text-lg font-bold flex-1">Messages</h1>
           <div className="w-7 ">
             <Icon path={mdiCogOutline} />{" "}
@@ -37,7 +37,7 @@ const Messages = () => {
             type="search"
             placeholder="Search Direct Messages"
             required
-            className="w-full border p-3 rounded-md"
+            className="w-full border p-3 rounded-lg bg-white"
           />
         </div>
         <div>

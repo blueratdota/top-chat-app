@@ -10,14 +10,18 @@ import {
   Input,
   Button
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
 import { useState } from "react";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to={"/"} />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
