@@ -5,16 +5,14 @@ import { useAuth } from "./hooks/AuthContext";
 
 function App() {
   const { pathname } = useLocation();
-  const { profile } = useAuth();
+  const { profile, isAuthenticated } = useAuth();
 
-  const soloPages = ["/login", "/signup", "/account-created"];
-  const renderOwnPage = soloPages.includes(pathname);
+  // const soloPages = ["/login", "/signup", "/account-created"];
+  // const renderOwnPage = soloPages.includes(pathname);
 
   return (
     <>
-      {renderOwnPage ? (
-        <Outlet />
-      ) : (
+      {isAuthenticated ? (
         <>
           <div className="flex h-screen bg-gray-100">
             <Sidebar pathName={pathname} profile={profile} />
@@ -23,6 +21,8 @@ function App() {
             </main>
           </div>
         </>
+      ) : (
+        <Outlet />
       )}
     </>
   );

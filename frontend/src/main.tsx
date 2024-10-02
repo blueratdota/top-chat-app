@@ -13,7 +13,6 @@ import UserLogin from "./pages/UserLogin.tsx";
 import HomePage from "./pages/HomePageOutlet/HomePage.tsx";
 import Newsfeed from "./pages/HomePageOutlet/Newsfeed.tsx";
 import Post from "./pages/HomePageOutlet/Post.tsx";
-import Profile from "./pages/HomePageOutlet/Profile.tsx";
 import Messages from "./pages/HomePageOutlet/Messages.tsx";
 import ConversationId from "./pages/HomePageOutlet/MessagesOutlet/ConversationId.tsx";
 import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault.tsx";
@@ -38,14 +37,14 @@ const router = createBrowserRouter([
       { path: "/login", element: <UserLogin /> },
       { path: "/signup", element: <UserSignup /> },
       { path: "/:id", element: <UserProfile /> },
-      {
-        path: "/profile",
-        element: (
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        )
-      },
+      // {
+      //   path: "/profile",
+      //   element: (
+      //     <PrivateRoute>
+      //       <Profile />
+      //     </PrivateRoute>
+      //   )
+      // },
       {
         path: "/messages",
         element: (

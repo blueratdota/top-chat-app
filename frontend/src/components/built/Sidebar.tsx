@@ -38,7 +38,7 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
         isClosable: true
       });
     }
-    window.location.reload();
+    window.location.replace("/");
   };
 
   return (
