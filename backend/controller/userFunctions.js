@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // #### GET USER PROFILE, ALL FRIENDS, CONVERSATIONS, ETC... ####
 const getUserData = async (req, res, next) => {
   const { id } = req.user;
-  console.log(req.user);
+  // console.log(req.user);
   try {
     const userData = await prisma.user.findUnique({
       where: { id: id },
@@ -212,7 +212,7 @@ const userAcceptFriend = async (req, res, next) => {
 // #### GET,UPDATE USER PROFILE ####
 
 const getUserProfile = async (req, res, next) => {
-  console.log(req.user);
+  // console.log(req.user);
   try {
     const { id } = req.user;
     const userData = await prisma.user.findUnique({
@@ -297,7 +297,7 @@ const getUserProfileById = async (req, res, next) => {
         profile: { include: { user: { select: { email: true } } } }
       }
     });
-    console.log(userData);
+    // console.log(userData);
 
     const result = {
       isSuccess: true,
