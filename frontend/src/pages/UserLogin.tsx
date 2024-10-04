@@ -17,9 +17,10 @@ import { useState } from "react";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, profile } = useAuth();
 
   if (isAuthenticated) {
+    // console.log("LOGGED IN", profile);
     return <Navigate to={"/"} />;
   }
 
@@ -64,11 +65,8 @@ const UserLogin = () => {
         <CardFooter className="flex flex-col items-center gap-3">
           <Button
             className="text-slate-200 bg-black w-1/2 py-2 rounded-md"
-            onClick={async () => {
-              console.log(email, password);
-
-              await login(email, password);
-              window.location.href = "/";
+            onClick={() => {
+              login(email, password);
             }}
           >
             Login

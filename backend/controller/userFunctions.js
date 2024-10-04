@@ -129,7 +129,10 @@ const userLogin = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     if (email && password) {
-      const user = await prisma.user.findUnique({ where: { email: email } });
+      const user = await prisma.user.findUnique({
+        where: { email: email },
+        include: { profile: { include: { user: { select: { email: true } } } } }
+      });
       if (!user) {
         const error = new Error("User does not exist");
         error.status = 401;

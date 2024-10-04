@@ -5,6 +5,7 @@ import {
   useEffect,
   ReactNode
 } from "react";
+import { useToast } from "@chakra-ui/react";
 
 // Define the shape of the context value
 interface AuthContextType {
@@ -37,12 +38,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true); // For handling async loading state
   const [profile, setProfile] = useState({});
+  const toast = useToast();
+
   // API call to check authentication status
   const checkAuthStatus = async () => {
     try {
       setLoading(true); // Start loading
 
-      const response = await fetch(
+      const auth = await fetch(
         `${import.meta.env.VITE_SERVER}/api/users/profile`,
         {
           method: "GET",
@@ -50,9 +53,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       );
 
-      const data = await response.json();
-      if (response.ok && data.isSuccess) {
-        setProfile(data.data.profile);
+      const response = await auth.json();
+      if (auth.ok && response.isSuccess) {
+        setProfile(response.data.profile);
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -84,11 +87,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       );
       const response = await login.json();
-      if (response.isSuccess) {
-      }
-    } catch (error) {}
+      console.log(response);
 
-    setIsAuthenticated(true);
+      if (response.isSuccess) {
+        setIsAuthenticated(true);
+        setProfile(response.data.profile);
+      } else {
+        throw new Error("Login failed");
+      }
+      toast({
+        title: "User Logged In",
+        description: "You will be redirected to the homepage",
+        status: "success",
+        duration: 9000,
+        isClosable: true
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Login Failed",
+        description: "Check your email and password",
+        status: "error",
+        duration: 9000,
+        isClosable: true
+      });
+    }
   }; // Function to login
   const logout = () => setIsAuthenticated(false); // Function to logout
 
