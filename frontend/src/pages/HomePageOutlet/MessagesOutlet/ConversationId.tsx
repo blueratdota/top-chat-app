@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import useSWR from "swr";
 import Message from "../../../components/message/Message";
 import { Button } from "@chakra-ui/react";
@@ -21,6 +21,7 @@ const ConversationId = () => {
   const emptyDiv = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { id } = useParams();
+  const navigate = useNavigate();
   const context = useOutletContext();
   const { pathname, userId }: any = context;
 
@@ -118,7 +119,7 @@ const ConversationId = () => {
         let conversationName: string = "";
         if (type === "PRIVATE") {
           // RETURN CONVERSATIONNAME = FIRST NAME + LAST NAME
-          if (members[0].profile) {
+          if (members[0].profile.firstName) {
             conversationName = `${members[0].profile.firstName} ${members[0].profile.lastName}`;
             return conversationName;
           } else {
@@ -139,7 +140,18 @@ const ConversationId = () => {
             <>
               <div className="flex items-center h-[48px] pl-5 border-b gap-3">
                 <div className="size-8 bg-green-500"></div>
-                <p className=" text-xl font-bold">{fullName}</p>
+                <p
+                  className=" text-xl font-bold hover:cursor-pointer"
+                  onClick={() => {
+                    // console.log(conversation);
+                    if (type == "PRIVATE") {
+                      const profileId = members[0].profile.userId;
+                      navigate(`/${profileId}`);
+                    }
+                  }}
+                >
+                  {fullName}
+                </p>
               </div>
               <div className="bg-gradient-to-r from-gray-600 to-gray-500 max-h-[calc(100vh-64px-48px)] overflow-auto">
                 {isLoadingConversation && <div>Loading conversation...</div>}

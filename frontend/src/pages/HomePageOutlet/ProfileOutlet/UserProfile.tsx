@@ -2,17 +2,15 @@ import { Button, Input } from "@chakra-ui/react";
 import {
   mdiAccount,
   mdiAccountCircle,
-  mdiChat,
-  mdiDotsHorizontal,
   mdiHomeVariant,
   mdiMapMarker,
-  mdiPencil,
   mdiSchool
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/AuthContext";
+import ProfileHeaderButtons from "../../../components/built/ProfileHeaderButtons";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -36,7 +34,7 @@ const UserProfile = () => {
     return <div>Loading Profile</div>;
   } else {
     const { profile: pageProfile } = userProfile.data;
-    console.log(pageProfile, isAuthenticated);
+    // console.log(pageProfile, isAuthenticated);
 
     const fullName = (() => {
       if (pageProfile.firstName) {
@@ -77,41 +75,11 @@ const UserProfile = () => {
                 <p># of friends</p>
               </div>
               <div className="flex gap-2">
-                {viewerIsUser ? (
-                  <>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiPencil}></Icon>
-                      </div>
-                      <p>Edit Profile</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-5">
-                        <Icon path={mdiDotsHorizontal}></Icon>
-                      </div>
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Friends?</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiChat}></Icon>
-                      </div>
-                      <p>Message</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-5">
-                        <Icon path={mdiDotsHorizontal}></Icon>
-                      </div>
-                    </Button>
-                  </>
-                )}
+                <ProfileHeaderButtons
+                  id={id}
+                  viewerIsUser={viewerIsUser}
+                  isAuth={isAuthenticated}
+                />
               </div>
             </header>
             <main className="flex gap-5">

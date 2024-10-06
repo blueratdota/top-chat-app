@@ -10,7 +10,7 @@ const Conversation = ({ data, userId }: any) => {
     let conversationName: string = "";
     if (type === "PRIVATE") {
       // RETURN CONVERSATIONNAME = FIRST NAME + LAST NAME
-      if (members[0].profile) {
+      if (members[0].profile.firstName) {
         conversationName = `${members[0].profile.firstName} ${members[0].profile.lastName}`;
         return conversationName;
       } else {
@@ -33,6 +33,10 @@ const Conversation = ({ data, userId }: any) => {
       profile: { firstName: string | number; lastName: string | number } | null;
       id: string;
     };
+    if (messages.length === 0) {
+      message = "No messages";
+      return message;
+    }
     if (messages[0].isImage) {
       console.log(userId);
 

@@ -33,6 +33,7 @@ router.put(
   addConversationImageMessage
 );
 // ESTABLISHING CONVERSATION
+router.get("/establish-conversation/:id", protect, getConversation);
 router.post("/establish-conversation", protect, establishConversation);
 // UPDATING PROFILE
 router.put("/profile", protect, userUpdateProfile);

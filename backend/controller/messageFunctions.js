@@ -36,25 +36,22 @@ const establishConversation = async (req, res, next) => {
 
 // GET - DOWNLOAD EXISTING CONVERSATION BETWEEN GIVEN USER
 const getConversation = async (req, res, next) => {
-  const memberId = [
-    "53a094fd-452b-42f7-b7bd-62f85de077a1",
-    "f660d9fa-963b-453f-a16f-8238fce9e0ff"
-  ];
   try {
+    const memberId = [req.user.id, req.params.id];
     const conversation = await prisma.conversation.findFirst({
       where: { type: "PRIVATE", members: { every: { id: { in: memberId } } } },
       include: { messages: true }
     });
     const result = {
       isSuccess: true,
-      msg: "Conversation downloaded",
+      msg: "Conversation query successful",
       data: conversation
     };
     // WILL RETURN DATA
     // DATA {"ISSUCCESS":TRUE, "DATA":NULL} => IF NO EXISTING CONVERSATION BETWEEN USERS
     res.status(200).json(result);
   } catch (error) {
-    const result = new Error("Conversation download failed");
+    const result = new Error("Conversation query failed");
     result.status = 400;
     result.log = error;
     next(result);

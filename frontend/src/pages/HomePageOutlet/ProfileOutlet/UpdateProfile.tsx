@@ -24,7 +24,7 @@ const UpdateProfile = () => {
       if (firstName && lastName) {
         const body = { firstName: firstName, lastName: lastName, bio: bio };
         const response = await fetch(
-          "http://localhost:3000/api/users/profile",
+          `${import.meta.env.VITE_SERVER}/api/users/profile`,
           {
             method: "PUT",
             credentials: "include",
