@@ -1,6 +1,7 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
 import {
+  getFriendshipStatus,
   getUserConversations,
   getUserData,
   getUserFriends,
@@ -8,6 +9,7 @@ import {
   getUserProfileById,
   userAcceptFriend,
   userAddFriend,
+  userDeleteFriendRequest,
   userLogin,
   userLogout,
   userSignup,
@@ -19,7 +21,8 @@ const router = express.Router();
 router.get("/userdata", protect, getUserData);
 // GET SPECIFIC USER DATA
 router.get("/profile", protect, getUserProfile);
-router.get("/friends", protect, getUserFriends);
+router.get("/friend-status/:id", protect, getFriendshipStatus);
+// router.get("/friends", protect, getUserFriends);
 router.get("/conversations", protect, getUserConversations);
 router.get("/:id", getUserProfileById);
 // POST
@@ -30,5 +33,7 @@ router.post("/logout", userLogout);
 // PUT
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);
+// DELETE
+router.delete("/friendship", userDeleteFriendRequest);
 
 export default router;

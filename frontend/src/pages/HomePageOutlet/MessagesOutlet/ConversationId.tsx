@@ -23,7 +23,7 @@ const ConversationId = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useOutletContext();
-  const { pathname, userId }: any = context;
+  const { pathname, userId, mutateConversations }: any = context;
 
   // SWR FETCHER FUNCTION
   const fetcher = (url: string) =>
@@ -64,6 +64,7 @@ const ConversationId = () => {
         setIsHidden(true);
         setIsOpenEmoji(false);
         await mutateConversation();
+        await mutateConversations();
         setMessageContent("");
         emptyDiv.current?.scrollIntoView({ behavior: "smooth" });
       } catch (error) {
@@ -272,10 +273,9 @@ const ConversationId = () => {
   }
 };
 
-// IF MESSAGE IS FROM USER, PUT ON RIGHT SIDE
-// ELSE PUT ON LEFT SIDE
 // EXPLORE INFINITE SCROLLING, UPWARDS SCROLLING
 // PUT NAME ON PERSON IN CHAT WITH ON TOP, @ RIGHTMOST PUT DETAILS ICON
 // @BOTTOM CHAT BOX, OPTION IN THE LEFT TO SEND EMOJI/PICTURE
 // @MIDDLE IS THE INPUT CHATBOX, @RIGHTMOST SEND BUTTON
+
 export default ConversationId;

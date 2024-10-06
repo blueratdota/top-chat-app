@@ -57,6 +57,54 @@ const getUserFriends = async (req, res, next) => {
   }
 };
 
+const getFriendshipStatus = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const friendId = req.params.id;
+    const receiver = await prisma.friendship.findFirst({
+      where: { acceptingUserId: userId, requestingUserId: friendId }
+    });
+    const sender = await prisma.friendship.findFirst({
+      where: { requestingUserId: userId, acceptingUserId: friendId }
+    });
+    let btnAction = "";
+    let friendshipId = null;
+    if (receiver) {
+      if (receiver.accepted) {
+        btnAction = "Friends";
+      } else {
+        btnAction = "Confirm request";
+        friendshipId = receiver.id;
+      }
+    }
+    if (sender) {
+      if (sender.accepted) {
+        btnAction = "Friends";
+      } else {
+        btnAction = "Cancel request";
+        friendshipId = sender.id;
+      }
+    }
+    if (!sender && !receiver) {
+      btnAction = "Add friend";
+    }
+    const result = {
+      isSuccess: true,
+      msg: "Friendship status checked",
+      btnAction: btnAction,
+      friendshipId: friendshipId
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+
+    const result = new Error("Friendship status check failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 const getUserConversations = async (req, res, next) => {
   const { id } = req.user;
   try {
@@ -174,7 +222,7 @@ const userAddFriend = async (req, res, next) => {
   const { friendId } = req.body;
   try {
     const friendship = await prisma.friendship.create({
-      data: { requestingUserId: req.user.id, acceptingUserrId: friendId }
+      data: { requestingUserId: req.user.id, acceptingUserId: friendId }
     });
     const result = {
       isSuccess: true,
@@ -202,6 +250,26 @@ const userAcceptFriend = async (req, res, next) => {
       isSuccess: true,
       msg: "Friend request accepted",
       data: friendship
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("Friend request handling fatal error");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
+const userDeleteFriendRequest = async (req, res, next) => {
+  const { friendRequestId } = req.body;
+  try {
+    const friendship = await prisma.friendship.delete({
+      where: { id: friendRequestId }
+    });
+
+    const result = {
+      isSuccess: true,
+      msg: "Friendship cancelled"
     };
     res.status(200).json(result);
   } catch (error) {
@@ -321,13 +389,15 @@ export {
   getUserProfile,
   getUserProfileById,
   getUserFriends,
+  getFriendshipStatus,
   getUserConversations,
   userSignup,
   userLogin,
   userLogout,
   userAddFriend,
   userAcceptFriend,
-  userUpdateProfile
+  userUpdateProfile,
+  userDeleteFriendRequest
 };
 
 // FOR SHOWING PROFILE ON FRIEND REQUEST

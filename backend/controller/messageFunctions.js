@@ -150,7 +150,8 @@ const addConversationTextMessage = async (req, res, next) => {
     const conversation = await prisma.conversation.update({
       where: { id: conversationId },
       data: {
-        messages: { create: { authorId: req.user.id, content: content } }
+        messages: { create: { authorId: req.user.id, content: content } },
+        dateUpdated: new Date()
       }
     });
 
@@ -194,7 +195,8 @@ const addConversationImageMessage = async (req, res, next) => {
             content: fileData.filename,
             isImage: true
           }
-        }
+        },
+        dateUpdated: new Date()
       }
     });
 

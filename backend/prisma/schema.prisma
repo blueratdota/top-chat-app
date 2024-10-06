@@ -33,8 +33,8 @@ model Friendship {
   accepted         Boolean  @default(false)
   requestingUser   User     @relation("Sent Request", fields: [requestingUserId], references: [id])
   requestingUserId String
-  acceptingUser    User     @relation("Received Request", fields: [acceptingUserrId], references: [id])
-  acceptingUserrId String
+  acceptingUser    User     @relation("Received Request", fields: [acceptingUserId], references: [id])
+  acceptingUserId  String
   dateSent         DateTime @default(now())
   dateAccepted     DateTime @updatedAt
 }

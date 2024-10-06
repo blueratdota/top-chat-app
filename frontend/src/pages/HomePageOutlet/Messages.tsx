@@ -9,11 +9,16 @@ const Messages = () => {
   // SWR FETCHER FUNCTION
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
-  const { data: conversations, isLoading: isLoadingConversations } = useSWR(
+  const {
+    data: conversations,
+    isLoading: isLoadingConversations,
+    mutate: mutateConversations
+  } = useSWR(
     `${import.meta.env.VITE_SERVER}/api/users/conversations`,
     fetcher,
     {
-      revalidateOnFocus: false
+      revalidateOnFocus: false,
+      refreshInterval: 60000
     }
   );
   const { pathname } = useLocation();
@@ -62,7 +67,8 @@ const Messages = () => {
           context={{
             profile: profile,
             pathname: pathname,
-            userId: conversations?.userId
+            userId: conversations?.userId,
+            mutateConversations: mutateConversations
           }}
         />
       </div>
