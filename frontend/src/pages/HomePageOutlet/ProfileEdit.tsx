@@ -18,10 +18,10 @@ const ProfileEdit = () => {
         </div>
         <div className="[&>div]:hover:cursor-pointer py-5">
           <Link to={`/${profile.userId}/edit/general`}>
-            <div>General</div>
+            <div>General Info</div>
           </Link>
           <Link to={`/${profile.userId}/edit/intro`}>
-            <div>Intro</div>
+            <div>Additional Info</div>
           </Link>
           <div>Profile Photo</div>
           <div>Featured Photos</div>

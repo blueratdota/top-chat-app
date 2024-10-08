@@ -61,7 +61,7 @@ const General = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md rounded-md bg-white py-5 px-7">
         <CardHeader className="">
           <Heading className="text-2xl font-bold text-center mb-2">
@@ -69,7 +69,7 @@ const General = () => {
           </Heading>
           <Text className="text-center text-sm">Complete the form below</Text>
         </CardHeader>
-        <CardBody className="space-y-4 mb-10">
+        <CardBody className="space-y-4 mb-5">
           <FormControl>
             <FormLabel>First name</FormLabel>
             <Input
@@ -96,14 +96,14 @@ const General = () => {
           </FormControl>
           <FormControl>
             <FormLabel>Bio</FormLabel>
-            <Input
-              type="text"
-              className="w-full border px-3 py-1 rounded-md"
+            <textarea
+              className="w-full border px-3 py-1 rounded-md resize-none"
               placeholder="(Optional)"
               onChange={(e) => {
                 setBio(e.target.value);
               }}
               value={bio}
+              rows={4}
             />
           </FormControl>
         </CardBody>
