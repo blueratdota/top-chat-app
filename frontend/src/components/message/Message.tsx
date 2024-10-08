@@ -44,7 +44,7 @@ const Message = ({ message }: any) => {
                 className="max-w-[520px] rounded-3xl"
               />
             ) : (
-              <div className="max-w-[320px]">{message.content}</div>
+              <div className="max-w-[320px] h-[2000px]">{message.content}</div>
             )}
           </div>
         ) : (
@@ -67,7 +67,7 @@ const Message = ({ message }: any) => {
                 className="max-w-[520px] rounded-3xl"
               />
             ) : (
-              <div className="max-w-[320px]">{message.content}</div>
+              <div className="max-w-[320px] h-[2000px]">{message.content}</div>
             )}
           </div>
         ) : (

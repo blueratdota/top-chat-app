@@ -11,6 +11,7 @@ import {
   mdiImage,
   mdiSend
 } from "@mdi/js";
+import imageCompression from "browser-image-compression";
 
 const ConversationId = () => {
   const [messageContent, setMessageContent] = useState("");
@@ -45,7 +46,7 @@ const ConversationId = () => {
   useEffect(() => {
     if (emptyDiv.current) {
       console.log("scroll down");
-      emptyDiv.current.scrollIntoView({ block: "end", behavior: "smooth" });
+      emptyDiv.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [pathname, isLoadingConversation]);
   // DATA POST FUNCTION
@@ -99,10 +100,24 @@ const ConversationId = () => {
     }
   };
   // HANDLE CHANGE FILE INPUT
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true
+    };
     if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      setImage(file);
+      try {
+        const file = event.target.files[0];
+        const compressedFile = await imageCompression(file, options);
+        console.log(compressedFile);
+
+        setImage(compressedFile);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

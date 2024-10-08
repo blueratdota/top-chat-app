@@ -61,8 +61,8 @@ const Conversation = ({ data, userId }: any) => {
   })();
 
   if (messages[0]) {
-    console.log(members);
-    console.log(messages[0]);
+    // console.log(members);
+    // console.log(messages[0]);
   }
 
   return (

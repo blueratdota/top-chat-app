@@ -46,7 +46,7 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
       <Link to={`/${profile.userId}`}>
         <div
           className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
-            mainPath == "profile" ? "bg-gray-100 font-bold" : ""
+            mainPath == profile.userId ? "bg-gray-100 font-bold" : ""
           }`}
         >
           <div className="w-10">

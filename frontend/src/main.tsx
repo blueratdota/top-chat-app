@@ -19,7 +19,10 @@ import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault
 import UserSignup from "./pages/UserSignup.tsx";
 // UTILS
 import PrivateRoute from "./utils/PrivateRoute.tsx";
-import UserProfile from "./pages/HomePageOutlet/ProfileOutlet/UserProfile.tsx";
+import UserProfile from "./pages/UserProfile.tsx";
+import ProfileEdit from "./pages/HomePageOutlet/ProfileEdit.tsx";
+import General from "./pages/HomePageOutlet/ProfileOutlet/General.tsx";
+import Intro from "./pages/HomePageOutlet/ProfileOutlet/Intro.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +39,22 @@ const router = createBrowserRouter([
       },
       { path: "/login", element: <UserLogin /> },
       { path: "/signup", element: <UserSignup /> },
-      { path: "/:id", element: <UserProfile /> },
+      {
+        path: "/:id",
+        element: <UserProfile />
+      },
+      {
+        path: "/:id/edit",
+        element: (
+          <PrivateRoute>
+            <ProfileEdit />
+          </PrivateRoute>
+        ),
+        children: [
+          { path: "/:id/edit/general", element: <General /> },
+          { path: "/:id/edit/intro", element: <Intro /> }
+        ]
+      },
       // {
       //   path: "/profile",
       //   element: (

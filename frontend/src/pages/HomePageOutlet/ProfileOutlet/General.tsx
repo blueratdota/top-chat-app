@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const UpdateProfile = () => {
+const General = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
@@ -62,8 +62,8 @@ const UpdateProfile = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
-      <Card className="w-full max-w-md rounded-md bg-white py-10 px-7">
-        <CardHeader className="mb-10">
+      <Card className="w-full max-w-md rounded-md bg-white py-5 px-7">
+        <CardHeader className="">
           <Heading className="text-2xl font-bold text-center mb-2">
             Update your profile
           </Heading>
@@ -119,4 +119,9 @@ const UpdateProfile = () => {
     </div>
   );
 };
-export default UpdateProfile;
+export default General;
+
+// RECREATE THIS ENTIRE FORM
+// ADD FOR EDUCATION ENTRY
+// ADD FOR CURRENT RESIDENCE
+// ADD FOR PLACE OF ORIGIN

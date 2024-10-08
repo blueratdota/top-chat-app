@@ -9,8 +9,8 @@ import {
 import Icon from "@mdi/react";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../../hooks/AuthContext";
-import ProfileHeaderButtons from "../../../components/built/ProfileHeaderButtons";
+import { useAuth } from "../hooks/AuthContext";
+import ProfileHeaderButtons from "../components/built/ProfileHeaderButtons";
 
 const UserProfile = () => {
   const { id } = useParams();

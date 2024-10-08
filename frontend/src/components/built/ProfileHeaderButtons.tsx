@@ -6,7 +6,7 @@ type ProfileHeaderButtonParams = {
 import { Button, useToast } from "@chakra-ui/react";
 import Icon from "@mdi/react";
 import { mdiPencil, mdiDotsHorizontal, mdiAccount, mdiChat } from "@mdi/js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 
 const ProfileHeaderButtons = ({
@@ -21,7 +21,6 @@ const ProfileHeaderButtons = ({
     fetch(url, { credentials: "include" }).then((res) => res.json());
   const {
     data: friendshipStatus,
-    error: errorFriendship,
     isLoading: loadingFriendship,
     mutate: mutateFriendship
   } = useSWR(
@@ -149,12 +148,15 @@ const ProfileHeaderButtons = ({
   if (viewerIsUser) {
     return (
       <>
-        <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-          <div className="size-4">
-            <Icon path={mdiPencil}></Icon>
-          </div>
-          <p>Edit Profile</p>
-        </Button>
+        <Link to={`/${id}/edit`}>
+          <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
+            <div className="size-4">
+              <Icon path={mdiPencil}></Icon>
+            </div>
+            <p>Edit Profile</p>
+          </Button>
+        </Link>
+
         <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
           <div className="size-5">
             <Icon path={mdiDotsHorizontal}></Icon>

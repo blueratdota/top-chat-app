@@ -26,6 +26,10 @@ model User {
   profile                Profile?
   sentFriendRequests     Friendship[]   @relation("Sent Request")
   receivedFriendRequests Friendship[]   @relation("Received Request")
+  posts                  Posts[]        @relation("Post Author")
+  comments               Comment[]
+  likedPosts             Posts[]        @relation("Liked Posts")
+  GeneralInfo            GeneralInfo[]
 }
 
 model Friendship {
@@ -40,12 +44,44 @@ model Friendship {
 }
 
 model Profile {
-  id        String  @id @default(uuid())
-  bio       String?
-  firstName String?
-  lastName  String?
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String  @unique
+  id           String        @id @default(uuid())
+  bio          String?
+  firstName    String?
+  lastName     String?
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String        @unique
+  displayPhoto String?
+  generalInfo  GeneralInfo[]
+}
+
+model GeneralInfo {
+  id        String          @id @default(uuid())
+  author    User            @relation(fields: [authorId], references: [id])
+  authorId  String
+  type      GeneralInfoType
+  profile   Profile         @relation(fields: [profileId], references: [id])
+  profileId String
+}
+
+model Posts {
+  id           String    @id @default(uuid())
+  author       User      @relation("Post Author", fields: [authorId], references: [id])
+  authorId     String
+  imageContent String?
+  textContent  String?
+  comments     Comment[]
+  likedByUsers User[]    @relation("Liked Posts")
+  datePosted   DateTime  @default(now())
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String
+  textContent String
+  post        Posts?   @relation(fields: [postId], references: [id])
+  postId      String?
+  datePosted  DateTime @default(now())
 }
 
 model Message {
@@ -72,4 +108,11 @@ model Conversation {
 enum ConversationType {
   PRIVATE
   GROUP
+}
+
+enum GeneralInfoType {
+  EDUCATION
+  ADDRESS
+  ORIGIN
+  BIRTH_DATE
 }
