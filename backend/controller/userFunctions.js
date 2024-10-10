@@ -154,8 +154,12 @@ const userSignup = async (req, res, next) => {
         data: { email: email, password: hashedPassword }
       });
 
-      await prisma.profile.create({
+      const newProfile = await prisma.profile.create({
         data: { userId: user.id }
+      });
+
+      const newGeneralInfo = await prisma.generalInfo.create({
+        data: { profileId: newProfile.id }
       });
 
       const result = { isSuccess: true, msg: "User created", data: user };
@@ -359,13 +363,40 @@ const userUpdateProfile = async (req, res, next) => {
   }
 };
 
+const updateUserGeneralInfo = async (req, res, next) => {
+  try {
+    const generalInfo = req.body;
+    const { id } = req.params;
+
+    const newProfile = await prisma.generalInfo.update({
+      where: { id: id },
+      data: { ...generalInfo }
+    });
+
+    const result = {
+      isSuccess: true,
+      msg: "Profile updated",
+      data: newProfile
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Profile update failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 const getUserProfileById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const userData = await prisma.user.findUnique({
       where: { id: id },
       select: {
-        profile: { include: { user: { select: { email: true } } } }
+        profile: {
+          include: { user: { select: { email: true } }, generalInfo: true }
+        }
       }
     });
     // console.log(userData);
@@ -397,7 +428,8 @@ export {
   userAddFriend,
   userAcceptFriend,
   userUpdateProfile,
-  userDeleteFriendRequest
+  userDeleteFriendRequest,
+  updateUserGeneralInfo
 };
 
 // FOR SHOWING PROFILE ON FRIEND REQUEST

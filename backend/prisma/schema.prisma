@@ -54,17 +54,17 @@ model Profile {
 }
 
 model GeneralInfo {
-  id            String    @id @default(uuid())
-  profile       Profile   @relation(fields: [profileId], references: [id])
-  profileId     String    @unique
+  id            String  @id @default(uuid())
+  profile       Profile @relation(fields: [profileId], references: [id])
+  profileId     String  @unique
   highschool    String?
   collegeDegree String?
   college       String?
   workPosition  String?
   workCompany   String?
-  birthDate     DateTime?
+  birthDate     String?
   residence     String?
-  birthOPlace   String?
+  birthPlace    String?
 }
 
 model Posts {

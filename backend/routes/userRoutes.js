@@ -7,6 +7,7 @@ import {
   getUserFriends,
   getUserProfile,
   getUserProfileById,
+  updateUserGeneralInfo,
   userAcceptFriend,
   userAddFriend,
   userDeleteFriendRequest,
@@ -33,6 +34,7 @@ router.post("/logout", userLogout);
 // PUT
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);
+router.put("/intro/:id", protect, updateUserGeneralInfo);
 // DELETE
 router.delete("/friendship", userDeleteFriendRequest);
 

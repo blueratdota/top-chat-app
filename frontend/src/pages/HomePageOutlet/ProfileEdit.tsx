@@ -1,11 +1,29 @@
-import { Outlet, useLocation, useOutletContext, Link } from "react-router-dom";
-import { Input } from "@chakra-ui/react";
+import {
+  Outlet,
+  useLocation,
+  useOutletContext,
+  Link,
+  useParams
+} from "react-router-dom";
 import Icon from "@mdi/react";
 import { mdiAccount } from "@mdi/js";
+import useSWR from "swr";
+
 const ProfileEdit = () => {
   const { pathname } = useLocation();
   const context = useOutletContext();
+  const { id } = useParams();
   const { profile }: any = context;
+
+  const fetcher = (url: string) =>
+    fetch(url, { credentials: "include" }).then((res) => res.json());
+  const {
+    data: generalInfo,
+    isLoading: isLoadingGeneralInfo,
+    mutate: mutateGeneralInfo
+  } = useSWR(`${import.meta.env.VITE_SERVER}/api/users/${id}`, fetcher, {
+    revalidateOnFocus: false
+  });
 
   return (
     <div className="flex">
@@ -32,7 +50,10 @@ const ProfileEdit = () => {
         <Outlet
           context={{
             profile: profile,
-            pathname: pathname
+            pathname: pathname,
+            generalInfo: generalInfo?.data.profile.generalInfo,
+            isLoadingGeneralInfo: isLoadingGeneralInfo,
+            mutateGeneralInfo: mutateGeneralInfo
           }}
         />
       </div>
