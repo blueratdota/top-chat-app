@@ -11,11 +11,11 @@ import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
 import ProfileHeaderButtons from "../components/built/ProfileHeaderButtons";
+import ProfileIntro from "../components/built/ProfileIntro";
 
 const UserProfile = () => {
   const { id } = useParams();
   const { profile, isAuthenticated } = useAuth();
-  // console.log(id);
 
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
@@ -26,6 +26,7 @@ const UserProfile = () => {
   } = useSWR(`${import.meta.env.VITE_SERVER}/api/users/${id}`, fetcher, {
     revalidateOnFocus: true
   });
+  console.log(userProfile);
 
   if (errorUserProfile) {
     return <div>Error Profile/Does not exist</div>;
@@ -84,7 +85,7 @@ const UserProfile = () => {
             </header>
             <main className="flex gap-5">
               <div className="basis-[40%] flex flex-col gap-3 [&>div]:bg-pink-300">
-                <div className="py-3 px-4 rounded-xl">
+                {/* <div className="py-3 px-4 rounded-xl">
                   <h1 className="text-lg font-bold mb-1">Intro</h1>
                   <p className="text-center pb-2 border-b border-gray-100 border-opacity-50 ">
                     I am a person
@@ -107,7 +108,11 @@ const UserProfile = () => {
                       <p>From Korea</p>
                     </div>
                   </div>
-                </div>
+                </div> */}
+                <ProfileIntro
+                  generalInfo={pageProfile.generalInfo}
+                  bio={pageProfile.bio}
+                />
                 <div className="py-3 px-4 rounded-xl">
                   <h1 className="text-lg font-bold mb-1">Photos</h1>
                   <div className="grid grid-cols-2 grid-rows-2 gap-3">
