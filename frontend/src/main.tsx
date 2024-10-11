@@ -23,6 +23,7 @@ import UserProfile from "./pages/UserProfile.tsx";
 import ProfileEdit from "./pages/HomePageOutlet/ProfileEdit.tsx";
 import General from "./pages/HomePageOutlet/ProfileOutlet/General.tsx";
 import Intro from "./pages/HomePageOutlet/ProfileOutlet/Intro.tsx";
+import ProfilePhoto from "./pages/HomePageOutlet/ProfileOutlet/ProfilePhoto.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,8 @@ const router = createBrowserRouter([
         ),
         children: [
           { path: "/:id/edit/general", element: <General /> },
-          { path: "/:id/edit/intro", element: <Intro /> }
+          { path: "/:id/edit/intro", element: <Intro /> },
+          { path: "/:id/edit/photo", element: <ProfilePhoto /> }
         ]
       },
       // {

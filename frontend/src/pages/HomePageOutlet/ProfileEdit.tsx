@@ -15,6 +15,8 @@ const ProfileEdit = () => {
   const { id } = useParams();
   const { profile }: any = context;
 
+  // console.log(profile);
+
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
   const {
@@ -41,7 +43,9 @@ const ProfileEdit = () => {
           <Link to={`/${profile.userId}/edit/intro`}>
             <div>Additional Info</div>
           </Link>
-          <div>Profile Photo</div>
+          <Link to={`/${profile.userId}/edit/photo`}>
+            <div>Profile Photo</div>
+          </Link>
           <div>Featured Photos</div>
           <div>Privacy</div>
         </div>

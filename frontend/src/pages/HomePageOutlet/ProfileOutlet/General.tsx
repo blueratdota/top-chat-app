@@ -11,13 +11,28 @@ import {
   Text,
   useToast
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 const General = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
   const toast = useToast();
+  const context = useOutletContext();
+  const { profile }: any = context;
+
+  useEffect(() => {
+    if (profile.firstName.length > 0) {
+      setFirstName(profile.firstName);
+    }
+    if (profile.lastName.length > 0) {
+      setLastName(profile.lastName);
+    }
+    if (profile.bio.length > 0) {
+      setBio(profile.bio);
+    }
+  }, []);
 
   const onUpdateProfile = async () => {
     try {

@@ -26,7 +26,7 @@ const ProfileIntro = ({ generalInfo, bio }: GeneralInfoType) => {
   return (
     <div className="pt-3 pb-4 px-4 rounded-xl">
       <h1 className="text-xl font-bold mb-1">Intro</h1>
-      {bio.length > 0 ? (
+      {bio?.length > 0 ? (
         <p className="text-center pb-2 border-b border-gray-100 border-opacity-50 ">
           {bio}
         </p>
