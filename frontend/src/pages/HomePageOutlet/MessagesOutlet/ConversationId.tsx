@@ -111,6 +111,8 @@ const ConversationId = () => {
     if (event.target.files && event.target.files.length > 0) {
       try {
         const file = event.target.files[0];
+        console.log(file);
+
         const compressedFile = await imageCompression(file, options);
         console.log(compressedFile);
 

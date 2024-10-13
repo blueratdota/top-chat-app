@@ -17,7 +17,7 @@ import { useState } from "react";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isAuthenticated, profile } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
     // console.log("LOGGED IN", profile);

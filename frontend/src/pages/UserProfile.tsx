@@ -1,17 +1,12 @@
 import { Button, Input } from "@chakra-ui/react";
-import {
-  mdiAccount,
-  mdiAccountCircle,
-  mdiHomeVariant,
-  mdiMapMarker,
-  mdiSchool
-} from "@mdi/js";
+import { mdiAccount, mdiAccountCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
 import ProfileHeaderButtons from "../components/built/ProfileHeaderButtons";
 import ProfileIntro from "../components/built/ProfileIntro";
+import ProfilePicture from "../components/built/ProfilePiture";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -62,7 +57,11 @@ const UserProfile = () => {
           <div className={`min-w-[70%] px-5`}>
             <header className="flex items-center">
               <div className="size-48 p-3">
-                <Icon path={mdiAccountCircle} />
+                {pageProfile.displayPhoto?.length > 0 ? (
+                  <ProfilePicture displayPhotoId={pageProfile.displayPhoto} />
+                ) : (
+                  <Icon path={mdiAccountCircle} />
+                )}
               </div>
               <div className="py-5 px-5  flex-1">
                 <p className="text-3xl font-bold mb-2">{fullName}</p>
@@ -85,30 +84,6 @@ const UserProfile = () => {
             </header>
             <main className="flex gap-5">
               <div className="basis-[40%] flex flex-col gap-3 [&>div]:bg-pink-300">
-                {/* <div className="py-3 px-4 rounded-xl">
-                  <h1 className="text-lg font-bold mb-1">Intro</h1>
-                  <p className="text-center pb-2 border-b border-gray-100 border-opacity-50 ">
-                    I am a person
-                  </p>
-                  <div className="flex flex-col gap-2 pt-4">
-                    <div className="flex gap-3">
-                      <Icon className="size-5" path={mdiSchool} />{" "}
-                      <p>Went to SPED</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <Icon className="size-5" path={mdiSchool} />{" "}
-                      <p>Went to Usep</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <Icon className="size-5" path={mdiHomeVariant} />{" "}
-                      <p>Lives in Davao City</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <Icon className="size-5" path={mdiMapMarker} />{" "}
-                      <p>From Korea</p>
-                    </div>
-                  </div>
-                </div> */}
                 <ProfileIntro
                   generalInfo={pageProfile.generalInfo}
                   bio={pageProfile.bio}

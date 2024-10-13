@@ -388,6 +388,35 @@ const updateUserGeneralInfo = async (req, res, next) => {
   }
 };
 
+const updateUserDisplayPhoto = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    // console.log(req.file);
+    const fileData = {
+      path: req.file.path,
+      name: req.file.originalname,
+      filename: req.file.filename,
+      fileSize: req.file.size,
+      authorId: req.user.id
+    };
+    await prisma.profile.update({
+      where: { userId: userId },
+      data: { displayPhoto: fileData.filename }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "Display Photo Updated"
+    };
+    res.status(200).json(fileData);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Display Photo Update Failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 const getUserProfileById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -429,7 +458,8 @@ export {
   userAcceptFriend,
   userUpdateProfile,
   userDeleteFriendRequest,
-  updateUserGeneralInfo
+  updateUserGeneralInfo,
+  updateUserDisplayPhoto
 };
 
 // FOR SHOWING PROFILE ON FRIEND REQUEST

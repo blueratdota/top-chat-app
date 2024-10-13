@@ -7,6 +7,7 @@ import {
   getUserFriends,
   getUserProfile,
   getUserProfileById,
+  updateUserDisplayPhoto,
   updateUserGeneralInfo,
   userAcceptFriend,
   userAddFriend,
@@ -16,6 +17,8 @@ import {
   userSignup,
   userUpdateProfile
 } from "../controller/userFunctions.js";
+import multer from "multer";
+const upload = multer({ dest: "image_uploads" });
 const router = express.Router();
 
 // GET ALL USER DATA
@@ -35,6 +38,12 @@ router.post("/logout", userLogout);
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);
 router.put("/intro/:id", protect, updateUserGeneralInfo);
+router.put(
+  "/display-photo",
+  protect,
+  upload.single("file"),
+  updateUserDisplayPhoto
+);
 // DELETE
 router.delete("/friendship", userDeleteFriendRequest);
 

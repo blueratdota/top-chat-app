@@ -57,14 +57,6 @@ const router = createBrowserRouter([
           { path: "/:id/edit/photo", element: <ProfilePhoto /> }
         ]
       },
-      // {
-      //   path: "/profile",
-      //   element: (
-      //     <PrivateRoute>
-      //       <Profile />
-      //     </PrivateRoute>
-      //   )
-      // },
       {
         path: "/messages",
         element: (
