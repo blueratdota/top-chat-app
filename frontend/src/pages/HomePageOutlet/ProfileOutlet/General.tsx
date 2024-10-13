@@ -23,13 +23,13 @@ const General = () => {
   const { profile }: any = context;
 
   useEffect(() => {
-    if (profile.firstName.length > 0) {
+    if (profile.firstName?.length > 0) {
       setFirstName(profile.firstName);
     }
-    if (profile.lastName.length > 0) {
+    if (profile.lastName?.length > 0) {
       setLastName(profile.lastName);
     }
-    if (profile.bio.length > 0) {
+    if (profile.bio?.length > 0) {
       setBio(profile.bio);
     }
   }, []);

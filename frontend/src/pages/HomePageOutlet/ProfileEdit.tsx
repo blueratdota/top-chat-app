@@ -38,16 +38,16 @@ const ProfileEdit = () => {
         </div>
         <div className="[&>div]:hover:cursor-pointer py-5">
           <Link to={`/${profile.userId}/edit/general`}>
-            <div>General Info</div>
+            <div className=" text-lg py-2 pl-3">General Info</div>
           </Link>
           <Link to={`/${profile.userId}/edit/intro`}>
-            <div>Additional Info</div>
+            <div className="ext-lg py-2 pl-3">Additional Info</div>
           </Link>
           <Link to={`/${profile.userId}/edit/photo`}>
-            <div>Profile Photo</div>
+            <div className="text-lg py-2 pl-3">Profile Photo</div>
           </Link>
-          <div>Featured Photos</div>
-          <div>Privacy</div>
+          <div className="text-lg py-2 pl-3">Featured Photos</div>
+          <div className="text-lg py-2 pl-3">Privacy</div>
         </div>
       </div>
       <div className="w-full min-h-screen">

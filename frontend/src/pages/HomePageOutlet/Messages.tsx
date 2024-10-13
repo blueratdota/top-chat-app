@@ -45,7 +45,7 @@ const Messages = () => {
             className="w-full border p-3 rounded-lg bg-white"
           />
         </div>
-        <div>
+        <div className="w-[430px]">
           {isLoadingConversations && <div>Loading conversations...</div>}
           {conversations ? (
             <>

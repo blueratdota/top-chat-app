@@ -119,7 +119,11 @@ const getUserConversations = async (req, res, next) => {
                 id: true,
                 email: true,
                 profile: {
-                  select: { firstName: true, lastName: true }
+                  select: {
+                    firstName: true,
+                    lastName: true,
+                    displayPhoto: true
+                  }
                 }
               }
             },

@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import ProfilePicture from "../built/ProfilePiture";
 
 const Conversation = ({ data, userId }: any) => {
   // ADD CONDITIONAL STUFF HERE. IF MEMBERS>1, SINCE USER IS EXCLUDED
   // IF PROFILE == NULL, DISPLAY EMAIL AS NAME
   // ADD OPTION FOR GROUP CHATS TO HAVE NAME, ELSE DISPLAY NAME OF FIRST TWO MEMBERS
   const { members, messages, id, type } = data;
+  // console.log(members);
 
   const fullName = (() => {
     let conversationName: string = "";
@@ -30,7 +32,11 @@ const Conversation = ({ data, userId }: any) => {
     let message: string = "";
     type MemberType = {
       email: string;
-      profile: { firstName: string | number; lastName: string | number } | null;
+      profile: {
+        firstName: string | number;
+        lastName: string | number;
+        displayPhoto: string;
+      } | null;
       id: string;
     };
     if (messages.length === 0) {
@@ -38,21 +44,26 @@ const Conversation = ({ data, userId }: any) => {
       return message;
     }
     if (messages[0].isImage) {
-      console.log(userId);
+      // console.log(userId);
 
       if (messages[0].authorId == userId) {
         message = "You sent a photo";
       } else {
         const sender = members.find((member: MemberType) => {
+          console.log(member);
+
           if (member.id === messages[0].authorId) {
-            if (member.profile) {
+            if (member.profile?.firstName) {
               return member.profile.firstName;
             } else {
+              console.log("this runs", member.email);
               return member.email;
             }
           }
         });
-        message = `${sender} sent a photo`;
+        console.log(sender);
+
+        message = `${sender.profile.firstName || sender.email} sent a photo`;
       }
     } else {
       message = messages[0].content;
@@ -66,12 +77,15 @@ const Conversation = ({ data, userId }: any) => {
   }
 
   return (
-    <div className="flex p-2 border-y">
-      <Link to={`/messages/${id}`} className="flex items-center gap-5  w-full">
-        <div className="size-16 bg-green-500">x</div>
-        <div className="flex-1">
-          <p className="text-lg font-bold">{fullName}</p>
-          <p className="max-w-[80%] truncate text-gray-500">{lastMessage}</p>
+    <div className="flex p-2 border-y w-[430px]">
+      <Link to={`/messages/${id}`} className="flex items-center gap-5">
+        {/* <div className="size-16 bg-green-500">x</div> */}
+        <div className="size-16">
+          <ProfilePicture displayPhotoId={members[0].profile.displayPhoto} />
+        </div>
+        <div className="">
+          <p className="max-w-[280px] truncate text-lg font-bold">{fullName}</p>
+          <p className="max-w-[280px] truncate text-gray-500">{lastMessage}</p>
         </div>
       </Link>
       <div className="px-5 max-h-fit bg-gray-400 hover:bg-gray-200">...</div>

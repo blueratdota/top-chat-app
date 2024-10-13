@@ -86,7 +86,7 @@ const Intro = () => {
     return <div>Loading...</div>;
   } else {
     return (
-      <form className="flex flex-col gap-5 items-center justify-center min-h-screen">
+      <form className="flex flex-col gap-5 items-center min-h-screen max-h-screen overflow-auto py-10">
         <Card className="w-1/2">
           <CardHeader>
             <Heading className="text-3xl">Personal Info</Heading>
