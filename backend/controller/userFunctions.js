@@ -155,7 +155,11 @@ const getUserPosts = async (req, res, next) => {
       where: { id: id },
       select: {
         posts: {
-          include: { comments: true, likedByUsers: true },
+          include: {
+            comments: true,
+            likedByUsers: true,
+            author: { select: { profile: true, email: true } }
+          },
           orderBy: { datePosted: "desc" }
         }
       }

@@ -7,10 +7,9 @@ NODE_ENV = development
 
 # todo
 
-- profile set profile picture
-- setup api for getting image for profile loading. also in conversation loading >> first learn image compression
-- create the profile page. must be accessible to all even if no logged in account via domain/profileId
-- make profile setup mandatory then refactor the old code?
 - make a "SEEN"/"UNREAD" functionality for messages
+- finish post template, like,comment,share(?)
+- do the photos portion, display latest 4 photos uploaded by the user. add option to view all photos poster by the user
+- display friends, and total number of friends
 
 # done

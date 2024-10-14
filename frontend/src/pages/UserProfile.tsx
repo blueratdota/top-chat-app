@@ -128,7 +128,7 @@ const UserProfile = () => {
                 ) : (
                   <>
                     {userPosts.data.posts.map((post: any) => {
-                      return <Posts post={post} />;
+                      return <Posts post={post} key={post.id} />;
                     })}
                   </>
                 )}
