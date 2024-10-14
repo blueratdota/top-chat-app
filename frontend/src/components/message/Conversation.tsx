@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ProfilePicture from "../built/ProfilePiture";
+import ProfilePicture from "../built/ProfilePicture";
 
 const Conversation = ({ data, userId }: any) => {
   // ADD CONDITIONAL STUFF HERE. IF MEMBERS>1, SINCE USER IS EXCLUDED

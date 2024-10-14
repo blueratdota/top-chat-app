@@ -41,7 +41,7 @@ const ProfileEdit = () => {
             <div className=" text-lg py-2 pl-3">General Info</div>
           </Link>
           <Link to={`/${profile.userId}/edit/intro`}>
-            <div className="ext-lg py-2 pl-3">Additional Info</div>
+            <div className="text-lg py-2 pl-3">Additional Info</div>
           </Link>
           <Link to={`/${profile.userId}/edit/photo`}>
             <div className="text-lg py-2 pl-3">Profile Photo</div>

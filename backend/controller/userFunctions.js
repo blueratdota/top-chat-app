@@ -148,6 +148,32 @@ const getUserConversations = async (req, res, next) => {
   }
 };
 
+const getUserPosts = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const userData = await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        posts: {
+          include: { comments: true, likedByUsers: true },
+          orderBy: { datePosted: "desc" }
+        }
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "Post downloaded",
+      data: userData,
+      userId: id
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    const result = new Error("User post data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
 // #### USER CREATION, USER LOGIN/LOGOUT ####
 const userSignup = async (req, res, next) => {
   const { email, password } = req.body;
@@ -448,13 +474,51 @@ const getUserProfileById = async (req, res, next) => {
   }
 };
 
+const createPost = async (req, res, next) => {
+  try {
+    const { textContent } = req.body;
+    const fileData = (() => {
+      if (req.file) {
+        return {
+          path: req.file.path,
+          name: req.file.originalname,
+          filename: req.file.filename,
+          fileSize: req.file.size,
+          authorId: req.user.id
+        };
+      } else return null;
+    })();
+    const post = await prisma.posts.create({
+      data: {
+        authorId: req.user.id,
+        textContent: textContent,
+        imageContent: fileData?.filename
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "Post created",
+      data: post
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Failed to create post");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 export {
   getUserData,
+  getUserPosts,
   getUserProfile,
   getUserProfileById,
   getUserFriends,
   getFriendshipStatus,
   getUserConversations,
+  createPost,
   userSignup,
   userLogin,
   userLogout,
