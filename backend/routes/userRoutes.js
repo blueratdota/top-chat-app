@@ -1,6 +1,7 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
 import {
+  commentPost,
   createPost,
   getFriendshipStatus,
   getUserConversations,
@@ -39,8 +40,9 @@ router.post("/login", userLogin);
 router.post("/add-friend", protect, userAddFriend);
 router.post("/logout", userLogout);
 router.post("/post", protect, upload.single("file"), createPost);
-router.post("/like", protect, likePost);
 // PUT
+router.put("/like", protect, likePost);
+router.put("/comment", protect, commentPost);
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);
 router.put("/intro/:id", protect, updateUserGeneralInfo);

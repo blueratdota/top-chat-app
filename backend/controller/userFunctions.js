@@ -157,7 +157,12 @@ const getUserPosts = async (req, res, next) => {
         posts: {
           include: {
             comments: {
-              select: { author: { select: { profile: true, email: true } } }
+              select: {
+                author: { select: { profile: true, email: true } },
+                textContent: true,
+                id: true
+              },
+              orderBy: { datePosted: "asc" }
             },
             likedByUsers: {
               select: { email: true, profile: true }
@@ -565,6 +570,33 @@ const likePost = async (req, res, next) => {
   }
 };
 
+const commentPost = async (req, res, next) => {
+  try {
+    const { postId, comment } = req.body;
+
+    const post = await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        comments: {
+          create: { textContent: comment, postId: postId }
+        }
+      }
+    });
+    const result = {
+      isSuccess: true,
+      msg: "Comment posted",
+      data: post
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Failed to post comment");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 export {
   getUserData,
   getUserPosts,
@@ -575,6 +607,7 @@ export {
   getUserConversations,
   createPost,
   likePost,
+  commentPost,
   userSignup,
   userLogin,
   userLogout,

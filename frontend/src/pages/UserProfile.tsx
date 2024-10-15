@@ -21,7 +21,7 @@ const UserProfile = () => {
     error: errorUserProfile,
     isLoading: isLoadingUserProfile
   } = useSWR(`${import.meta.env.VITE_SERVER}/api/users/${id}`, fetcher, {
-    revalidateOnFocus: true
+    revalidateOnFocus: false
   });
 
   const {
@@ -63,11 +63,14 @@ const UserProfile = () => {
             <div>loading...</div>
           </>
         ) : (
-          <div className={`min-w-[70%] px-5`}>
+          <div className={`min-w-[70%] max-w-[70%] px-5`}>
             <header className="flex items-center">
               <div className="size-48 p-3">
                 {pageProfile.displayPhoto?.length > 0 ? (
-                  <ProfilePicture displayPhotoId={pageProfile.displayPhoto} />
+                  <ProfilePicture
+                    displayPhotoId={pageProfile.displayPhoto}
+                    key={id}
+                  />
                 ) : (
                   <Icon path={mdiAccountCircle} />
                 )}
@@ -91,7 +94,7 @@ const UserProfile = () => {
                 />
               </div>
             </header>
-            <main className="flex gap-5">
+            <main className="flex gap-5 pb-10">
               <div className="basis-[40%] flex flex-col gap-3 [&>div]:bg-white [&>div]:shadow-sm">
                 <ProfileIntro
                   generalInfo={pageProfile.generalInfo}
@@ -138,170 +141,6 @@ const UserProfile = () => {
                     })}
                   </>
                 )}
-                <div className="rounded-xl p-3">
-                  <div className="flex items-center pb-5 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-lg font-bold">{fullName}</p>
-                      <p>date posted</p>
-                    </div>
-                  </div>
-                  <div className="bg-green-500 w-full h-[400px] rounded-xl"></div>
-                  <div className="py-2 border-b border-gray-100 border-opacity-50">
-                    people who have reacted to the post
-                  </div>
-                  <div className="flex gap-3 justify-center items-center py-2 border-b border-gray-100 border-opacity-50">
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Like</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Comment</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Share</p>
-                    </Button>
-                  </div>
-                  <div className="flex items-center pt-3 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <Input className="ml-3 rounded-3xl" />
-                  </div>
-                </div>
-                <div className="rounded-xl p-3">
-                  <div className="flex items-center pb-5 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-lg font-bold">{fullName}</p>
-                      <p>date posted</p>
-                    </div>
-                  </div>
-                  <div className="bg-green-500 w-full h-[400px] rounded-xl"></div>
-                  <div className="py-2 border-b border-gray-100 border-opacity-50">
-                    people who have reacted to the post
-                  </div>
-                  <div className="flex gap-3 justify-center items-center py-2 border-b border-gray-100 border-opacity-50">
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Like</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Comment</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Share</p>
-                    </Button>
-                  </div>
-                  <div className="flex items-center pt-3 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <Input className="ml-3 rounded-3xl" />
-                  </div>
-                </div>
-                <div className="rounded-xl p-3">
-                  <div className="flex items-center pb-5 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-lg font-bold">{fullName}</p>
-                      <p>date posted</p>
-                    </div>
-                  </div>
-                  <div className="bg-green-500 w-full h-[400px] rounded-xl"></div>
-                  <div className="py-2 border-b border-gray-100 border-opacity-50">
-                    people who have reacted to the post
-                  </div>
-                  <div className="flex gap-3 justify-center items-center py-2 border-b border-gray-100 border-opacity-50">
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Like</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Comment</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Share</p>
-                    </Button>
-                  </div>
-                  <div className="flex items-center pt-3 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <Input className="ml-3 rounded-3xl" />
-                  </div>
-                </div>
-                <div className="rounded-xl p-3">
-                  <div className="flex items-center pb-5 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-lg font-bold">{fullName}</p>
-                      <p>date posted</p>
-                    </div>
-                  </div>
-                  <div className="bg-green-500 w-full h-[400px] rounded-xl"></div>
-                  <div className="py-2 border-b border-gray-100 border-opacity-50">
-                    people who have reacted to the post
-                  </div>
-                  <div className="flex gap-3 justify-center items-center py-2 border-b border-gray-100 border-opacity-50">
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Like</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Comment</p>
-                    </Button>
-                    <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
-                      <div className="size-4">
-                        <Icon path={mdiAccount}></Icon>
-                      </div>
-                      <p>Share</p>
-                    </Button>
-                  </div>
-                  <div className="flex items-center pt-3 ">
-                    <div>
-                      <Icon className="size-[40px]" path={mdiAccountCircle} />
-                    </div>
-                    <Input className="ml-3 rounded-3xl" />
-                  </div>
-                </div>
               </div>
             </main>
           </div>

@@ -22,6 +22,13 @@ console.log(`### pathname is: ${__dirname}`);
 
 // body parser middleware
 // must be before other
+// app.use("/images", express.static(path.join(__dirname, "image_uploads")));
+// app.get("/api/images", (req, res) => {
+//   const images = [
+//     { url: "http://localhost:3000/images/6a30734dfd54c36799622f7b07f49e19" }
+//   ];
+//   res.json(images);
+// });
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

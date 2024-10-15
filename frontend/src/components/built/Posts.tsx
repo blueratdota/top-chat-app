@@ -1,13 +1,22 @@
 import Icon from "@mdi/react";
-import { Button, Input } from "@chakra-ui/react";
-import { mdiAccountCircle, mdiAccount } from "@mdi/js";
-import { useState, useEffect } from "react";
+import { Button } from "@chakra-ui/react";
+import {
+  mdiThumbUp,
+  mdiThumbDown,
+  mdiSend,
+  mdiComment,
+  mdiShare
+} from "@mdi/js";
+import { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import ProfilePicture from "./ProfilePicture";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 const Posts = ({ post, viewerProfile, mutate }: any) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>("");
+  const commentRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     const fetchImage = async () => {
       try {
@@ -41,8 +50,6 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
     }
   })();
   const likedByUser = (() => {
-    console.log(viewerProfile.id);
-    console.log(post.likedByUsers);
     const isLikedByViewer = post.likedByUsers.some((user: any) => {
       return user.profile.id == viewerProfile.id;
     });
@@ -56,7 +63,7 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
       const likedPost = await fetch(
         `${import.meta.env.VITE_SERVER}/api/users/like`,
         {
-          method: "POST",
+          method: "PUT",
           mode: "cors",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -69,6 +76,25 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const onCommentSend = async () => {
+    try {
+      const body = { postId: post.id, comment: comment };
+      const likedPost = await fetch(
+        `${import.meta.env.VITE_SERVER}/api/users/comment`,
+        {
+          method: "PUT",
+          mode: "cors",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
+      const response = await likedPost.json();
+      console.log(response);
+      setComment("");
+      await mutate();
+    } catch (error) {}
   };
 
   return (
@@ -116,28 +142,54 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
           onClick={onLikeClick}
         >
           <div className="size-4">
-            <Icon path={mdiAccount}></Icon>
+            {likedByUser ? (
+              <Icon path={mdiThumbDown}></Icon>
+            ) : (
+              <Icon path={mdiThumbUp}></Icon>
+            )}
           </div>
           <p>Like</p>
         </Button>
-        <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
+        <Button
+          className="flex gap-2 text-sm text-white bg-black rounded-xl"
+          onClick={() => {
+            commentRef.current?.focus();
+          }}
+        >
           <div className="size-4">
-            <Icon path={mdiAccount}></Icon>
+            <Icon path={mdiComment}></Icon>
           </div>
           <p>Comment</p>
         </Button>
         <Button className="flex gap-2 text-sm text-white bg-black rounded-xl">
           <div className="size-4">
-            <Icon path={mdiAccount}></Icon>
+            <Icon path={mdiShare}></Icon>
           </div>
           <p>Share</p>
         </Button>
       </div>
-      <div className="flex items-center pt-3 ">
+      {post.comments?.length > 0 ? (
         <div>
-          <Icon className="size-[40px]" path={mdiAccountCircle} />
+          {post.comments.map((comment: any) => {
+            return <div>{comment.textContent}</div>;
+          })}
         </div>
-        <Input className="ml-3 rounded-3xl" />
+      ) : null}
+      <div className="flex items-start pt-3 ">
+        <div className="size-[40px]">
+          <ProfilePicture displayPhotoId={viewerProfile.displayPhoto} />
+        </div>
+        <ReactTextareaAutosize
+          className="ml-3 min-h-[42px] w-full p-2 border border-gray-200 rounded-md"
+          ref={commentRef}
+          value={comment}
+          onChange={(e) => {
+            setComment(e.target.value);
+          }}
+        />
+        <div className="size-[30px] mx-2 my-auto" onClick={onCommentSend}>
+          <Icon path={mdiSend} />
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { Button, Textarea } from "@chakra-ui/react";
 import ProfilePicture from "./ProfilePicture.tsx";
 import { useRef, useState } from "react";
 import imageCompression from "browser-image-compression";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 const CreatePost = ({ displayPhotoId }: any) => {
   const [image, setImage] = useState<File | null>(null);
@@ -68,13 +69,13 @@ const CreatePost = ({ displayPhotoId }: any) => {
     }
   };
   return (
-    <div className="rounded-md p-3">
+    <div className="rounded-md p-3 ">
       <div className="flex items-start border-b border-gray-100 border-opacity-50">
         <div className="size-[40px]">
           <ProfilePicture displayPhotoId={displayPhotoId} />
         </div>
-        <Textarea
-          className="ml-3 border border-gray-200 rounded-md"
+        <ReactTextareaAutosize
+          className="ml-3 min-h-[42px] w-full p-2 border border-gray-200 rounded-md"
           value={caption}
           onChange={(e) => {
             setCaption(e.target.value);

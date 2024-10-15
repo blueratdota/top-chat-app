@@ -224,3 +224,4 @@ export default ProfilePhoto;
 
 // display a default photo or last used photo
 // add toasts
+// add loading
