@@ -156,8 +156,12 @@ const getUserPosts = async (req, res, next) => {
       select: {
         posts: {
           include: {
-            comments: true,
-            likedByUsers: true,
+            comments: {
+              select: { author: { select: { profile: true, email: true } } }
+            },
+            likedByUsers: {
+              select: { email: true, profile: true }
+            },
             author: { select: { profile: true, email: true } }
           },
           orderBy: { datePosted: "desc" }
@@ -514,6 +518,53 @@ const createPost = async (req, res, next) => {
   }
 };
 
+const likePost = async (req, res, next) => {
+  try {
+    const { postId } = req.body;
+    const user = await prisma.user.findFirst({
+      where: { id: req.user.id },
+      select: { likedPosts: true }
+    });
+    console.log(user.likedPosts);
+
+    if (
+      user.likedPosts.some((post) => {
+        return post.id == postId;
+      })
+    ) {
+      const post = await prisma.user.update({
+        where: { id: req.user.id },
+        data: { likedPosts: { disconnect: { id: postId } } },
+        select: { likedPosts: true }
+      });
+      const result = {
+        isSuccess: true,
+        msg: "Post disliked",
+        data: post
+      };
+      res.status(200).json(result);
+    } else {
+      const post = await prisma.user.update({
+        where: { id: req.user.id },
+        data: { likedPosts: { connect: { id: postId } } },
+        select: { likedPosts: true }
+      });
+      const result = {
+        isSuccess: true,
+        msg: "Post liked",
+        data: post
+      };
+      res.status(200).json(result);
+    }
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Failed to like post");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 export {
   getUserData,
   getUserPosts,
@@ -523,6 +574,7 @@ export {
   getFriendshipStatus,
   getUserConversations,
   createPost,
+  likePost,
   userSignup,
   userLogin,
   userLogout,

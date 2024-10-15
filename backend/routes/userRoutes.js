@@ -9,6 +9,7 @@ import {
   getUserPosts,
   getUserProfile,
   getUserProfileById,
+  likePost,
   updateUserDisplayPhoto,
   updateUserGeneralInfo,
   userAcceptFriend,
@@ -38,6 +39,7 @@ router.post("/login", userLogin);
 router.post("/add-friend", protect, userAddFriend);
 router.post("/logout", userLogout);
 router.post("/post", protect, upload.single("file"), createPost);
+router.post("/like", protect, likePost);
 // PUT
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);

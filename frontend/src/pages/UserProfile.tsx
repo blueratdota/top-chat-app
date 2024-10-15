@@ -26,7 +26,6 @@ const UserProfile = () => {
 
   const {
     data: userPosts,
-    error: errorUserPosts,
     isLoading: isLoadingUserPosts,
     mutate: mutateUserPosts
   } = useSWR(`${import.meta.env.VITE_SERVER}/api/users/posts/${id}`, fetcher, {
@@ -128,7 +127,14 @@ const UserProfile = () => {
                 ) : (
                   <>
                     {userPosts.data.posts.map((post: any) => {
-                      return <Posts post={post} key={post.id} />;
+                      return (
+                        <Posts
+                          post={post}
+                          key={post.id}
+                          viewerProfile={profile}
+                          mutate={mutateUserPosts}
+                        />
+                      );
                     })}
                   </>
                 )}
