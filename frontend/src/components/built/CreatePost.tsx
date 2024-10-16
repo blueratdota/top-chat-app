@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import imageCompression from "browser-image-compression";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
-const CreatePost = ({ displayPhotoId }: any) => {
+const CreatePost = ({ displayPhotoId, mutateUserPosts }: any) => {
   const [image, setImage] = useState<File | null>(null);
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [caption, setCaption] = useState<string>("");
@@ -60,7 +60,7 @@ const CreatePost = ({ displayPhotoId }: any) => {
           setImgSrc("");
         }
         setCaption("");
-
+        await mutateUserPosts();
         // ADD SOME CLEANUP FUNCTION HERE
         // ADD SOME POSTS MUTATE CALL HERE
       }

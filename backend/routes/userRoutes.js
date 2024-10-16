@@ -6,7 +6,6 @@ import {
   getFriendshipStatus,
   getUserConversations,
   getUserData,
-  getUserFriends,
   getUserPosts,
   getUserProfile,
   getUserProfileById,

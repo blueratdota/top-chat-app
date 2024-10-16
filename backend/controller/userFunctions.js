@@ -34,29 +34,6 @@ const getUserData = async (req, res, next) => {
   }
 };
 
-const getUserFriends = async (req, res, next) => {
-  const { id } = req.user;
-  try {
-    const userData = await prisma.user.findUnique({
-      where: { id: id },
-      select: {
-        friends: true
-      }
-    });
-    const result = {
-      isSuccess: true,
-      msg: "User friends data downloaded",
-      data: userData
-    };
-    res.status(200).json(result);
-  } catch (error) {
-    const result = new Error("User friends data download failed");
-    result.status = 400;
-    result.log = error;
-    next(result);
-  }
-};
-
 const getFriendshipStatus = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -160,7 +137,8 @@ const getUserPosts = async (req, res, next) => {
               select: {
                 author: { select: { profile: true, email: true } },
                 textContent: true,
-                id: true
+                id: true,
+                datePosted: true
               },
               orderBy: { datePosted: "asc" }
             },
@@ -467,7 +445,26 @@ const getUserProfileById = async (req, res, next) => {
       where: { id: id },
       select: {
         profile: {
-          include: { user: { select: { email: true } }, generalInfo: true }
+          include: {
+            user: {
+              select: {
+                email: true,
+                sentFriendRequests: {
+                  where: { accepted: true },
+                  include: {
+                    acceptingUser: { select: { email: true, profile: true } }
+                  }
+                },
+                receivedFriendRequests: {
+                  where: { accepted: true },
+                  include: {
+                    requestingUser: { select: { email: true, profile: true } }
+                  }
+                }
+              }
+            },
+            generalInfo: true
+          }
         }
       }
     });
@@ -602,7 +599,6 @@ export {
   getUserPosts,
   getUserProfile,
   getUserProfileById,
-  getUserFriends,
   getFriendshipStatus,
   getUserConversations,
   createPost,

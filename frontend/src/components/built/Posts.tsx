@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import ProfilePicture from "./ProfilePicture";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import Comment from "./Comment";
 
 const Posts = ({ post, viewerProfile, mutate }: any) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -100,9 +101,9 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
   return (
     <div
       className="rounded-xl p-3"
-      onClick={() => {
-        console.log(post);
-      }}
+      // onClick={() => {
+      //   console.log(post);
+      // }}
     >
       <div className="flex items-center pb-2 ">
         <div className="size-[40px]">
@@ -110,7 +111,7 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
         </div>
         <div className="ml-3">
           <p className="text-lg font-bold">{fullName}</p>
-          <p>{format(post.datePosted, "PPp")}</p>
+          <p className="text-sm">{format(post.datePosted, "PPp")}</p>
         </div>
       </div>
       <div className="pb-1 max-w-[680px]">
@@ -129,7 +130,9 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
       </div>
       <div className="border-b border-gray-100 border-opacity-50">
         {post.likedByUsers.length > 0 ? (
-          <p className="py-2">{`${post.likedByUsers.length} ${
+          <p className="py-2 text-gray-400 text-sm">{`${
+            post.likedByUsers.length
+          } ${
             post.likedByUsers.length > 1 ? "users" : "user"
           } liked this post`}</p>
         ) : null}
@@ -169,9 +172,9 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
         </Button>
       </div>
       {post.comments?.length > 0 ? (
-        <div>
+        <div className="py-2">
           {post.comments.map((comment: any) => {
-            return <div>{comment.textContent}</div>;
+            return <Comment comment={comment} key={comment.id} />;
           })}
         </div>
       ) : null}

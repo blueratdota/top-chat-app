@@ -9,6 +9,8 @@ import ProfileIntro from "../components/built/ProfileIntro";
 import ProfilePicture from "../components/built/ProfilePicture";
 import CreatePost from "../components/built/CreatePost";
 import Posts from "../components/built/Posts";
+import ProfileGallery from "../components/built/ProfileGallery";
+import ProfileFriends from "../components/built/ProfileFriends";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -102,28 +104,36 @@ const UserProfile = () => {
                 />
                 <div className="py-3 px-4 rounded-xl">
                   <h1 className="text-lg font-bold mb-1">Photos</h1>
-                  <div className="grid grid-cols-2 grid-rows-2 gap-3">
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                  </div>
+                  {isLoadingUserPosts ? (
+                    <div>Loading...</div>
+                  ) : (
+                    <ProfileGallery posts={userPosts.data.posts} />
+                  )}
                 </div>
                 <div className="py-3 px-4 rounded-xl">
                   <h1 className="text-lg font-bold mb-1">Friends</h1>
-                  <div className="grid grid-cols-2 grid-rows-3 gap-3">
+                  {/* <div className="grid grid-cols-2 grid-rows-3 gap-3">
                     <div className="bg-red-500 aspect-square">x</div>
                     <div className="bg-red-500 aspect-square">x</div>
                     <div className="bg-red-500 aspect-square">x</div>
                     <div className="bg-red-500 aspect-square">x</div>
                     <div className="bg-red-500 aspect-square">x</div>
                     <div className="bg-red-500 aspect-square">x</div>
-                  </div>
+                  </div> */}
+                  <ProfileFriends
+                    receivedFriendRequests={
+                      pageProfile.user.receivedFriendRequests
+                    }
+                    sentFriendRequests={pageProfile.user.sentFriendRequests}
+                  />
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 [&>div]:bg-white [&>div]:shadow-sm">
                 {viewerIsUser && (
-                  <CreatePost displayPhotoId={pageProfile.displayPhoto} />
+                  <CreatePost
+                    displayPhotoId={pageProfile.displayPhoto}
+                    mutateUserPosts={mutateUserPosts}
+                  />
                 )}
                 {isLoadingUserPosts ? (
                   <div>Loading...</div>
