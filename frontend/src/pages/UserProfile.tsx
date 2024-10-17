@@ -112,14 +112,6 @@ const UserProfile = () => {
                 </div>
                 <div className="py-3 px-4 rounded-xl">
                   <h1 className="text-lg font-bold mb-1">Friends</h1>
-                  {/* <div className="grid grid-cols-2 grid-rows-3 gap-3">
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                    <div className="bg-red-500 aspect-square">x</div>
-                  </div> */}
                   <ProfileFriends
                     receivedFriendRequests={
                       pageProfile.user.receivedFriendRequests

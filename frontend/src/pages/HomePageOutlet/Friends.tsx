@@ -15,6 +15,20 @@ const Friends = () => {
   const { profile }: any = context;
   const mainPath = pathname.split("/")[2];
 
+  const fetcher = (url: string) =>
+    fetch(url, { credentials: "include" }).then((res) => res.json());
+  const {
+    data: suggestedFriends,
+    isLoading: isLoadingSuggestedFriends,
+    mutate: mutateSuggestedFriends
+  } = useSWR(
+    `${import.meta.env.VITE_SERVER}/api/users/suggested-friends`,
+    fetcher,
+    {
+      revalidateOnFocus: false
+    }
+  );
+
   return (
     <div className="flex">
       <div className="border-r min-h-screen">
@@ -140,11 +154,14 @@ const Friends = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full min-h-screen">
+      <div className="w-full min-h-screen bg-gray-100">
         <Outlet
           context={{
             profile: profile,
-            pathname: pathname
+            pathname: pathname,
+            suggestedFriends: suggestedFriends?.data,
+            isLoadingSuggestedFriends: isLoadingSuggestedFriends,
+            mutateSuggestedFriends: mutateSuggestedFriends
           }}
         />
       </div>

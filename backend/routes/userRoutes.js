@@ -6,9 +6,11 @@ import {
   getFriendshipStatus,
   getUserConversations,
   getUserData,
+  getUserFriends,
   getUserPosts,
   getUserProfile,
   getUserProfileById,
+  getUserSuggestedFriends,
   likePost,
   updateUserDisplayPhoto,
   updateUserGeneralInfo,
@@ -30,7 +32,8 @@ router.get("/userdata", protect, getUserData);
 router.get("/profile", protect, getUserProfile);
 router.get("/friend-status/:id", protect, getFriendshipStatus);
 router.get("/posts/:id", getUserPosts);
-// router.get("/friends", protect, getUserFriends);
+router.get("/friends", protect, getUserFriends);
+router.get("/suggested-friends", protect, getUserSuggestedFriends);
 router.get("/conversations", protect, getUserConversations);
 router.get("/:id", getUserProfileById);
 // POST

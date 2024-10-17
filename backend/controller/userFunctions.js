@@ -165,6 +165,100 @@ const getUserPosts = async (req, res, next) => {
     next(result);
   }
 };
+
+const getUserFriends = async (req, res, next) => {
+  try {
+    const sentRequests = await prisma.friendship.findMany({
+      where: { requestingUserId: req.user.id, accepted: true },
+      select: {
+        acceptingUser: { select: { id: true, profile: true, email: true } }
+      }
+    });
+    const receivedRequests = await prisma.friendship.findMany({
+      where: { acceptingUserId: req.user.id, accepted: true },
+      select: {
+        requestingUser: { select: { id: true, profile: true, email: true } }
+      }
+    });
+    const allFriends = (() => {
+      let arr = [];
+      sentRequests.forEach((entry) => {
+        arr.push(entry.acceptingUser);
+      });
+      receivedRequests.forEach((entry) => {
+        arr.push(entry.requestingUser);
+      });
+      return arr;
+    })();
+
+    const result = {
+      isSuccess: true,
+      msg: "Friends data downloaded",
+      data: allFriends
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+
+    const result = new Error("Friends data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
+const getUserSuggestedFriends = async (req, res, next) => {
+  try {
+    const sentRequests = await prisma.friendship.findMany({
+      where: { requestingUserId: req.user.id },
+      select: {
+        acceptingUser: { select: { id: true } }
+      }
+    });
+    const receivedRequests = await prisma.friendship.findMany({
+      where: { acceptingUserId: req.user.id },
+      select: {
+        requestingUser: { select: { id: true } }
+      }
+    });
+    const allRequests = (() => {
+      let arr = [];
+      sentRequests.forEach((entry) => {
+        arr.push(entry.acceptingUser.id);
+      });
+      receivedRequests.forEach((entry) => {
+        arr.push(entry.requestingUser.id);
+      });
+      return arr;
+    })();
+
+    const suggestedFriends = await prisma.user.findMany({
+      where: {
+        AND: [{ id: { notIn: allRequests } }, { id: { not: req.user.id } }]
+      },
+      select: {
+        id: true,
+        profile: { include: { generalInfo: true } },
+        email: true
+      }
+    });
+
+    const result = {
+      isSuccess: true,
+      msg: "Suggested Friends compiled",
+      data: suggestedFriends
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+
+    const result = new Error("Failed to compile suggested friends");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 // #### USER CREATION, USER LOGIN/LOGOUT ####
 const userSignup = async (req, res, next) => {
   const { email, password } = req.body;
@@ -601,6 +695,8 @@ export {
   getUserProfileById,
   getFriendshipStatus,
   getUserConversations,
+  getUserFriends,
+  getUserSuggestedFriends,
   createPost,
   likePost,
   commentPost,
