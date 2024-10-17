@@ -17,13 +17,19 @@ import Messages from "./pages/HomePageOutlet/Messages.tsx";
 import ConversationId from "./pages/HomePageOutlet/MessagesOutlet/ConversationId.tsx";
 import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault.tsx";
 import UserSignup from "./pages/UserSignup.tsx";
-// UTILS
-import PrivateRoute from "./utils/PrivateRoute.tsx";
 import UserProfile from "./pages/UserProfile.tsx";
 import ProfileEdit from "./pages/HomePageOutlet/ProfileEdit.tsx";
 import General from "./pages/HomePageOutlet/ProfileOutlet/General.tsx";
 import Intro from "./pages/HomePageOutlet/ProfileOutlet/Intro.tsx";
 import ProfilePhoto from "./pages/HomePageOutlet/ProfileOutlet/ProfilePhoto.tsx";
+import Friends from "./pages/HomePageOutlet/Friends.tsx";
+import FriendsHome from "./pages/HomePageOutlet/FriendsOutlet/FriendsHome.tsx";
+import FriendsRequests from "./pages/HomePageOutlet/FriendsOutlet/FriendsRequests.tsx";
+import FriendsAll from "./pages/HomePageOutlet/FriendsOutlet/FriendsAll.tsx";
+import FriendsBirthday from "./pages/HomePageOutlet/FriendsOutlet/FriendsBirthday.tsx";
+// UTILS
+import PrivateRoute from "./utils/PrivateRoute.tsx";
+import FriendsSuggested from "./pages/HomePageOutlet/FriendsOutlet/FriendsSuggested.tsx";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +79,24 @@ const router = createBrowserRouter([
         path: "/newsfeed",
         element: <Newsfeed />,
         children: [{ path: "/newsfeed/post", element: <Post /> }]
+      },
+      {
+        path: "/friends",
+        element: (
+          <PrivateRoute>
+            <Friends />
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <FriendsHome />
+          },
+          { path: "/friends/requests", element: <FriendsRequests /> },
+          { path: "/friends/suggestions", element: <FriendsSuggested /> },
+          { path: "/friends/all", element: <FriendsAll /> },
+          { path: "/friends/birthdays", element: <FriendsBirthday /> }
+        ]
       }
     ]
   }

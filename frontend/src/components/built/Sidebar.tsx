@@ -11,8 +11,6 @@ import {
 import { Link } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 
-//
-
 type SidebarParam = {
   pathName: string;
   profile: { firstName: string; lastName: string; userId: string };
@@ -100,19 +98,21 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
           <p className=" text-lg">Messages</p>
         </div>
       </Link>
-      <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
-          mainPath == "friends" ? "bg-gray-100 font-bold" : ""
-        }`}
-      >
-        <div className="w-10">
-          <Icon path={mdiAccountGroup} />
+      <Link to={"/friends"}>
+        <div
+          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == "friends" ? "bg-gray-100 font-bold" : ""
+          }`}
+        >
+          <div className="w-10">
+            <Icon path={mdiAccountGroup} />
+          </div>
+          <p className=" text-lg">Friends</p>
         </div>
-        <p className=" text-lg">Friends</p>
-      </div>
+      </Link>
       <div
         className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
-          mainPath == "friends" ? "bg-gray-100 font-bold" : ""
+          mainPath == "logout" ? "bg-gray-100 font-bold" : ""
         }`}
         onClick={onLogout}
       >

@@ -10,11 +10,12 @@ const ProfileFriends = ({
 
   return (
     <>
-      <div className="mb-2">{`${friends.length} friends`}</div>
-      <div className="grid grid-cols-2 gap-3">
-        {friends.slice(0, 6).map((friend: any) => {
+      <div className="mb-2">{`${friends.length} friend${
+        friends.length > 1 ? "s" : ""
+      }`}</div>
+      <div className="grid grid-cols-3 gap-3">
+        {friends.slice(0, 9).map((friend: any) => {
           const friendDetails = friend.acceptingUser || friend.requestingUser;
-          console.log(friendDetails);
           const fullName = (() => {
             if (friendDetails.profile.firstName) {
               return `${friendDetails.profile.firstName} ${
@@ -33,7 +34,7 @@ const ProfileFriends = ({
                 <ProfilePicture
                   displayPhotoId={friendDetails.profile.displayPhoto}
                 />
-                <p className="text-bold font-bold mt-1 ">{fullName}</p>
+                <p className="text-bold text-sm font-bold mt-1 ">{fullName}</p>
               </Link>
             </div>
           );
