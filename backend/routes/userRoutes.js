@@ -6,6 +6,7 @@ import {
   getFriendshipStatus,
   getUserConversations,
   getUserData,
+  getUserFriendRequests,
   getUserFriends,
   getUserPosts,
   getUserProfile,
@@ -34,6 +35,7 @@ router.get("/friend-status/:id", protect, getFriendshipStatus);
 router.get("/posts/:id", getUserPosts);
 router.get("/friends", protect, getUserFriends);
 router.get("/suggested-friends", protect, getUserSuggestedFriends);
+router.get("/requested-friends", protect, getUserFriendRequests);
 router.get("/conversations", protect, getUserConversations);
 router.get("/:id", getUserProfileById);
 // POST

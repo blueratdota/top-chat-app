@@ -166,27 +166,76 @@ const getUserPosts = async (req, res, next) => {
   }
 };
 
+const getUserFriendRequests = async (req, res, next) => {
+  try {
+    const sentRequests = await prisma.friendship.findMany({
+      where: { requestingUserId: req.user.id, accepted: false },
+      select: {
+        acceptingUser: { select: { id: true, profile: true, email: true } },
+        id: true
+      }
+    });
+    const receivedRequests = await prisma.friendship.findMany({
+      where: { acceptingUserId: req.user.id, accepted: false },
+      select: {
+        requestingUser: { select: { id: true, profile: true, email: true } },
+        id: true
+      }
+    });
+
+    const sentReq = (() => {
+      let arr = [];
+      sentRequests.forEach((entry) => {
+        arr.push({ ...entry.acceptingUser, friendshipId: entry.id });
+      });
+      return arr;
+    })();
+    const recReq = (() => {
+      let arr = [];
+      receivedRequests.forEach((entry) => {
+        arr.push({ ...entry.requestingUser, friendshipId: entry.id });
+      });
+      return arr;
+    })();
+
+    const result = {
+      isSuccess: true,
+      msg: "Friends data downloaded",
+      data: [sentReq, recReq]
+    };
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    const result = new Error("Friends data download failed");
+    result.status = 400;
+    result.log = error;
+    next(result);
+  }
+};
+
 const getUserFriends = async (req, res, next) => {
   try {
     const sentRequests = await prisma.friendship.findMany({
       where: { requestingUserId: req.user.id, accepted: true },
       select: {
-        acceptingUser: { select: { id: true, profile: true, email: true } }
+        acceptingUser: { select: { id: true, profile: true, email: true } },
+        id: true
       }
     });
     const receivedRequests = await prisma.friendship.findMany({
       where: { acceptingUserId: req.user.id, accepted: true },
       select: {
-        requestingUser: { select: { id: true, profile: true, email: true } }
+        requestingUser: { select: { id: true, profile: true, email: true } },
+        id: true
       }
     });
     const allFriends = (() => {
       let arr = [];
       sentRequests.forEach((entry) => {
-        arr.push(entry.acceptingUser);
+        arr.push({ ...entry.acceptingUser, friendshipId: entry.id });
       });
       receivedRequests.forEach((entry) => {
-        arr.push(entry.requestingUser);
+        arr.push({ ...entry.requestingUser, friendshipId: entry.id });
       });
       return arr;
     })();
@@ -199,7 +248,6 @@ const getUserFriends = async (req, res, next) => {
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
-
     const result = new Error("Friends data download failed");
     result.status = 400;
     result.log = error;
@@ -697,6 +745,7 @@ export {
   getUserConversations,
   getUserFriends,
   getUserSuggestedFriends,
+  getUserFriendRequests,
   createPost,
   likePost,
   commentPost,

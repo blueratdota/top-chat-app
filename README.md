@@ -11,6 +11,9 @@ NODE_ENV = development
 - for profilepic edit, add loading, toasts, display old profile pic
 - finish post template, comment,share(?)
 - do the photos portion, display latest 4 photos uploaded by the user. add option to view all photos poster by the user
-- display friends, and total number of friends
+- @ home, display friends' posts
+- @ explore, display all users of site posts
+- do pagination. display newest post
+- do autocreate post for changing displayPhoto. new friendships. etc - put this under notification page
 
 # done

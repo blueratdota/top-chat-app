@@ -17,6 +17,27 @@ const Friends = () => {
 
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
+  // ALL FRIENDS
+  const {
+    data: allFriends,
+    isLoading: isLoadingAllFriends,
+    mutate: mutateAllFriends
+  } = useSWR(`${import.meta.env.VITE_SERVER}/api/users/friends`, fetcher, {
+    revalidateOnFocus: false
+  });
+  // FRIEND REQUESTS
+  const {
+    data: requestedFriends,
+    isLoading: isLoadingRequestedFriends,
+    mutate: mutateRequestedFriends
+  } = useSWR(
+    `${import.meta.env.VITE_SERVER}/api/users/requested-friends`,
+    fetcher,
+    {
+      revalidateOnFocus: false
+    }
+  );
+  // SUGGESTED FRIENDS
   const {
     data: suggestedFriends,
     isLoading: isLoadingSuggestedFriends,
@@ -161,7 +182,13 @@ const Friends = () => {
             pathname: pathname,
             suggestedFriends: suggestedFriends?.data,
             isLoadingSuggestedFriends: isLoadingSuggestedFriends,
-            mutateSuggestedFriends: mutateSuggestedFriends
+            mutateSuggestedFriends: mutateSuggestedFriends,
+            requestedFriends: requestedFriends?.data,
+            isLoadingRequestedFriends: isLoadingRequestedFriends,
+            mutateRequestedFriends: mutateRequestedFriends,
+            allFriends: allFriends?.data,
+            isLoadingAllFriends: isLoadingAllFriends,
+            mutateAllFriends: mutateAllFriends
           }}
         />
       </div>

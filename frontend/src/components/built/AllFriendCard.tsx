@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import ProfilePicture from "./ProfilePicture";
 import { Link } from "react-router-dom";
 
-const SuggestedFriendCard = ({ person, mutate }: any) => {
+const AllFriendCard = ({ person, mutate }: any) => {
   const fullName = (() => {
     if (person.profile.firstName) {
       return `${person.profile.firstName} ${
@@ -13,12 +13,12 @@ const SuggestedFriendCard = ({ person, mutate }: any) => {
     }
   })();
 
-  const onClickAddFriend = async () => {
-    const body = { friendId: person.id };
+  const onClickUnfriend = async () => {
+    const body = { friendRequestId: person.friendshipId };
     const friendRequest = await fetch(
-      `${import.meta.env.VITE_SERVER}/api/users/add-friend`,
+      `${import.meta.env.VITE_SERVER}/api/users/friendship`,
       {
-        method: "POST",
+        method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -28,7 +28,7 @@ const SuggestedFriendCard = ({ person, mutate }: any) => {
     if (response.isSuccess) {
       await mutate();
     } else {
-      throw new Error("Unable to send friend request");
+      throw new Error("Unable to delete friendRequest");
     }
   };
 
@@ -45,13 +45,13 @@ const SuggestedFriendCard = ({ person, mutate }: any) => {
       <div className="p-2 mt-1 space-y-2">
         <p className="ml-2 font-bold truncate">{fullName}</p>
         <Button
-          className="w-full bg-blue-500 bg-opacity-20 text-blue-500"
-          onClick={onClickAddFriend}
+          className="w-full bg-red-500 bg-opacity-20 text-red-500"
+          onClick={onClickUnfriend}
         >
-          Add Friend
+          Unfriend
         </Button>
       </div>
     </div>
   );
 };
-export default SuggestedFriendCard;
+export default AllFriendCard;

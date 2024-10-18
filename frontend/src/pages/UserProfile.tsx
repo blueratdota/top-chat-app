@@ -1,5 +1,4 @@
-import { Button, Input } from "@chakra-ui/react";
-import { mdiAccount, mdiAccountCircle } from "@mdi/js";
+import { mdiAccountCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
