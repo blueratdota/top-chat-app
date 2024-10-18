@@ -1,18 +1,14 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
 import {
-  commentPost,
-  createPost,
   getFriendshipStatus,
   getUserConversations,
   getUserData,
   getUserFriendRequests,
   getUserFriends,
-  getUserPosts,
   getUserProfile,
   getUserProfileById,
   getUserSuggestedFriends,
-  likePost,
   updateUserDisplayPhoto,
   updateUserGeneralInfo,
   userAcceptFriend,
@@ -32,7 +28,6 @@ router.get("/userdata", protect, getUserData);
 // GET SPECIFIC USER DATA
 router.get("/profile", protect, getUserProfile);
 router.get("/friend-status/:id", protect, getFriendshipStatus);
-router.get("/posts/:id", getUserPosts);
 router.get("/friends", protect, getUserFriends);
 router.get("/suggested-friends", protect, getUserSuggestedFriends);
 router.get("/requested-friends", protect, getUserFriendRequests);
@@ -43,10 +38,7 @@ router.post("/signup", userSignup);
 router.post("/login", userLogin);
 router.post("/add-friend", protect, userAddFriend);
 router.post("/logout", userLogout);
-router.post("/post", protect, upload.single("file"), createPost);
 // PUT
-router.put("/like", protect, likePost);
-router.put("/comment", protect, commentPost);
 router.put("/accept-friend", protect, userAcceptFriend);
 router.put("/profile", protect, userUpdateProfile);
 router.put("/intro/:id", protect, updateUserGeneralInfo);

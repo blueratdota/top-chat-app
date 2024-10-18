@@ -66,16 +66,18 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
           <p className=" text-lg">Home</p>
         </div>
       </Link>
-      <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
-          mainPath == "explore" ? "bg-gray-100 font-bold" : ""
-        }`}
-      >
-        <div className="w-10">
-          <Icon path={mdiMagnify} />
+      <Link to={"/explore"}>
+        <div
+          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == "explore" ? "bg-gray-100 font-bold" : ""
+          }`}
+        >
+          <div className="w-10">
+            <Icon path={mdiMagnify} />
+          </div>
+          <p className=" text-lg">Explore</p>
         </div>
-        <p className=" text-lg">Explore</p>
-      </div>
+      </Link>
       <div
         className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
           mainPath == "notifications" ? "bg-gray-100 font-bold" : ""

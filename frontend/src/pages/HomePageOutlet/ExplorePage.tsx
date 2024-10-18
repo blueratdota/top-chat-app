@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/AuthContext";
 import Posts from "../../components/built/Posts";
 import CreatePost from "../../components/built/CreatePost";
 
-const HomePage = () => {
+const ExplorePage = () => {
   const { profile } = useAuth();
   const fetcher = (url: string) =>
     fetch(url, { credentials: "include" }).then((res) => res.json());
@@ -11,13 +11,9 @@ const HomePage = () => {
     data: allPosts,
     isLoading: isLoadingAllPosts,
     mutate: mutateAllPosts
-  } = useSWR(
-    `${import.meta.env.VITE_SERVER}/api/posts/friends-posts`,
-    fetcher,
-    {
-      revalidateOnFocus: false
-    }
-  );
+  } = useSWR(`${import.meta.env.VITE_SERVER}/api/posts/others-posts`, fetcher, {
+    revalidateOnFocus: false
+  });
 
   return (
     <div className="w-full min-h-screen max-h-screen overflow-auto flex justify-center py-5">
@@ -46,4 +42,4 @@ const HomePage = () => {
     </div>
   );
 };
-export default HomePage;
+export default ExplorePage;

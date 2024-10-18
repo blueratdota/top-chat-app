@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import ProfilePicture from "./ProfilePicture";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import Comment from "./Comment";
+import { useNavigate } from "react-router-dom";
 
 const Posts = ({ post, viewerProfile, mutate }: any) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -56,13 +57,14 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
     });
     return isLikedByViewer;
   })();
+  // console.log(profile.userId);
 
   // POST INTERACTION BUTTON FUNCTIONS
   const onLikeClick = async () => {
     try {
       const body = { postId: post.id };
       const likedPost = await fetch(
-        `${import.meta.env.VITE_SERVER}/api/users/like`,
+        `${import.meta.env.VITE_SERVER}/api/posts/like`,
         {
           method: "PUT",
           mode: "cors",
@@ -82,7 +84,7 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
     try {
       const body = { postId: post.id, comment: comment };
       const likedPost = await fetch(
-        `${import.meta.env.VITE_SERVER}/api/users/comment`,
+        `${import.meta.env.VITE_SERVER}/api/posts/comment`,
         {
           method: "PUT",
           mode: "cors",
@@ -98,19 +100,28 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
     } catch (error) {}
   };
 
+  const navigate = useNavigate();
+
   return (
-    <div
-      className="rounded-xl p-3"
-      // onClick={() => {
-      //   console.log(post);
-      // }}
-    >
+    <div className="rounded-xl p-3 min-w-full">
       <div className="flex items-center pb-2 ">
-        <div className="size-[40px]">
+        <div
+          className="size-[40px] hover:cursor-pointer"
+          onClick={() => {
+            navigate(`/${[profile.userId]}`);
+          }}
+        >
           <ProfilePicture displayPhotoId={profile.displayPhoto} />
         </div>
         <div className="ml-3">
-          <p className="text-lg font-bold">{fullName}</p>
+          <p
+            className="text-lg font-bold hover:cursor-pointer"
+            onClick={() => {
+              navigate(`/${[profile.userId]}`);
+            }}
+          >
+            {fullName}
+          </p>
           <p className="text-sm">{format(post.datePosted, "PPp")}</p>
         </div>
       </div>
@@ -185,6 +196,7 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
         <ReactTextareaAutosize
           className="ml-3 min-h-[42px] w-full p-2 border border-gray-200 rounded-md"
           ref={commentRef}
+          placeholder="Write a comment..."
           value={comment}
           onChange={(e) => {
             setComment(e.target.value);

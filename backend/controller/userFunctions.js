@@ -125,47 +125,6 @@ const getUserConversations = async (req, res, next) => {
   }
 };
 
-const getUserPosts = async (req, res, next) => {
-  const id = req.params.id;
-  try {
-    const userData = await prisma.user.findUnique({
-      where: { id: id },
-      select: {
-        posts: {
-          include: {
-            comments: {
-              select: {
-                author: { select: { profile: true, email: true } },
-                textContent: true,
-                id: true,
-                datePosted: true
-              },
-              orderBy: { datePosted: "asc" }
-            },
-            likedByUsers: {
-              select: { email: true, profile: true }
-            },
-            author: { select: { profile: true, email: true } }
-          },
-          orderBy: { datePosted: "desc" }
-        }
-      }
-    });
-    const result = {
-      isSuccess: true,
-      msg: "Post downloaded",
-      data: userData,
-      userId: id
-    };
-    res.status(200).json(result);
-  } catch (error) {
-    const result = new Error("User post data download failed");
-    result.status = 400;
-    result.log = error;
-    next(result);
-  }
-};
-
 const getUserFriendRequests = async (req, res, next) => {
   try {
     const sentRequests = await prisma.friendship.findMany({
@@ -626,119 +585,8 @@ const getUserProfileById = async (req, res, next) => {
   }
 };
 
-const createPost = async (req, res, next) => {
-  try {
-    const { textContent } = req.body;
-    const fileData = (() => {
-      if (req.file) {
-        return {
-          path: req.file.path,
-          name: req.file.originalname,
-          filename: req.file.filename,
-          fileSize: req.file.size,
-          authorId: req.user.id
-        };
-      } else return null;
-    })();
-    const post = await prisma.posts.create({
-      data: {
-        authorId: req.user.id,
-        textContent: textContent,
-        imageContent: fileData?.filename
-      }
-    });
-    const result = {
-      isSuccess: true,
-      msg: "Post created",
-      data: post
-    };
-    res.status(200).json(result);
-  } catch (error) {
-    console.log(error);
-    const result = new Error("Failed to create post");
-    result.status = 400;
-    result.log = error;
-    next(result);
-  }
-};
-
-const likePost = async (req, res, next) => {
-  try {
-    const { postId } = req.body;
-    const user = await prisma.user.findFirst({
-      where: { id: req.user.id },
-      select: { likedPosts: true }
-    });
-    console.log(user.likedPosts);
-
-    if (
-      user.likedPosts.some((post) => {
-        return post.id == postId;
-      })
-    ) {
-      const post = await prisma.user.update({
-        where: { id: req.user.id },
-        data: { likedPosts: { disconnect: { id: postId } } },
-        select: { likedPosts: true }
-      });
-      const result = {
-        isSuccess: true,
-        msg: "Post disliked",
-        data: post
-      };
-      res.status(200).json(result);
-    } else {
-      const post = await prisma.user.update({
-        where: { id: req.user.id },
-        data: { likedPosts: { connect: { id: postId } } },
-        select: { likedPosts: true }
-      });
-      const result = {
-        isSuccess: true,
-        msg: "Post liked",
-        data: post
-      };
-      res.status(200).json(result);
-    }
-  } catch (error) {
-    console.log(error);
-    const result = new Error("Failed to like post");
-    result.status = 400;
-    result.log = error;
-    next(result);
-  }
-};
-
-const commentPost = async (req, res, next) => {
-  try {
-    const { postId, comment } = req.body;
-
-    const post = await prisma.user.update({
-      where: { id: req.user.id },
-      data: {
-        comments: {
-          create: { textContent: comment, postId: postId }
-        }
-      }
-    });
-    const result = {
-      isSuccess: true,
-      msg: "Comment posted",
-      data: post
-    };
-    res.status(200).json(result);
-  } catch (error) {
-    console.log(error);
-    const result = new Error("Failed to post comment");
-    result.status = 400;
-    result.log = error;
-    next(result);
-  }
-};
-
 export {
   getUserData,
-  getUserPosts,
   getUserProfile,
   getUserProfileById,
   getFriendshipStatus,
@@ -746,9 +594,6 @@ export {
   getUserFriends,
   getUserSuggestedFriends,
   getUserFriendRequests,
-  createPost,
-  likePost,
-  commentPost,
   userSignup,
   userLogin,
   userLogout,

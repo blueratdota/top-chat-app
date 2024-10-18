@@ -6,7 +6,6 @@ import {
   mdiAccountDetails,
   mdiAccountPlus,
   mdiAccountSupervisor,
-  mdiCakeVariant,
   mdiCog
 } from "@mdi/js";
 const Friends = () => {
@@ -147,29 +146,6 @@ const Friends = () => {
                 className={`${mainPath == "all" ? "text-white" : "text-black"}`}
               >
                 All Friends
-              </p>
-            </div>
-          </Link>
-          <Link
-            to={"/friends/birthdays"}
-            className={`flex items-center rounded-xl space-x-3 p-2 ${
-              mainPath == "birthdays" ? "bg-black" : ""
-            }`}
-          >
-            <div
-              className={`size-10 p-2 rounded-[50%] ${
-                mainPath == "birthdays" ? "bg-blue-500" : "bg-gray-400"
-              }`}
-            >
-              <Icon className="text-white" path={mdiCakeVariant} />
-            </div>
-            <div>
-              <p
-                className={`${
-                  mainPath == "birthdays" ? "text-white" : "text-black"
-                }`}
-              >
-                Birthdays
               </p>
             </div>
           </Link>

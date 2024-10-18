@@ -47,7 +47,7 @@ const CreatePost = ({ displayPhotoId, mutateUserPosts }: any) => {
         if (caption) {
           formData.append("textContent", caption);
         }
-        await fetch(`${import.meta.env.VITE_SERVER}/api/users/post`, {
+        await fetch(`${import.meta.env.VITE_SERVER}/api/posts/post`, {
           method: "POST",
           mode: "cors",
           credentials: "include",
@@ -69,7 +69,7 @@ const CreatePost = ({ displayPhotoId, mutateUserPosts }: any) => {
     }
   };
   return (
-    <div className="rounded-md p-3 ">
+    <div className="rounded-md p-3 min-w-full">
       <div className="flex items-start border-b border-gray-100 border-opacity-50">
         <div className="size-[40px]">
           <ProfilePicture displayPhotoId={displayPhotoId} />
@@ -77,6 +77,7 @@ const CreatePost = ({ displayPhotoId, mutateUserPosts }: any) => {
         <ReactTextareaAutosize
           className="ml-3 min-h-[42px] w-full p-2 border border-gray-200 rounded-md"
           value={caption}
+          placeholder="Post something..."
           onChange={(e) => {
             setCaption(e.target.value);
           }}

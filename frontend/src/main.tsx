@@ -11,8 +11,6 @@ import { AuthProvider } from "./hooks/AuthContext.tsx";
 // PAGES
 import UserLogin from "./pages/UserLogin.tsx";
 import HomePage from "./pages/HomePageOutlet/HomePage.tsx";
-import Newsfeed from "./pages/HomePageOutlet/Newsfeed.tsx";
-import Post from "./pages/HomePageOutlet/Post.tsx";
 import Messages from "./pages/HomePageOutlet/Messages.tsx";
 import ConversationId from "./pages/HomePageOutlet/MessagesOutlet/ConversationId.tsx";
 import MessageDefault from "./pages/HomePageOutlet/MessagesOutlet/MessageDefault.tsx";
@@ -26,10 +24,10 @@ import Friends from "./pages/HomePageOutlet/Friends.tsx";
 import FriendsHome from "./pages/HomePageOutlet/FriendsOutlet/FriendsHome.tsx";
 import FriendsRequests from "./pages/HomePageOutlet/FriendsOutlet/FriendsRequests.tsx";
 import FriendsAll from "./pages/HomePageOutlet/FriendsOutlet/FriendsAll.tsx";
-import FriendsBirthday from "./pages/HomePageOutlet/FriendsOutlet/FriendsBirthday.tsx";
 // UTILS
 import PrivateRoute from "./utils/PrivateRoute.tsx";
 import FriendsSuggested from "./pages/HomePageOutlet/FriendsOutlet/FriendsSuggested.tsx";
+import ExplorePage from "./pages/HomePageOutlet/ExplorePage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -76,9 +74,8 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: "/newsfeed",
-        element: <Newsfeed />,
-        children: [{ path: "/newsfeed/post", element: <Post /> }]
+        path: "/explore",
+        element: <ExplorePage />
       },
       {
         path: "/friends",
@@ -94,8 +91,7 @@ const router = createBrowserRouter([
           },
           { path: "/friends/requests", element: <FriendsRequests /> },
           { path: "/friends/suggestions", element: <FriendsSuggested /> },
-          { path: "/friends/all", element: <FriendsAll /> },
-          { path: "/friends/birthdays", element: <FriendsBirthday /> }
+          { path: "/friends/all", element: <FriendsAll /> }
         ]
       }
     ]

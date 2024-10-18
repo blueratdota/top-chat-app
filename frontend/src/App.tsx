@@ -16,7 +16,7 @@ function App() {
         <>
           <div className="flex h-screen bg-gray-100">
             <Sidebar pathName={pathname} profile={profile} />
-            <main className="w-full">
+            <main className="w-full min-h-screen max-h-screen overflow-auto">
               <Outlet context={{ profile: profile }} />
             </main>
           </div>

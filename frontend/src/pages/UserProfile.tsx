@@ -29,9 +29,13 @@ const UserProfile = () => {
     data: userPosts,
     isLoading: isLoadingUserPosts,
     mutate: mutateUserPosts
-  } = useSWR(`${import.meta.env.VITE_SERVER}/api/users/posts/${id}`, fetcher, {
-    revalidateOnFocus: true
-  });
+  } = useSWR(
+    `${import.meta.env.VITE_SERVER}/api/posts/user-posts/${id}`,
+    fetcher,
+    {
+      revalidateOnFocus: true
+    }
+  );
 
   if (errorUserProfile) {
     return <div>Error Profile/Does not exist</div>;
