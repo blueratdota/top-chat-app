@@ -340,7 +340,7 @@ const userLogout = async (req, res, next) => {
     httpOnly: false,
     expires: new Date(0),
     secure: process.env.NODE_ENV !== "development",
-    sameSite: "none"
+    sameSite: process.env.SAME_SITE
   });
   res.json({ message: `User: logged-out` });
 };
