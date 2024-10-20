@@ -11,7 +11,7 @@ import postRoutes from "./routes/postRoutes.js";
 
 const app = express();
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL, DEF_FRONTEND_URL], // Change to your frontend's URL
+  origin: [process.env.FRONTEND_URL, process.env.DEF_FRONTEND_URL], // Change to your frontend's URL
   credentials: true // Allow credentials (cookies, authorization headers, etc.)
 };
 const port = process.env.PORT || 3001;
