@@ -56,12 +56,15 @@ const UserSignup = () => {
     console.log(`email: ${email} -- password:${password}`);
     try {
       const body = { email: email, password: password };
-      const response = await fetch("http://localhost:3000/api/users/signup", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER}/api/users/signup`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
       const result = await response.json();
       if (!result.isSuccess) {
         throw new Error("Network response was not ok");
