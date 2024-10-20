@@ -1,6 +1,6 @@
 import Icon from "@mdi/react";
 import { mdiAccount, mdiImage } from "@mdi/js";
-import { Button, Textarea } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import ProfilePicture from "./ProfilePicture.tsx";
 import { useRef, useState } from "react";
 import imageCompression from "browser-image-compression";

@@ -44,7 +44,6 @@ const UserProfile = () => {
     return <div>Loading Profile</div>;
   } else {
     const { profile: pageProfile } = userProfile.data;
-    // console.log(pageProfile, isAuthenticated);
 
     const fullName = (() => {
       if (pageProfile.firstName) {
@@ -58,6 +57,15 @@ const UserProfile = () => {
       if (id === profile.userId) return true;
       else return false;
     })();
+
+    const numFriends: number = (() => {
+      return (
+        pageProfile.user.receivedFriendRequests.length +
+        pageProfile.user.sentFriendRequests.length
+      );
+    })();
+
+    console.log(pageProfile);
 
     return (
       <div
@@ -81,15 +89,13 @@ const UserProfile = () => {
                 )}
               </div>
               <div className="py-5 px-5  flex-1">
-                <p className="text-3xl font-bold mb-2">{fullName}</p>
+                <p className="text-3xl font-bold mb-1">{fullName}</p>
                 {pageProfile.firstName ? (
-                  <p className="text-3xl">{pageProfile.user.email}</p>
+                  <p className="">{pageProfile.user.email}</p>
                 ) : (
-                  <p className="text-2xl italic">
-                    This user has an incomplete profile
-                  </p>
+                  <p className="">This user has an incomplete profile</p>
                 )}
-                <p># of friends</p>
+                <p>{`${numFriends} friends`}</p>
               </div>
               <div className="flex gap-2">
                 <ProfileHeaderButtons

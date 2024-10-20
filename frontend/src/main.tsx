@@ -28,6 +28,8 @@ import FriendsAll from "./pages/HomePageOutlet/FriendsOutlet/FriendsAll.tsx";
 import PrivateRoute from "./utils/PrivateRoute.tsx";
 import FriendsSuggested from "./pages/HomePageOutlet/FriendsOutlet/FriendsSuggested.tsx";
 import ExplorePage from "./pages/HomePageOutlet/ExplorePage.tsx";
+import FeaturedPhotos from "./pages/HomePageOutlet/ProfileOutlet/FeaturedPhotos.tsx";
+import Privacy from "./pages/HomePageOutlet/ProfileOutlet/Privacy.tsx";
 
 const router = createBrowserRouter([
   {
@@ -56,9 +58,11 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
-          { path: "/:id/edit/general", element: <General /> },
+          { index: true, element: <General /> },
           { path: "/:id/edit/intro", element: <Intro /> },
-          { path: "/:id/edit/photo", element: <ProfilePhoto /> }
+          { path: "/:id/edit/photo", element: <ProfilePhoto /> },
+          { path: "/:id/edit/featured-photo", element: <FeaturedPhotos /> },
+          { path: "/:id/edit/privacy", element: <Privacy /> }
         ]
       },
       {

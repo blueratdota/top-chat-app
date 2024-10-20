@@ -78,17 +78,19 @@ const Conversation = ({ data, userId }: any) => {
 
   return (
     <div className="flex p-2 border-y w-[430px]">
-      <Link to={`/messages/${id}`} className="flex items-center gap-5">
+      <Link to={`/messages/${id}`} className="flex-1 flex items-center gap-5">
         {/* <div className="size-16 bg-green-500">x</div> */}
         <div className="size-16">
           <ProfilePicture displayPhotoId={members[0].profile.displayPhoto} />
         </div>
         <div className="">
-          <p className="max-w-[280px] truncate text-lg font-bold">{fullName}</p>
+          <p className="max-w-[280px] truncate text-xl font-bold">{fullName}</p>
           <p className="max-w-[280px] truncate text-gray-500">{lastMessage}</p>
         </div>
       </Link>
-      <div className="px-5 max-h-fit bg-gray-400 hover:bg-gray-200">...</div>
+      <div className="px-3 rounded-3xl max-h-fit hover:bg-gray-400 flex items-center">
+        <p className="-mt-1">...</p>
+      </div>
     </div>
   );
 };

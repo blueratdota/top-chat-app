@@ -48,7 +48,7 @@ const Message = ({ message }: any) => {
             )}
           </div>
         ) : (
-          <div className="bg-blue-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
+          <div className="bg-blue-700 px-4 py-2 rounded-lg max-w-fit max-h-fit whitespace-pre-wrap">
             <div className="max-w-[320px]">{message.content}</div>
           </div>
         )}
@@ -71,7 +71,7 @@ const Message = ({ message }: any) => {
             )}
           </div>
         ) : (
-          <div className="bg-gray-700 px-4 py-2 rounded-lg max-w-fit max-h-fit">
+          <div className="bg-gray-700 px-4 py-2 rounded-lg max-w-fit max-h-fit whitespace-pre-wrap">
             <div className="max-w-[320px]">{message.content}</div>
           </div>
         )}

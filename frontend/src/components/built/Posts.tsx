@@ -125,7 +125,7 @@ const Posts = ({ post, viewerProfile, mutate }: any) => {
           <p className="text-sm">{format(post.datePosted, "PPp")}</p>
         </div>
       </div>
-      <div className="pb-1 max-w-[680px]">
+      <div className="pb-1 max-w-[680px] whitespace-pre-wrap">
         <p>{post.textContent}</p>
       </div>
       <div className="max-w-[690px]">

@@ -12,6 +12,7 @@ import {
   mdiSend
 } from "@mdi/js";
 import imageCompression from "browser-image-compression";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 const ConversationId = () => {
   const [messageContent, setMessageContent] = useState("");
@@ -240,13 +241,13 @@ const ConversationId = () => {
                 </div>
                 {isTextMessage ? (
                   <form className="flex flex-1 items-center gap-3 pr-4">
-                    <textarea
+                    <ReactTextareaAutosize
                       value={messageContent}
                       onChange={(e) => {
                         setMessageContent(e.target.value);
                       }}
-                      className="outline-none resize-none w-full my-2 px-4 rounded-lg"
-                    ></textarea>
+                      className="min-h-[42px] max-h-[42px] w-full p-2 border border-gray-200 rounded-md"
+                    ></ReactTextareaAutosize>
                     <Button
                       onClick={onSendText}
                       type="submit"

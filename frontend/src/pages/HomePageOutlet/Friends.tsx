@@ -62,7 +62,7 @@ const Friends = () => {
           <Link
             to={"/friends"}
             className={`flex items-center rounded-xl space-x-3 p-2 ${
-              mainPath == undefined ? "bg-black" : ""
+              mainPath == undefined ? "bg-black" : "hover:bg-gray-200"
             }`}
           >
             <div
@@ -85,7 +85,7 @@ const Friends = () => {
           <Link
             to={"/friends/requests"}
             className={`flex items-center rounded-xl space-x-3 p-2 ${
-              mainPath == "requests" ? "bg-black" : ""
+              mainPath == "requests" ? "bg-black" : "hover:bg-gray-200"
             }`}
           >
             <div
@@ -108,7 +108,7 @@ const Friends = () => {
           <Link
             to={"/friends/suggestions"}
             className={`flex items-center rounded-xl space-x-3 p-2 ${
-              mainPath == "suggestions" ? "bg-black" : ""
+              mainPath == "suggestions" ? "bg-black" : "hover:bg-gray-200"
             }`}
           >
             <div
@@ -131,7 +131,7 @@ const Friends = () => {
           <Link
             to={"/friends/all"}
             className={`flex items-center rounded-xl space-x-3 p-2 ${
-              mainPath == "all" ? "bg-black" : ""
+              mainPath == "all" ? "bg-black" : "hover:bg-gray-200"
             }`}
           >
             <div

@@ -10,6 +10,8 @@ import { Button } from "@chakra-ui/react";
 import { useDebounceEffect } from "../../../hooks/UseDebounceEffect";
 import CanvasPreview from "../../../components/built/CanvasPreview";
 import "react-image-crop/dist/ReactCrop.css";
+import { useOutletContext } from "react-router-dom";
+import ProfilePicture from "../../../components/built/ProfilePicture";
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -42,6 +44,9 @@ const ProfilePhoto = () => {
   const [fileName, setFileName] = useState("");
 
   const aspect = 1;
+  const context = useOutletContext();
+  const { profile }: any = context;
+  console.log(profile);
 
   function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
@@ -163,7 +168,9 @@ const ProfilePhoto = () => {
             />
           </div>
         ) : (
-          <div className="size-[300px] bg-gray-200"></div>
+          <div className="size-[300px] bg-gray-200">
+            <ProfilePicture displayPhotoId={profile.displayPhoto} />
+          </div>
         )}
 
         <div className="w-[300px]">

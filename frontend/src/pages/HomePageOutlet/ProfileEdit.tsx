@@ -6,7 +6,14 @@ import {
   useParams
 } from "react-router-dom";
 import Icon from "@mdi/react";
-import { mdiAccount } from "@mdi/js";
+import {
+  mdiAccount,
+  mdiCamera,
+  mdiImageMultiple,
+  mdiIncognito,
+  mdiInformation,
+  mdiPlusBox
+} from "@mdi/js";
 import useSWR from "swr";
 
 const ProfileEdit = () => {
@@ -14,6 +21,8 @@ const ProfileEdit = () => {
   const context = useOutletContext();
   const { id } = useParams();
   const { profile }: any = context;
+  const mainPath = pathname.split("/")[3];
+  console.log(mainPath);
 
   // console.log(profile);
 
@@ -36,18 +45,122 @@ const ProfileEdit = () => {
             <Icon path={mdiAccount} />{" "}
           </div>
         </div>
-        <div className="[&>div]:hover:cursor-pointer py-5">
-          <Link to={`/${profile.userId}/edit/general`}>
-            <div className=" text-lg py-2 pl-3">General Info</div>
+        <div className="mx-2 space-y-2">
+          <Link
+            to={`/${id}/edit`}
+            className={`flex items-center rounded-xl space-x-3 p-2 ${
+              mainPath == undefined ? "bg-black" : "hover:bg-gray-200"
+            }`}
+          >
+            <div
+              className={`size-10 p-2 rounded-[50%] ${
+                mainPath == undefined ? "bg-blue-500" : "bg-gray-400"
+              }`}
+            >
+              <Icon className="text-white" path={mdiInformation} />
+            </div>
+            <div>
+              <p
+                className={`${
+                  mainPath == undefined ? "text-white" : "text-black"
+                }`}
+              >
+                General Info
+              </p>
+            </div>
           </Link>
-          <Link to={`/${profile.userId}/edit/intro`}>
-            <div className="text-lg py-2 pl-3">Additional Info</div>
+          <Link
+            to={`/${id}/edit/intro`}
+            className={`flex items-center rounded-xl space-x-3 p-2 ${
+              mainPath == "intro" ? "bg-black" : "hover:bg-gray-200"
+            }`}
+          >
+            <div
+              className={`size-10 p-2 rounded-[50%] ${
+                mainPath == "intro" ? "bg-blue-500" : "bg-gray-400"
+              }`}
+            >
+              <Icon className="text-white" path={mdiPlusBox} />
+            </div>
+            <div>
+              <p
+                className={`${
+                  mainPath == "intro" ? "text-white" : "text-black"
+                }`}
+              >
+                Additional Info
+              </p>
+            </div>
           </Link>
-          <Link to={`/${profile.userId}/edit/photo`}>
-            <div className="text-lg py-2 pl-3">Profile Photo</div>
+          <Link
+            to={`/${profile.userId}/edit/photo`}
+            className={`flex items-center rounded-xl space-x-3 p-2 ${
+              mainPath == "photo" ? "bg-black" : "hover:bg-gray-200"
+            }`}
+          >
+            <div
+              className={`size-10 p-2 rounded-[50%] ${
+                mainPath == "photo" ? "bg-blue-500" : "bg-gray-400"
+              }`}
+            >
+              <Icon className="text-white" path={mdiCamera} />
+            </div>
+            <div>
+              <p
+                className={`${
+                  mainPath == "photo" ? "text-white" : "text-black"
+                }`}
+              >
+                Profile Photo
+              </p>
+            </div>
           </Link>
-          <div className="text-lg py-2 pl-3">Featured Photos</div>
-          <div className="text-lg py-2 pl-3">Privacy</div>
+          <Link
+            to={`/${profile.userId}/edit/featured-photo`}
+            className={`flex items-center rounded-xl space-x-3 p-2 ${
+              mainPath == "featured-photo" ? "bg-black" : "hover:bg-gray-200"
+            }`}
+          >
+            <div
+              className={`size-10 p-2 rounded-[50%] ${
+                mainPath == "featured-photo" ? "bg-blue-500" : "bg-gray-400"
+              }`}
+            >
+              <Icon className="text-white" path={mdiImageMultiple} />
+            </div>
+            <div>
+              <p
+                className={`${
+                  mainPath == "featured-photo" ? "text-white" : "text-black"
+                }`}
+              >
+                Featured Photos
+              </p>
+            </div>
+          </Link>
+          <Link
+            to={`/${profile.userId}/edit/privacy`}
+            className={`flex items-center rounded-xl space-x-3 p-2 ${
+              mainPath == "privacy" ? "bg-black" : "hover:bg-gray-200"
+            }`}
+          >
+            <div
+              className={`size-10 p-2 rounded-[50%] ${
+                mainPath == "privacy" ? "bg-blue-500" : "bg-gray-400"
+              }`}
+            >
+              <Icon className="text-white" path={mdiIncognito} />
+            </div>
+            <div>
+              <p
+                className={`${
+                  mainPath == "privacy" ? "text-white" : "text-black"
+                }`}
+              >
+                Privacy
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
       <div className="w-full min-h-screen">
