@@ -42,6 +42,7 @@ const ProfilePhoto = () => {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const aspect = 1;
   const context = useOutletContext();
@@ -90,6 +91,7 @@ const ProfilePhoto = () => {
   };
   const onSaveClick = async () => {
     try {
+      setIsLoading(true);
       const image = imgRef.current;
       const previewCanvas = previewCanvasRef.current;
       if (!image || !previewCanvas || !completedCrop) {
@@ -146,6 +148,7 @@ const ProfilePhoto = () => {
         body: formData
       });
       console.log("DP WILL BE UPDATED");
+      setIsLoading(false);
       // console.log(compressedFile);
       // console.log(file);
     } catch (error) {
@@ -220,7 +223,11 @@ const ProfilePhoto = () => {
             >
               Cancel
             </Button>
-            <Button onClick={onSaveClick}>Save</Button>
+            {isLoading ? (
+              <Button className="bg-green-500 text-black">Loading</Button>
+            ) : (
+              <Button onClick={onSaveClick}>Save</Button>
+            )}
           </div>
         </div>
       ) : null}
