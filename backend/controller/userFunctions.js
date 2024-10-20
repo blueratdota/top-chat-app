@@ -269,6 +269,7 @@ const getUserSuggestedFriends = async (req, res, next) => {
 // #### USER CREATION, USER LOGIN/LOGOUT ####
 const userSignup = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email, password);
   try {
     if (email && password) {
       const hashedPassword = await bcrypt.hash(password, 10);
