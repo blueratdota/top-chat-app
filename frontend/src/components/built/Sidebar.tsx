@@ -22,7 +22,7 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
 
   const onLogout = async () => {
     try {
-      await fetch("http://localhost:3000/api/users/logout", {
+      await fetch(`${import.meta.env.VITE_SERVER}/api/users/logout`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" }
