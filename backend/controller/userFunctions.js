@@ -337,8 +337,10 @@ const userLogin = async (req, res, next) => {
 
 const userLogout = async (req, res, next) => {
   res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0)
+    httpOnly: false,
+    expires: new Date(0),
+    secure: process.env.NODE_ENV !== "development",
+    sameSite: "none"
   });
   res.json({ message: `User: logged-out` });
 };
