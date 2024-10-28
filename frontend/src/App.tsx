@@ -7,16 +7,13 @@ function App() {
   const { pathname } = useLocation();
   const { profile, isAuthenticated } = useAuth();
 
-  // const soloPages = ["/login", "/signup", "/account-created"];
-  // const renderOwnPage = soloPages.includes(pathname);
-
   return (
     <>
       {isAuthenticated ? (
         <>
-          <div className="flex h-screen bg-gray-100">
+          <div className="flex flex-col-reverse md:flex md:flex-row h-screen bg-gray-100">
             <Sidebar pathName={pathname} profile={profile} />
-            <main className="w-full min-h-screen max-h-screen overflow-auto">
+            <main className="w-full md:min-h-screen md:max-h-screen overflow-auto">
               <Outlet context={{ profile: profile }} />
             </main>
           </div>

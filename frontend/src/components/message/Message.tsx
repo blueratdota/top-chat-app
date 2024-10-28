@@ -52,7 +52,7 @@ const Message = ({ message }: any) => {
             <div className="max-w-[320px]">{message.content}</div>
           </div>
         )}
-        <p className="py-1 text-sm">{date}</p>
+        <p className="py-1 text-black text-sm">{date}</p>
       </div>
     );
   } else {
@@ -75,7 +75,7 @@ const Message = ({ message }: any) => {
             <div className="max-w-[320px]">{message.content}</div>
           </div>
         )}
-        <p className="py-1 text-sm">{date}</p>
+        <p className="py-1 text-black text-sm">{date}</p>
       </div>
     );
   }

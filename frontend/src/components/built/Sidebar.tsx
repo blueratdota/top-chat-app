@@ -40,80 +40,80 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
   };
 
   return (
-    <div className="w-64 bg-white border-r [&>div]:hover:cursor-pointer py-5">
+    <div className="flex justify-around md:block md:w-64 bg-white border-r [&>div]:hover:cursor-pointer py-5">
       <Link to={`/${profile.userId}`}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
-            mainPath == profile.userId ? "bg-gray-100 font-bold" : ""
+          className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == profile.userId ? "md:bg-red-100 font-bold" : ""
           }`}
         >
           <div className="w-10">
             <Icon path={mdiAccountCircle} />
             {/* CHANGE THIS LATER TO A PROFILE PICTURE */}
           </div>
-          <p className=" text-lg">Profile</p>
+          <p className="hidden md:block text-lg">Profile</p>
         </div>
       </Link>
       <Link to={"/"}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
-            mainPath == "" ? "bg-gray-100 font-bold" : ""
+          className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
+            mainPath == "" ? "md:bg-gray-100 font-bold" : ""
           }`}
         >
           <div className="w-10">
             <Icon path={mdiHome} />
           </div>
-          <p className=" text-lg">Home</p>
+          <p className="hidden md:block text-lg">Home</p>
         </div>
       </Link>
       <Link to={"/explore"}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
             mainPath == "explore" ? "bg-gray-100 font-bold" : ""
           }`}
         >
           <div className="w-10">
             <Icon path={mdiMagnify} />
           </div>
-          <p className=" text-lg">Explore</p>
+          <p className="hidden md:block text-lg">Explore</p>
         </div>
       </Link>
       <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+        className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
           mainPath == "notifications" ? "bg-gray-100 font-bold" : ""
         }`}
       >
         <div className="w-10">
           <Icon path={mdiBellOutline} />
         </div>
-        <p className=" text-lg">Notifications</p>
+        <p className="hidden md:block text-lg">Notifications</p>
       </div>
       <Link to={"/messages"}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
             mainPath == "messages" ? "bg-gray-100 font-bold" : ""
           }`}
         >
           <div className="w-10">
             <Icon path={mdiEmailOutline} />
           </div>
-          <p className=" text-lg">Messages</p>
+          <p className="hidden md:block text-lg">Messages</p>
         </div>
       </Link>
       <Link to={"/friends"}>
         <div
-          className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+          className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
             mainPath == "friends" ? "bg-gray-100 font-bold" : ""
           }`}
         >
           <div className="w-10">
             <Icon path={mdiAccountGroup} />
           </div>
-          <p className=" text-lg">Friends</p>
+          <p className="hidden md:block text-lg">Friends</p>
         </div>
       </Link>
       <div
-        className={`flex items-center gap-3 pl-5 py-2 hover:bg-gray-100 ${
+        className={`flex items-center gap-3 md:pl-5 py-2 hover:bg-gray-100 ${
           mainPath == "logout" ? "bg-gray-100 font-bold" : ""
         }`}
         onClick={onLogout}
@@ -121,7 +121,7 @@ const Sidebar = ({ pathName, profile }: SidebarParam) => {
         <div className="w-10">
           <Icon path={mdiLogout} />
         </div>
-        <p className=" text-lg">Log Out</p>
+        <p className="hidden md:block text-lg">Log Out</p>
       </div>
     </div>
   );
