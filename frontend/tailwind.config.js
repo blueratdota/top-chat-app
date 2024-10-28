@@ -11,7 +11,7 @@ export default {
       md: "720px",
       // => @media (min-width: 768px) { ... }
 
-      mdLg: "840px",
+      mdLg: "940px",
       // => @media (min-width: 840px) { ... }
 
       lg: "1024px",

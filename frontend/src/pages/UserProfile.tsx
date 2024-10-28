@@ -76,9 +76,11 @@ const UserProfile = () => {
             <div>loading...</div>
           </>
         ) : (
-          <div className={`min-w-[70%] max-w-[70%] px-5`}>
-            <header className="flex items-center">
-              <div className="size-48 p-3">
+          <div
+            className={`max-w-[95%] mdLg:min-w-[90%] mdLg:max-w-[90%] xl:min-w-[70%] xl:max-w-[70%] mdLg:px-2`}
+          >
+            <header className="mdLg:flex w-full py-5 md:py-3">
+              <div className="mx-auto mdLg:mx-auto size-48 grow-0">
                 {pageProfile.displayPhoto?.length > 0 ? (
                   <ProfilePicture
                     displayPhotoId={pageProfile.displayPhoto}
@@ -88,25 +90,27 @@ const UserProfile = () => {
                   <Icon path={mdiAccountCircle} />
                 )}
               </div>
-              <div className="py-5 px-5  flex-1">
-                <p className="text-3xl font-bold mb-1">{fullName}</p>
-                {pageProfile.firstName ? (
-                  <p className="">{pageProfile.user.email}</p>
-                ) : (
-                  <p className="">This user has an incomplete profile</p>
-                )}
-                <p>{`${numFriends} friends`}</p>
-              </div>
-              <div className="flex gap-2">
-                <ProfileHeaderButtons
-                  id={id}
-                  viewerIsUser={viewerIsUser}
-                  isAuth={isAuthenticated}
-                />
+              <div className="xl:flex xl:justify-between md:flex-1 items-center">
+                <div className="text-center py-5 px-5 flex-1 w-full xl:text-left">
+                  <p className="text-3xl font-bold mb-1">{fullName}</p>
+                  {pageProfile.firstName ? (
+                    <p className="">{pageProfile.user.email}</p>
+                  ) : (
+                    <p className="">This user has an incomplete profile</p>
+                  )}
+                  <p>{`${numFriends} friends`}</p>
+                </div>
+                <div className="flex gap-2 justify-center">
+                  <ProfileHeaderButtons
+                    id={id}
+                    viewerIsUser={viewerIsUser}
+                    isAuth={isAuthenticated}
+                  />
+                </div>
               </div>
             </header>
-            <main className="flex gap-5 pb-10">
-              <div className="basis-[40%] flex flex-col gap-3 [&>div]:bg-white [&>div]:shadow-sm">
+            <main className="mdLg:flex gap-5 pb-10">
+              <div className="basis-[40%] flex flex-col gap-3 [&>div]:bg-white [&>div]:shadow-sm py-5 mdLg:py-0">
                 <ProfileIntro
                   generalInfo={pageProfile.generalInfo}
                   bio={pageProfile.bio}

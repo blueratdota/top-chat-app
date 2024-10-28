@@ -14,7 +14,7 @@ const FriendsAll = () => {
         ) : (
           <>
             {allFriends?.length > 0 ? (
-              <div className="grid grid-cols-6 gap-4 p-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 p-4">
                 {allFriends.map((person: any) => {
                   return (
                     <AllFriendCard

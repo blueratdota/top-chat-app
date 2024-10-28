@@ -69,7 +69,7 @@ const CreatePost = ({ displayPhotoId, mutateUserPosts }: any) => {
     }
   };
   return (
-    <div className="rounded-md p-3 min-w-full">
+    <div className="rounded-xl p-3 min-w-full">
       <div className="flex items-start border-b border-gray-100 border-opacity-50">
         <div className="size-[40px]">
           <ProfilePicture displayPhotoId={displayPhotoId} />

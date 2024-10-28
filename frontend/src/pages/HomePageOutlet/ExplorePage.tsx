@@ -17,7 +17,7 @@ const ExplorePage = () => {
 
   return (
     <div className="w-full min-h-screen max-h-screen overflow-auto flex justify-center py-5">
-      <div className="flex-1 flex flex-col gap-3 [&>div]:bg-white [&>div]:shadow-sm max-w-[40%]">
+      <div className="flex-1 flex flex-col gap-3 [&>div]:bg-white [&>div]:shadow-sm max-w-[95%] mdLg:max-w-[70%] xl:max-w-[40%]">
         <CreatePost
           displayPhotoId={profile.displayPhoto}
           mutateUserPosts={mutateAllPosts}
