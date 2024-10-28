@@ -172,7 +172,7 @@ const ConversationId = () => {
                   {fullName}
                 </p>
               </div>
-              <div className="bg-gradient-to-r from-gray-600 to-gray-500 max-h-[calc(100vh-64px-48px)] overflow-auto">
+              <div className="bg-gradient-to-r from-orange-600 to-orange-500 max-h-[calc(100vh-64px-48px)] overflow-auto">
                 {isLoadingConversation && <div>Loading conversation...</div>}
                 {conversation ? (
                   <>
