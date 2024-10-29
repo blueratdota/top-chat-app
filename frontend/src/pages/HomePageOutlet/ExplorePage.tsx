@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import { useAuth } from "../../hooks/AuthContext";
 import Posts from "../../components/built/Posts";
-import CreatePost from "../../components/built/CreatePost";
 
 const ExplorePage = () => {
   const { profile } = useAuth();
