@@ -4,7 +4,6 @@ import { Outlet, useLocation, useOutletContext } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import useSWR from "swr";
 import Conversation from "../../components/message/Conversation";
-import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const Messages = () => {
@@ -33,11 +32,11 @@ const Messages = () => {
   return (
     <div className="flex">
       <div
-        className={`border-r min-h-screen w-full ${
+        className={`border-r min-h-[calc(100vh-73px)] md:min-h-screen w-full xl:w-[430px] ${
           currentPath == undefined ? "" : "hidden xl:block"
         }`}
       >
-        <div className="flex w-full md:w-[430px] py-5 px-3 pr-5 gap-5 ">
+        <div className="flex w-full xl:w-[430px] py-5 px-3 pr-5 gap-5 ">
           <h1 className="text-lg font-bold flex-1">Messages</h1>
           <div className="w-7 ">
             <Icon path={mdiCogOutline} />{" "}
@@ -54,7 +53,7 @@ const Messages = () => {
             className="w-full border p-3 rounded-lg bg-white"
           />
         </div>
-        <div className="w-full md:w-[430px]">
+        <div className="w-full xl:w-[430px]">
           {isLoadingConversations && <div>Loading conversations...</div>}
           {conversations ? (
             <>
@@ -72,7 +71,7 @@ const Messages = () => {
         </div>
       </div>
       <div
-        className={`w-full min-h-screen ${
+        className={`w-full min-h-[calc(100vh-73px)] md:min-h-screen ${
           currentPath == undefined ? "hidden xl:block" : ""
         }`}
       >

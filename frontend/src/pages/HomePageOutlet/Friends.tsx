@@ -51,7 +51,7 @@ const Friends = () => {
 
   return (
     <div className="flex">
-      <div className="border-r min-h-screen hidden xl:block">
+      <div className="border-r min-h-[calc(100vh-73px)] md:min-h-screen hidden xl:block">
         <div className="flex w-[430px] py-5 px-3 pr-5 gap-5 ">
           <h1 className="text-lg font-bold flex-1">Friends</h1>
           <div className="size-7">
@@ -151,7 +151,7 @@ const Friends = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full min-h-screen bg-gray-100">
+      <div className="w-full min-h-[calc(100vh-73px)] md:min-h-screen bg-gray-100">
         <Outlet
           context={{
             profile: profile,

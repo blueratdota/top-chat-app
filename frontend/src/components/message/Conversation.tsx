@@ -77,7 +77,7 @@ const Conversation = ({ data, userId }: any) => {
   }
 
   return (
-    <div className="flex p-2 border-y w-[430px]">
+    <div className="flex p-2 border-y xl:w-[430px]">
       <Link to={`/messages/${id}`} className="flex-1 flex items-center gap-5">
         {/* <div className="size-16 bg-green-500">x</div> */}
         <div className="size-16">

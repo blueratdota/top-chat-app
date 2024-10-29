@@ -38,7 +38,7 @@ const ProfileEdit = () => {
 
   return (
     <div className="flex">
-      <div className="border-r min-h-screen">
+      <div className="border-r min-h-[calc(100vh-73px)] md:min-h-screen">
         <div className="flex w-[430px] py-5 px-3 pr-5 gap-5 ">
           <h1 className="text-lg font-bold flex-1">Edit Profile</h1>
           <div className="w-7 ">
@@ -163,7 +163,7 @@ const ProfileEdit = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full min-h-screen">
+      <div className="w-full min-h-[calc(100vh-73px)] md:min-h-screen">
         <Outlet
           context={{
             profile: profile,

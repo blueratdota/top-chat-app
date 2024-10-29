@@ -1,4 +1,9 @@
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useParams
+} from "react-router-dom";
 import useSWR from "swr";
 import Message from "../../../components/message/Message";
 import { Button } from "@chakra-ui/react";
@@ -6,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import Icon from "@mdi/react";
 import {
+  mdiArrowLeft,
   mdiEmoticonHappyOutline,
   mdiFormTextbox,
   mdiImage,
@@ -13,6 +19,7 @@ import {
 } from "@mdi/js";
 import imageCompression from "browser-image-compression";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import ProfilePicture from "../../../components/built/ProfilePicture";
 
 const ConversationId = () => {
   const [messageContent, setMessageContent] = useState("");
@@ -153,12 +160,26 @@ const ConversationId = () => {
           return conversationName;
         }
       })();
+      const convoPic = (() => {
+        if (type === "PRIVATE") {
+          return members[0].profile.displayPhoto;
+        } else return null;
+      })();
+
       return (
         <div>
           {conversation ? (
             <>
               <div className="flex items-center h-[48px] pl-5 border-b gap-3">
-                <div className="size-8 bg-green-500"></div>
+                <Link to={"/messages"} className="xl:hidden">
+                  <Icon
+                    className="text-black h-[32px]"
+                    path={mdiArrowLeft}
+                  ></Icon>
+                </Link>
+                <div className="size-8">
+                  <ProfilePicture displayPhotoId={convoPic} />
+                </div>
                 <p
                   className=" text-xl font-bold hover:cursor-pointer"
                   onClick={() => {
@@ -172,7 +193,7 @@ const ConversationId = () => {
                   {fullName}
                 </p>
               </div>
-              <div className="bg-gradient-to-r from-gray-200 to-gray-100 max-h-[calc(100vh-64px-48px)] overflow-auto">
+              <div className="bg-gradient-to-r from-gray-200 to-gray-100 max-h-[calc(100vh-64px-48px-73px)] md:max-h-[calc(100vh-64px-48px)] overflow-auto">
                 {isLoadingConversation && <div>Loading conversation...</div>}
                 {conversation ? (
                   <>
